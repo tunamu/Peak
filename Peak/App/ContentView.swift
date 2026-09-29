@@ -14,6 +14,7 @@ struct ContentView: View {
             Image(systemName: "figure.strengthtraining.traditional")
                 .imageScale(.large)
                 .foregroundStyle(DesignTokens.primary)
+                .accessibilityHidden(true)
             Text("Peak")
         }
         .padding()

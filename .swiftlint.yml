@@ -1,0 +1,55 @@
+# SwiftLint flags likely bugs and non-idiomatic code. Layout is owned by swift-format
+# (see .swift-format), so rules that fight the formatter are disabled or relaxed here.
+
+included:
+  - Peak
+  - Packages/PeakKit/Sources
+  - Packages/PeakKit/Tests
+
+excluded:
+  - Packages/PeakKit/.build
+
+disabled_rules:
+  # swift-format adds trailing commas to multi-line collection literals.
+  - trailing_comma
+
+opt_in_rules:
+  # SwiftUI and accessibility
+  - private_swiftui_state
+  - accessibility_label_for_image
+  - accessibility_trait_for_button
+  # Safety
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - fatal_error_message
+  - discouraged_optional_boolean
+  - yoda_condition
+  # Idioms and performance
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - first_where
+  - last_where
+  - reduce_into
+  - redundant_nil_coalescing
+  - toggle_bool
+
+# swift-format moves `{` to its own line after multi-line conditions and signatures.
+opening_brace:
+  ignore_multiline_statement_conditions: true
+  ignore_multiline_function_signatures: true
+  ignore_multiline_type_headers: true
+
+# Same limit as .swift-format. The formatter cannot wrap long strings, so those still warn here.
+line_length:
+  warning: 120
+  error: 200
+  ignores_urls: true
+
+identifier_name:
+  excluded:
+    - id
+    - x
+    - y
+    - kg
+    - lb
