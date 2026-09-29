@@ -29,7 +29,7 @@ Working assumptions that have not been confirmed yet. Each becomes an ADR once c
 
 | ID | Assumption |
 | --- | --- |
-| V-01 | Icons are SF Symbols; active states use the `.fill` variant |
+| V-01 | Icons are SF Symbols; active states use the `.fill` variant (except the tab bar, where iOS fills every symbol; see DESIGN_SYSTEM › Icons) |
 | V-02 | Weight defaults to kg with an lb option; data is always stored in kg. Water is stored in ml |
 | V-03 | The app is free, with no ads, no analytics and no third-party SDKs |
 | V-04 | Design hex values are the dark variants; light variants are derived to pass WCAG AA |

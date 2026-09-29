@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F1 — Design system and app skeleton
+**Current Phase**: F4 done · next: F5 — Home screen
 
 ## F0 — Repository and infrastructure
 
@@ -20,17 +20,45 @@
 | ID | Task | Status |
 | --- | --- | --- |
 | F1-01 | Color tokens (dark/light/Increase Contrast), typography, spacing and radius | ✅ In code, not an Asset Catalog ([ADR 0017](adr/0017-color-tokens-and-contrast.md)); `ContrastTests` enforce AA, report in DESIGN_SYSTEM |
-| F1-02 | Glass primitives: `GlassCard`, `TintedGlassButton`, `GlassPill`, container use | ⬜ |
-| F1-03 | Shared components: SectionHeader, SettingsRow, ProgressRing, ValuePickerSheet, ResultSheet | ⬜ |
-| F1-04 | TabView skeleton + Analysis placeholder | ⬜ |
-| F1-05 | DEBUG-only Component Gallery | ⬜ |
-| F1-06 | App icon (Icon Composer, 4 variants) | ⬜ |
+| F1-02 | Glass primitives: card, table, pill, glass button style, container use | ✅ `.glassCard()`, `.glassTable()`, `.glassPill()`, `.buttonStyle(.peakGlass)` (tint from role); showcase previews dark + light; glass color measured for the contrast tests |
+| F1-03 | Shared components: SectionHeader, SettingsRow, ProgressRing, ValuePickerSheet, ResultSheet | ✅ Plus `.fittedSheet()`; previews in dark, light and Dynamic Type XXXL; checked on the simulator at accessibility sizes |
+| F1-04 | TabView skeleton + Analysis placeholder | ✅ Home / Analysis / Settings with native glass tab bar, design tint (white/black), minimize on scroll; EN + TR |
+| F1-05 | DEBUG-only Component Gallery | ✅ Settings › Developer › Component Gallery; debug launch arguments for screenshots |
+| F1-06 | App icon (Icon Composer, 4 variants) | ✅ `AppIcon.icon` from the design's vectors; Default, Dark, Clear and Tinted rendered with `ictool`; home screen checked in dark and light |
+
+## F2 — Data layer
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F2-01 | SwiftData models (CloudKit rules) + `SchemaV1` + migration plan | ✅ 10 models; `SchemaRulesTests` checks the CloudKit rules on the real schema |
+| F2-02 | ModelContainer in the App Group; CloudKit flag ready but off until F8 | ✅ Store created in the App Group container on the simulator (signed build); widget arrives in F9 |
+| F2-03 | Repositories (Exercise, Template, Routine, Session, Water) | ✅ In-memory tests green |
+| F2-04 | SettingsStore (App Group defaults + sync mirror) | ✅ Written to App Group `UserDefaults`; iCloud key-value mirror plugs in with F8 |
+| F2-05 | Sample program seed (six templates + routine, only when chosen) | ✅ `SampleProgram.install`; onboarding (F10-05) will offer it, debug builds have Settings › Developer › Load Sample Program |
+| F2-06 | Archive and cascade tests | ✅ Archived and renamed exercises show in history by name |
+
+## F3 — Engines
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F3-01 | ProgressionEngine + tests | ✅ Reproduces all 13 next targets of the `/coach` program after 28.09.2026 |
+| F3-02 | RoutineScheduler + tests | ✅ Six-template rotation matches the `/coach` upcoming list; missed day, interval, several routines, archived templates |
+| F3-03 | EnergyEngine + tests (levels A/B/C) | ✅ A test per rule and boundary; boundary mutations are caught |
+| F3-04 | Statistics (volume, completion, target success) | ✅ Matches 4 of 6 logged success rates; the other 2 were miscounted in the log (see PROGRESSIVE_OVERLOAD.md) |
+| F3-05 | PROGRESSIVE_OVERLOAD, ROUTINES, ENERGY_LEVEL docs | ✅ Formulas, exact boundaries and examples |
+
+## F4 — Settings screen
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F4-01 | Settings layout: Goal / Workout / Recorded Workouts / Routines / General | ✅ Import and export rows are shown disabled until F7 |
+| F4-02 | Step, water and progressive overload sheets | ✅ Saved to `SettingsStore`; Home reads them in F5 |
+| F4-03 | Set Workout + New Movement (create, edit, archive) | ✅ Choose, order and size movements; delete archives. Taps and drags still need a manual pass on a device (no UI tests yet) |
+| F4-04 | Set Routine (weekdays / interval, several active) | ✅ Weekday chips in the locale's week order; interval with start date |
+| F4-05 | General: units, Apple Health status, About | ✅ kg/lb switch (weights appear from F5 on); Health status from HealthKit's request status; version, source, license, privacy |
 
 ## Upcoming phases (⬜)
 
-- F2: Data layer
-- F3: Engines (progression, routine, energy)
-- F4: Settings screen
 - F5: Home screen
 - F6: Workout Session
 - F7: Import / Export

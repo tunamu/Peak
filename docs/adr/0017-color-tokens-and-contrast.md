@@ -19,6 +19,8 @@ catalog's JSON files.
   that follows light/dark mode and Increase Contrast. Tests check the same values the app draws with.
 - Dark mode keeps the design's grays by default. With Settings › Accessibility › Increase Contrast on, both themes switch
   to grays that pass 4.5:1 on the canvas and on glass cards.
+- The same rule covers the design's pure reds (`accent.steps`, `energy.notReady`), which are 2.85:1 on a dark glass card:
+  Increase Contrast switches them to #FF453A (Apple's dark `systemRed`), 3.34:1.
 - Light mode passes AA with or without Increase Contrast.
 - Anything tappable uses `text.secondary` or stronger, never `text.tertiary`.
 - Logos (`brand.flag`) are exempt, as WCAG 1.4.11 allows.
@@ -28,5 +30,5 @@ catalog's JSON files.
 - `ContrastTests` fails CI if a token change breaks these rules. The contrast table in
   [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md) is printed by `swift test --filter contrastReport`.
 - Colors are not visible as swatches in Xcode's asset editor; previews show them instead.
-- The glass card background is an estimate until it is measured on a simulator (F1-02). Two graphic tokens sit at
-  3.01:1 on that estimate, so the measurement may force a small change.
+- The glass card color used by the tests was measured on the iOS 27 simulator in F1-02 (#3A3A3A dark, #F8F8FD light).
+  The measurement, lighter than the first estimate, is what moved the reds and `text.tertiary` into this rule.

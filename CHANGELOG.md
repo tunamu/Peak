@@ -22,3 +22,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Apple Health usage descriptions in English and Turkish, and a privacy manifest.
 - Design tokens in `PeakDesign`: colors for dark, light and Increase Contrast, typography, spacing and radius, with
   WCAG AA contrast tests.
+- Liquid Glass primitives: glass card, table and pill modifiers, and a glass button style tinted by the button's role.
+- Shared components: section header, settings row, progress ring, value picker sheet, result sheet and content-sized
+  sheets.
+- Tab bar with Home, Analysis (coming soon) and Settings, in English and Turkish.
+- Component Gallery in debug builds (Settings › Developer).
+- App icon (Liquid Glass, Icon Composer format) with Default, Dark, Clear and Tinted appearances.
+- Data layer: SwiftData schema v1 with a migration plan, stored in the App Group; repositories for exercises,
+  templates, routines, sessions and water; settings store; optional sample program.
+- Engines: progressive overload targets, routine scheduling, energy score and session statistics.
+- Settings screen: step, water and progressive overload goals; creating, editing and archiving workouts and movements;
+  routines on weekdays or every N days; units, Apple Health status and About. English and Turkish.

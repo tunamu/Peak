@@ -33,14 +33,16 @@ public enum PeakPalette {
     public static let textTertiary = ColorToken(
         "text.tertiary", role: .text,
         dark: RGBA(hex: 0x67676A), light: RGBA(hex: 0x6C6C70),
-        darkHighContrast: RGBA(hex: 0xA1A1A6), lightHighContrast: RGBA(hex: 0x48484A)
+        darkHighContrast: RGBA(hex: 0xA8A8AD), lightHighContrast: RGBA(hex: 0x48484A)
     )
 
     // MARK: Accents
 
+    /// The design's pure reds are 2.85:1 on a dark glass card; Increase Contrast lifts them (Apple's dark systemRed).
     public static let accentSteps = ColorToken(
         "accent.steps", role: .graphic,
-        dark: RGBA(hex: 0xFF0004), light: RGBA(hex: 0xD70015)
+        dark: RGBA(hex: 0xFF0004), light: RGBA(hex: 0xD70015),
+        darkHighContrast: RGBA(hex: 0xFF453A)
     )
 
     public static let accentWater = ColorToken(
@@ -60,7 +62,8 @@ public enum PeakPalette {
 
     public static let energyNotReady = ColorToken(
         "energy.notReady", role: .graphic,
-        dark: RGBA(hex: 0xFF0000), light: RGBA(hex: 0xD70015)
+        dark: RGBA(hex: 0xFF0000), light: RGBA(hex: 0xD70015),
+        darkHighContrast: RGBA(hex: 0xFF453A)
     )
 
     // MARK: Glass tints
@@ -91,9 +94,9 @@ public enum PeakPalette {
     ]
 
     /// What a regular glass card looks like over the canvas, used only by the contrast checks.
-    /// An estimate (10% white in dark, white in light) until it is measured on a simulator in F1-02.
-    public static let glassSurfaceEstimate = ColorToken(
-        "estimate.glassSurface", role: .surface,
-        dark: RGBA(hex: 0xFFFFFF, alpha: 0.10), light: RGBA(hex: 0xFFFFFF)
+    /// Measured on the iOS 27 simulator (F1-02): `.glassEffect(.regular)` card over `bg.canvas`.
+    public static let glassSurface = ColorToken(
+        "measured.glassSurface", role: .surface,
+        dark: RGBA(hex: 0x3A3A3A), light: RGBA(hex: 0xF8F8FD)
     )
 }

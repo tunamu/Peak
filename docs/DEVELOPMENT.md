@@ -12,16 +12,17 @@
 ```
 Peak.xcodeproj          # Xcode project (app target, synchronized folders)
 Peak/                   # App target sources (SwiftUI)
-  ├── App/              # PeakApp (@main entry point), root views
-  ├── Features/         # Feature modules (Home, Settings, etc)
+  ├── App/              # PeakApp (@main entry point), RootTabView
+  ├── Features/         # Home, Analysis, Settings (one folder per feature)
   ├── Resources/        # Assets.xcassets, strings, icons
   └── Peak.entitlements # iCloud + HealthKit permissions
 
 Packages/PeakKit/       # Local Swift Package, linked to the app target
   ├── Package.swift
   ├── Sources/PeakCore/     # Models, engines, services
-  ├── Sources/PeakDesign/   # UI tokens, glass components
-  └── Tests/PeakCoreTests/  # Swift Testing tests
+  ├── Sources/PeakDesign/   # Tokens, glass primitives, components, showcase (debug)
+  ├── Tests/PeakCoreTests/  # Swift Testing tests
+  └── Tests/PeakDesignTests/ # Contrast and component tests
 
 PeakWidgets/            # Widget extension (later)
 ```
@@ -72,6 +73,30 @@ xcodebuild build -project Peak.xcodeproj -scheme Peak \
 xcrun devicectl list devices
 xcrun devicectl device install app --device <UDID> <path/to/Peak.app>
 xcrun devicectl device process launch --device <UDID> com.tunamu.peak
+```
+
+## Component Gallery and launch arguments
+
+Debug builds have **Settings › Developer**: the **Component Gallery**, which shows every design token, glass primitive
+and component with sample content, and **Load Sample Program**, which fills the store with the sample templates and
+routine. The section is compiled out of Release builds.
+
+Debug builds also read a few launch arguments, handy for screenshots from the command line (`simctl` cannot tap). In
+Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; `-key value` pairs land in `UserDefaults`.
+
+| Argument | Effect |
+| --- | --- |
+| `-PeakTab home\|analysis\|settings` | Opens that tab |
+| `-PeakOpenGallery YES` | With `-PeakTab settings`, opens the Component Gallery |
+| `-PeakShowcaseSection dashboard\|buttons\|settings` | Scrolls the gallery to a section |
+| `-PeakShowcaseSheet stepGoal\|success\|failure` | Presents a sample sheet |
+| `-PeakLoadSampleProgram YES` | With `-PeakTab settings`, loads the sample program (same as Settings › Developer › Load Sample Program) |
+| `-PeakSettingsSheet stepGoal\|waterGoal\|overload\|newWorkout\|editWorkout\|newRoutine\|editRoutine` | With `-PeakTab settings`, opens that Settings sheet (edit opens the first workout or routine) |
+| `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
+| `-AppleLanguages "(tr)"` | Runs in Turkish (system argument); add `-AppleLocale tr_TR` for Turkish number formats |
+
+```bash
+xcrun simctl launch booted com.tunamu.peak -PeakTab settings -PeakOpenGallery YES -PeakShowcaseSheet success
 ```
 
 ## Formatting & Linting
