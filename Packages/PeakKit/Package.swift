@@ -4,7 +4,9 @@ import PackageDescription
 let package = Package(
     name: "PeakKit",
     platforms: [
-        .iOS(.v26)
+        .iOS(.v26),
+        // Only so `swift test` can build the SwiftUI code on a Mac host; the app ships on iOS.
+        .macOS(.v26),
     ],
     products: [
         .library(name: "PeakCore", targets: ["PeakCore"]),

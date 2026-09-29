@@ -22,3 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Apple Health usage descriptions in English and Turkish, and a privacy manifest.
 - Design tokens in `PeakDesign`: colors for dark, light and Increase Contrast, typography, spacing and radius, with
   WCAG AA contrast tests.
+- Liquid Glass primitives: glass card, table and pill modifiers, and a glass button style tinted by the button's role.
+- Shared components: section header, settings row, progress ring, value picker sheet, result sheet and content-sized
+  sheets.
+- Tab bar with Home, Analysis (coming soon) and Settings, in English and Turkish.
+- Component Gallery in debug builds (Settings › Developer).

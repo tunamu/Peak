@@ -20,10 +20,10 @@
 | ID | Task | Status |
 | --- | --- | --- |
 | F1-01 | Color tokens (dark/light/Increase Contrast), typography, spacing and radius | ✅ In code, not an Asset Catalog ([ADR 0017](adr/0017-color-tokens-and-contrast.md)); `ContrastTests` enforce AA, report in DESIGN_SYSTEM |
-| F1-02 | Glass primitives: `GlassCard`, `TintedGlassButton`, `GlassPill`, container use | ⬜ |
-| F1-03 | Shared components: SectionHeader, SettingsRow, ProgressRing, ValuePickerSheet, ResultSheet | ⬜ |
-| F1-04 | TabView skeleton + Analysis placeholder | ⬜ |
-| F1-05 | DEBUG-only Component Gallery | ⬜ |
+| F1-02 | Glass primitives: card, table, pill, glass button style, container use | ✅ `.glassCard()`, `.glassTable()`, `.glassPill()`, `.buttonStyle(.peakGlass)` (tint from role); showcase previews dark + light; glass color measured for the contrast tests |
+| F1-03 | Shared components: SectionHeader, SettingsRow, ProgressRing, ValuePickerSheet, ResultSheet | ✅ Plus `.fittedSheet()`; previews in dark, light and Dynamic Type XXXL; checked on the simulator at accessibility sizes |
+| F1-04 | TabView skeleton + Analysis placeholder | ✅ Home / Analysis / Settings with native glass tab bar, design tint (white/black), minimize on scroll; EN + TR |
+| F1-05 | DEBUG-only Component Gallery | ✅ Settings › Developer › Component Gallery; debug launch arguments for screenshots |
 | F1-06 | App icon (Icon Composer, 4 variants) | ⬜ |
 
 ## Upcoming phases (⬜)

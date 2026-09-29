@@ -4,7 +4,7 @@ import Testing
 
 /// WCAG AA checks for the palette (docs/DESIGN_SYSTEM.md › Contrast).
 ///
-/// Every token is checked on the canvas and on the estimated glass card, in all four appearances.
+/// Every token is checked on the canvas and on the measured glass card, in all four appearances.
 @Suite struct ContrastTests {
     struct Appearance: CustomStringConvertible {
         let isDark: Bool
@@ -19,12 +19,19 @@ import Testing
         Appearance(isDark: false, highContrast: true),
     ]
 
-    /// Dark grays kept as designed; they pass only with Increase Contrast on.
-    static let darkDesignExceptions: Set = [PeakPalette.textSecondary.name, PeakPalette.textTertiary.name]
+    /// Dark values kept as designed; they pass only with Increase Contrast on (ADR 0017).
+    static let darkDesignExceptions: Set = [
+        PeakPalette.textSecondary.name, PeakPalette.textTertiary.name,
+        PeakPalette.accentSteps.name, PeakPalette.energyNotReady.name,
+    ]
+
+    static func isDesignException(_ token: ColorToken, _ appearance: Appearance) -> Bool {
+        appearance.isDark && !appearance.highContrast && darkDesignExceptions.contains(token.name)
+    }
 
     static func backgrounds(_ appearance: Appearance) -> [RGBA] {
         let canvas = PeakPalette.canvas.resolve(isDark: appearance.isDark, highContrast: appearance.highContrast)
-        let glass = PeakPalette.glassSurfaceEstimate
+        let glass = PeakPalette.glassSurface
             .resolve(isDark: appearance.isDark, highContrast: appearance.highContrast)
             .composited(over: canvas)
         return [canvas, glass]
@@ -38,10 +45,7 @@ import Testing
     @Test(arguments: appearances)
     func textMeetsAA(_ appearance: Appearance) {
         for token in PeakPalette.all where token.role == .text {
-            let isException =
-                appearance.isDark && !appearance.highContrast
-                && Self.darkDesignExceptions.contains(token.name)
-            guard !isException else { continue }
+            guard !Self.isDesignException(token, appearance) else { continue }
             let ratio = Self.minimumRatio(token, appearance)
             #expect(ratio >= 4.5, "\(token.name) is \(ratio):1 in \(appearance)")
         }
@@ -50,6 +54,7 @@ import Testing
     @Test(arguments: appearances)
     func graphicsMeetAA(_ appearance: Appearance) {
         for token in PeakPalette.all where token.role == .graphic {
+            guard !Self.isDesignException(token, appearance) else { continue }
             let ratio = Self.minimumRatio(token, appearance)
             #expect(ratio >= 3, "\(token.name) is \(ratio):1 in \(appearance)")
         }

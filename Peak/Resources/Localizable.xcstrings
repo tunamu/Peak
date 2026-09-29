@@ -1,8 +1,85 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Peak" : {
-      "shouldTranslate" : false
+    "Analysis" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analiz"
+          }
+        }
+      }
+    },
+    "Charts and trends for your workouts will appear here." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarının grafikleri ve eğilimleri burada görünecek."
+          }
+        }
+      }
+    },
+    "Coming soon" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakında"
+          }
+        }
+      }
+    },
+    "Component Gallery" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bileşen Galerisi"
+          }
+        }
+      }
+    },
+    "Dashboard" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Panel"
+          }
+        }
+      }
+    },
+    "Developer" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geliştirici"
+          }
+        }
+      }
+    },
+    "Home" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ana Sayfa"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarlar"
+          }
+        }
+      }
     },
     "Welcome Back" : {
       "localizations" : {
