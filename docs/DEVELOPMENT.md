@@ -44,6 +44,30 @@ xcodebuild -project Peak.xcodeproj -scheme Peak \
 cd Packages/PeakKit && swift test
 ```
 
+## Formatting & Linting
+
+Two tools with separate jobs, like Prettier and ESLint:
+
+| Tool | Job | Config | How it runs |
+| --- | --- | --- | --- |
+| swift-format (ships with Xcode) | Layout: indentation, line breaks, import order | `.swift-format` | Xcode: Editor > Structure > Format File (⌃⇧I) |
+| SwiftLint (`brew install swiftlint`) | Likely bugs and non-idiomatic code | `.swiftlint.yml` | Automatically on every Xcode build (SwiftLint build phase) |
+
+SwiftLint rules that conflict with swift-format are disabled or relaxed in `.swiftlint.yml`.
+The SwiftLint build phase needs `ENABLE_USER_SCRIPT_SANDBOXING = NO` on the app target, because it
+reads the whole repo and writes a cache outside the build folder.
+
+```bash
+# Format everything in place
+xcrun swift-format format -i --recursive \
+  Peak Packages/PeakKit/Package.swift Packages/PeakKit/Sources Packages/PeakKit/Tests
+
+# Check (same commands CI will run)
+swiftlint lint --strict
+xcrun swift-format lint --strict --recursive \
+  Peak Packages/PeakKit/Package.swift Packages/PeakKit/Sources Packages/PeakKit/Tests
+```
+
 ## HealthKit Permissions
 
 Add to `Peak/Peak.entitlements`:

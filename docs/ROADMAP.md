@@ -19,7 +19,7 @@ Target: Q2 2027
 
 ### Quality
 - ⬜ Swift Testing suite (unit + integration)
-- ⬜ SwiftLint + swift-format
+- ✅ SwiftLint + swift-format
 - ⬜ Accessibility audit (WCAG AA)
 
 ## Phase 2: Post-Launch

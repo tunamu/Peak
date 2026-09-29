@@ -16,21 +16,21 @@ let package = Package(
             name: "PeakCore",
             dependencies: [],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency"),
+                .enableUpcomingFeature("ApproachableConcurrency")
             ]
         ),
         .target(
             name: "PeakDesign",
             dependencies: ["PeakCore"],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency"),
+                .enableUpcomingFeature("ApproachableConcurrency")
             ]
         ),
         .testTarget(
             name: "PeakCoreTests",
             dependencies: ["PeakCore"],
             swiftSettings: [
-                .enableUpcomingFeature("ApproachableConcurrency"),
+                .enableUpcomingFeature("ApproachableConcurrency")
             ]
         ),
     ]
