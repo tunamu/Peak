@@ -1,0 +1,26 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSHealthShareUsageDescription" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak, günlük ilerlemeni ve Enerji Seviyeni göstermek için adım, uyku, kalp atış hızı değişkenliği, dinlenik nabız ve su verilerini okur."
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak, içtiğin suyu ve tamamladığın antrenmanları Sağlık uygulamasına kaydeder."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

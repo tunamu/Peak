@@ -1,7 +1,6 @@
 # HealthKit
 
-> Status: skeleton. `HealthService` is built in F2–F5 and capabilities are set up in F0-03; this file is updated with
-> them.
+> Status: skeleton. Capabilities are set up (F0-03); `HealthService` is built in F2–F5 and this file is updated with it.
 
 ## Read
 
@@ -32,6 +31,11 @@
 
 ## Setup
 
-Capabilities and entitlements (HealthKit with background delivery, iCloud/CloudKit, App Groups, background remote
-notifications) are configured in F0-03. Usage descriptions: `NSHealthShareUsageDescription`,
-`NSHealthUpdateUsageDescription`.
+| Item | Where | State |
+| --- | --- | --- |
+| HealthKit + background delivery | `Peak/Peak.entitlements` | ✅ |
+| App Group `group.com.tunamu.peak` | `Peak/Peak.entitlements` | ✅ |
+| Usage descriptions (`NSHealthShareUsageDescription`, `NSHealthUpdateUsageDescription`) | Build settings (`INFOPLIST_KEY_*`); Turkish in `Peak/Resources/InfoPlist.xcstrings` | ✅ |
+| iCloud (CloudKit container `iCloud.com.tunamu.peak`, key-value store), Push, background remote notifications | — | Needs the paid Apple Developer Program; added before F8 |
+
+The app does not list `healthkit` in `UIRequiredDeviceCapabilities`: it works without Health access.

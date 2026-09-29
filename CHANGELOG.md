@@ -18,3 +18,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Documentation: architecture, decision records, data model, import format, engines, design system, HealthKit,
   testing, release and privacy policy draft.
 - Code of Conduct (Contributor Covenant 3.0), security policy and third-party notices.
+- Automatic signing; HealthKit (with background delivery) and App Group entitlements.
+- Apple Health usage descriptions in English and Turkish, and a privacy manifest.

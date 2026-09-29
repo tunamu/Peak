@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F0 — Repository and infrastructure
+**Current Phase**: F0 done · next: F1 — Design system and app skeleton
 
 ## F0 — Repository and infrastructure
 
@@ -9,9 +9,9 @@
 | --- | --- | --- |
 | F0-01 | Public GitHub repo (MIT LICENSE, Xcode .gitignore, README skeleton) | ✅ |
 | F0-02 | Xcode 27 project: `Peak` app target (iOS 26.0, iPhone only), synchronized folders, `Packages/PeakKit` | ✅ Launches on iOS 26.3 and 27.0 simulators |
-| F0-03 | Capabilities and entitlements, App Group, CloudKit container | ⏸️ Blocked: needs an Apple ID in Xcode and a physical iPhone |
+| F0-03 | Capabilities and entitlements, App Group, CloudKit container | ✅ Signed build runs on iPhone; HealthKit and App Group enabled. iCloud and Push wait for the paid membership (see Notes) |
 | F0-04 | SwiftLint + swift-format + EditorConfig | ✅ `swiftlint` and `swift-format lint` clean |
-| F0-05 | GitHub Actions (`xcodebuild build test`), PR and issue templates | 🔶 Every step passes locally; waiting for the first green PR run |
+| F0-05 | GitHub Actions (`xcodebuild build test`), PR and issue templates | ✅ Green on PR #2 and on `main` |
 | F0-06 | Docs skeleton, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, THIRD_PARTY_NOTICES | ✅ |
 | F0-07 | `Localizable.xcstrings` (EN base + TR) | ✅ "Welcome Back" shows in English and Turkish |
 
@@ -31,5 +31,7 @@
 
 ## Notes
 
-- `Peak/Peak.entitlements` is not wired to the build yet and contains placeholder keys; F0-03 replaces it.
+- The project is signed with a free Personal Team for now. Personal Teams cannot use iCloud (CloudKit, key-value store)
+  or Push Notifications, so those capabilities are added once the paid Apple Developer Program membership is active,
+  before F8 (iCloud sync). Until then, settings live in App Group `UserDefaults` only.
 - Design tokens from `figma-spec.md` pending import (F1-01).

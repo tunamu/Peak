@@ -44,7 +44,8 @@ flowchart TD
 
 - UI state uses Observation (`@Observable`) feature models on the main actor, not view models per screen.
 - Settings live in `NSUbiquitousKeyValueStore` (synced across devices), mirrored to App Group `UserDefaults` so the
-  widget extension can read them.
+  widget extension can read them. The key-value store needs the iCloud capability (paid membership); until then,
+  settings live in App Group `UserDefaults` only.
 
 ## Stack
 
