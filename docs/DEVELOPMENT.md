@@ -77,8 +77,9 @@ xcrun devicectl device process launch --device <UDID> com.tunamu.peak
 
 ## Component Gallery and launch arguments
 
-Debug builds have **Settings › Developer › Component Gallery**, which shows every design token, glass primitive and
-component with sample content. It is compiled out of Release builds.
+Debug builds have **Settings › Developer**: the **Component Gallery**, which shows every design token, glass primitive
+and component with sample content, and **Load Sample Program**, which fills the store with the sample templates and
+routine. The section is compiled out of Release builds.
 
 Debug builds also read a few launch arguments, handy for screenshots from the command line (`simctl` cannot tap). In
 Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; `-key value` pairs land in `UserDefaults`.
@@ -89,7 +90,10 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakOpenGallery YES` | With `-PeakTab settings`, opens the Component Gallery |
 | `-PeakShowcaseSection dashboard\|buttons\|settings` | Scrolls the gallery to a section |
 | `-PeakShowcaseSheet stepGoal\|success\|failure` | Presents a sample sheet |
-| `-AppleLanguages "(tr)"` | Runs in Turkish (system argument) |
+| `-PeakLoadSampleProgram YES` | With `-PeakTab settings`, loads the sample program (same as Settings › Developer › Load Sample Program) |
+| `-PeakSettingsSheet stepGoal\|waterGoal\|overload\|newWorkout\|editWorkout\|newRoutine\|editRoutine` | With `-PeakTab settings`, opens that Settings sheet (edit opens the first workout or routine) |
+| `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
+| `-AppleLanguages "(tr)"` | Runs in Turkish (system argument); add `-AppleLocale tr_TR` for Turkish number formats |
 
 ```bash
 xcrun simctl launch booted com.tunamu.peak -PeakTab settings -PeakOpenGallery YES -PeakShowcaseSheet success

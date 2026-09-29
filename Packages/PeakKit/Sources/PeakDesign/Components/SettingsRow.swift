@@ -14,12 +14,20 @@ public struct SettingsRow: View {
         case none
     }
 
-    private let title: LocalizedStringKey
+    private let title: Text
     private let accessory: Accessory
     private let perform: () -> Void
 
+    /// A row with a fixed, localized title such as "Daily Step Goal".
     public init(_ title: LocalizedStringKey, accessory: Accessory = .none, perform: @escaping () -> Void) {
-        self.title = title
+        self.title = Text(title)
+        self.accessory = accessory
+        self.perform = perform
+    }
+
+    /// A row titled with text the user wrote, such as a workout name. It is never looked up as a translation key.
+    public init(verbatim title: String, accessory: Accessory = .none, perform: @escaping () -> Void) {
+        self.title = Text(verbatim: title)
         self.accessory = accessory
         self.perform = perform
     }
@@ -27,7 +35,7 @@ public struct SettingsRow: View {
     public var body: some View {
         Button(action: perform) {
             HStack(spacing: Spacing.small) {
-                Text(title)
+                title
                     .foregroundStyle(.peakTextPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 accessoryView
@@ -59,13 +67,24 @@ public struct SettingsRow: View {
     }
 }
 
-/// Highlights the row while it is pressed, like a list cell.
+/// Highlights the row while it is pressed, like a list cell, and dims it when disabled.
 private struct RowButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(
-                .peakFillControl.opacity(configuration.isPressed ? 1 : 0),
-                in: .rect(cornerRadius: Radius.control)
-            )
+        Row(configuration: configuration)
+    }
+
+    // A view, so it can read `isEnabled` from the environment.
+    private struct Row: View {
+        let configuration: Configuration
+        @Environment(\.isEnabled) private var isEnabled
+
+        var body: some View {
+            configuration.label
+                .opacity(isEnabled ? 1 : 0.4)
+                .background(
+                    .peakFillControl.opacity(configuration.isPressed ? 1 : 0),
+                    in: .rect(cornerRadius: Radius.control)
+                )
+        }
     }
 }

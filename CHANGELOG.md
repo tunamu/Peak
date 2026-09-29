@@ -27,3 +27,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   sheets.
 - Tab bar with Home, Analysis (coming soon) and Settings, in English and Turkish.
 - Component Gallery in debug builds (Settings › Developer).
+- App icon (Liquid Glass, Icon Composer format) with Default, Dark, Clear and Tinted appearances.
+- Data layer: SwiftData schema v1 with a migration plan, stored in the App Group; repositories for exercises,
+  templates, routines, sessions and water; settings store; optional sample program.
+- Engines: progressive overload targets, routine scheduling, energy score and session statistics.
+- Settings screen: step, water and progressive overload goals; creating, editing and archiving workouts and movements;
+  routines on weekdays or every N days; units, Apple Health status and About. English and Turkish.

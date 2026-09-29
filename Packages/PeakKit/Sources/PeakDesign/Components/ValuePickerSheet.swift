@@ -10,20 +10,24 @@ public struct ValuePickerSheet<Value: Hashable>: View {
         let pickerLabel: LocalizedStringKey
         let reset: LocalizedStringKey
         let update: LocalizedStringKey
+        let footnote: LocalizedStringKey?
 
         /// - Parameters:
         ///   - title: What is being changed, such as "Daily Step Goal".
         ///   - pickerLabel: The label above the picker, such as "New Goal".
+        ///   - footnote: An explanation under the current value, such as how progressive overload works.
         public init(
             _ title: LocalizedStringKey,
             pickerLabel: LocalizedStringKey,
             reset: LocalizedStringKey,
-            update: LocalizedStringKey
+            update: LocalizedStringKey,
+            footnote: LocalizedStringKey? = nil
         ) {
             self.title = title
             self.pickerLabel = pickerLabel
             self.reset = reset
             self.update = update
+            self.footnote = footnote
         }
     }
 
@@ -66,6 +70,12 @@ public struct ValuePickerSheet<Value: Hashable>: View {
                     .foregroundStyle(.peakTextPrimary)
             }
             .accessibilityElement(children: .combine)
+
+            if let footnote = titles.footnote {
+                Text(footnote)
+                    .font(.peakRow)
+                    .foregroundStyle(.peakTextSecondary)
+            }
 
             VStack(spacing: 0) {
                 Text(titles.pickerLabel)

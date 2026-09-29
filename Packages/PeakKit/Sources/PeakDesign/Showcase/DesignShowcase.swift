@@ -232,7 +232,7 @@
                 VStack(alignment: .leading, spacing: 0) {
                     SectionHeader("Recorded Workouts", action: .init("New") {})
                     ForEach(["Chest & Biceps", "Back & Triceps", "Shoulder & Biceps"], id: \.self) { name in
-                        SettingsRow(LocalizedStringKey(name), accessory: .action("Edit")) {}
+                        SettingsRow(verbatim: name, accessory: .action("Edit")) {}
                     }
                 }
             }

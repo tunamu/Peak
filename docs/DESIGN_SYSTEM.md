@@ -115,9 +115,10 @@ the call site in the app are picked up by the app's String Catalog (strings insi
 | Component | Design | Notes |
 | --- | --- | --- |
 | `SectionHeader("Goal Settings", action: .init("New") { … })` | C-07 | `.title2`, marked as a header for VoiceOver. The optional action ("+ New") uses `text.secondary`, not the design's tertiary, because it is tappable |
-| `SettingsRow("Daily Step Goal", accessory: .value("10.000")) { … }` | C-08 | Whole row tappable, at least 44 pt (the design draws 20 pt). Accessories: `.value` (tertiary), `.action("Edit")` (secondary), `.icon`, `.none`. All rows use 15 pt `.subheadline`; the design's 13 pt first rows are an inconsistency |
+| `SettingsRow("Daily Step Goal", accessory: .value("10.000")) { … }` | C-08 | Whole row tappable, at least 44 pt (the design draws 20 pt). Accessories: `.value` (tertiary), `.action("Edit")` (secondary), `.icon`, `.none`. All rows use 15 pt `.subheadline`; the design's 13 pt first rows are an inconsistency. Dims when disabled. Use `SettingsRow(verbatim:)` for names the user typed, so they are never looked up as translation keys |
 | `ProgressRing(progress: 0.76, tint: .peakSteps)` | C-04 ring | 8 pt stroke on a `fill.control` track; values above 1 draw a full ring. VoiceOver reads a percentage; add `.accessibilityLabel` at the call site |
-| `ValuePickerSheet(titles:current:defaultValue:options:format:onSave:)` | S-02, S-03, S-04 | Current value, wheel picker, Reset (saves the default) and Update. Reset is disabled at the default, Update until the value changes |
+| `ValuePickerSheet(titles:current:defaultValue:options:format:onSave:)` | S-02, S-03, S-04 | Current value, optional footnote, wheel picker, Reset (saves the default) and Update. Reset is disabled at the default, Update until the value changes |
+| `SheetActionBar(cancel:confirm:isConfirmEnabled:…)` | S-05, S-07 | Cancel (red) and Update/Create (green) glass buttons for the bottom of an editing sheet, via `.safeAreaInset(edge: .bottom)` |
 | `ResultSheet(.success, title: "Success", message: Text(…)) { buttons }` | S-09 | 52 pt checkmark or cross (scales with Dynamic Type), success or error haptic, context actions |
 | `.fittedSheet()` | D-14 | Sizes a sheet to its content instead of a fixed detent, so it grows with Dynamic Type; very tall content scrolls. Shows the drag indicator |
 
@@ -149,4 +150,19 @@ selected symbol was tried; the tab bar ignores the override on the first render,
 | energy · water | `bolt.fill` · `drop.fill` |
 | log out | `rectangle.portrait.and.arrow.right` |
 
-**App icon:** a mountain with a red flag, built in Icon Composer with Default, Dark, Clear and Tinted variants.
+**App icon:** a mountain with a red flag on #2E2E2E, in `Peak/Resources/AppIcon.icon` (Icon Composer format). Two layers
+(`mountain.svg` white, `flag.svg` #FE0000) so each gets its own Liquid Glass treatment; the system derives the Dark,
+Clear and Tinted appearances from them. The artwork is the design's Hugeicons "mountain" (mirrored) and "flag-01"
+(MIT, see THIRD_PARTY_NOTICES). SF Symbols are not allowed in app icons by their license.
+
+Icon Composer ships inside Xcode and is the default app for `.icon` files: double-click `AppIcon.icon` in Finder, or
+run `open Peak/Resources/AppIcon.icon`. To render a preview from the command line:
+
+```bash
+"/Applications/Xcode.app/Contents/Applications/Icon Composer.app/Contents/Executables/ictool" \
+  Peak/Resources/AppIcon.icon --export-image --output-file icon.png \
+  --platform iOS --rendition Default --width 1024 --height 1024 --scale 1
+```
+
+Renditions: `Default`, `Dark`, `ClearLight`, `ClearDark`, `TintedLight`, `TintedDark` (tinted also takes
+`--tint-color` and `--tint-strength`).

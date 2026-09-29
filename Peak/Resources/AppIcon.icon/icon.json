@@ -1,0 +1,24 @@
+{
+  "fill": {
+    "solid": "srgb:0.18039,0.18039,0.18039,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "flag.svg",
+          "name": "flag"
+        },
+        {
+          "image-name": "mountain.svg",
+          "name": "mountain"
+        }
+      ]
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "iOS"
+    ]
+  }
+}
