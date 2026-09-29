@@ -109,6 +109,26 @@ import Testing
         #expect(overview.firstPending == nil)
     }
 
+    @Test func twoRoutinesOnOneDayStackInRoutineOrder() throws {
+        let (context, routine) = try sampleStore()
+        try SampleProgram.installSecondRoutine(into: context, now: Self.today)
+        let routines = try RoutineRepository(context: context).all()
+        #expect(routines.count == 2)
+
+        let wednesday = Self.day("2026-09-30")
+        let overview = Self.planner.overview(
+            of: wednesday, today: wednesday, routines: routines, sessions: try sessions(context))
+        #expect(names(overview.workouts) == ["planned Chest & Biceps", "planned Back & Biceps"])
+
+        // Starting the first leaves the second planned: only its Start waits.
+        let template = try #require(routine.orderedEntries.first?.template)
+        SessionRepository(context: context).start(from: template, routine: routine, at: wednesday)
+        let running = Self.planner.overview(
+            of: wednesday, today: wednesday, routines: routines, sessions: try sessions(context))
+        #expect(names(running.workouts) == ["active Chest & Biceps", "planned Back & Biceps"])
+        #expect(running.workouts.map(\.isPlanned) == [false, true])
+    }
+
     @Test func withoutRoutinesThereIsNothingToPlan() throws {
         let context = try makeContext()
         let overview = Self.planner.overview(of: Self.today, today: Self.today, routines: [], sessions: [])

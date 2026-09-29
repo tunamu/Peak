@@ -87,7 +87,7 @@ struct HomeView: View {
 
     private var workoutDays: Set<Date> {
         planner.workoutDays(
-            in: RoutineScheduler(calendar: calendar).week(containing: selectedDay),
+            in: WeekStrip.days(around: selectedDay, today: today, calendar: calendar),
             today: today, routines: routines, sessions: sessions
         )
     }
@@ -101,18 +101,31 @@ struct HomeView: View {
     @ViewBuilder
     private var workoutCards: some View {
         let overview = overview
-        let label =
-            isToday ? Text("Today's Workout") : Text(selectedDay, format: .dateTime.weekday(.wide).day().month(.wide))
+        let base =
+            isToday
+            ? String(localized: "Today's Workout")
+            : selectedDay.formatted(.dateTime.weekday(.wide).day().month(.wide))
+        let isRunning = overview.workouts.contains {
+            if case .active = $0 { return true }
+            return false
+        }
         VStack(spacing: Spacing.medium) {
             if overview.workouts.isEmpty {
                 let state: TodayWorkoutCard.State =
                     isFuture || isToday
                     ? (overview.hasActiveRoutine ? .restDay(next: overview.nextWorkoutDay) : .noRoutine)
                     : .noWorkout
-                TodayWorkoutCard(label: label, state: state, action: openSettings)
+                TodayWorkoutCard(label: Text(verbatim: base), state: state, action: openSettings)
             }
+            // Several workouts on one day stack, each named by its routine. Only one runs at a time, so while one
+            // runs the others' Start waits.
             ForEach(Array(overview.workouts.enumerated()), id: \.offset) { _, workout in
-                TodayWorkoutCard(label: label, state: state(of: workout), action: action(for: workout))
+                TodayWorkoutCard(
+                    label: Text(verbatim: label(base, for: workout, isOneOfMany: overview.workouts.count > 1)),
+                    state: state(of: workout),
+                    action: action(for: workout)
+                )
+                .disabled(isRunning && workout.isPlanned)
             }
         }
         .contextMenu {
@@ -128,6 +141,17 @@ struct HomeView: View {
                 }
             }
         }
+    }
+
+    /// "Today's Workout", and with several workouts that day "Today's Workout · Main Routine".
+    private func label(_ base: String, for workout: DayWorkout, isOneOfMany: Bool) -> String {
+        let routine: Routine? =
+            switch workout {
+            case .planned(_, let routine): routine
+            case .active(let session), .completed(let session): session.routine
+            }
+        guard isOneOfMany, let routine else { return base }
+        return "\(base) · \(routine.name)"
     }
 
     private func state(of workout: DayWorkout) -> TodayWorkoutCard.State {

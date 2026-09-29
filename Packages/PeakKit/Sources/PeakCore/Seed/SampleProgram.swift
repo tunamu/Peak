@@ -131,4 +131,18 @@ public enum SampleProgram {
         }
         try context.save()
     }
+
+    static let secondRoutineName = "Extra Routine"
+
+    /// Debug only: a second routine every day, rotating "Back & Biceps" and "Shoulder & Triceps", so days with two
+    /// workouts can be seen. Needs the program installed; does nothing when it already exists.
+    public static func installSecondRoutine(into context: ModelContext, now: Date = .now) throws {
+        let routines = RoutineRepository(context: context)
+        guard !(try routines.all().contains { $0.name.matchingKey == secondRoutineName.matchingKey }) else { return }
+        let names = ["Back & Biceps", "Shoulder & Triceps"].map(\.matchingKey)
+        let templates = try TemplateRepository(context: context).all().filter { names.contains($0.name.matchingKey) }
+        guard !templates.isEmpty else { return }
+        try routines.create(name: secondRoutineName, intervalDays: 1, startDate: now, templates: templates)
+        try context.save()
+    }
 }

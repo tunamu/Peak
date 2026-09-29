@@ -10,6 +10,14 @@ public enum DayWorkout: Hashable {
     case completed(WorkoutSession)
 }
 
+extension DayWorkout {
+    /// Planned and not started.
+    public var isPlanned: Bool {
+        if case .planned = self { return true }
+        return false
+    }
+}
+
 /// Everything the Home screen shows about one day's workouts.
 public struct DayOverview {
     /// Completed first, then the running session, then planned ones in routine order.

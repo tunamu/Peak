@@ -45,6 +45,11 @@
                 if UserDefaults.standard.bool(forKey: "PeakLoadSampleProgram") {
                     loadSampleProgram()
                 }
+                // Screenshot helper: `-PeakLoadSecondRoutine YES` adds an everyday routine (two workouts a day).
+                if UserDefaults.standard.bool(forKey: "PeakLoadSecondRoutine") {
+                    try? SampleProgram.install(into: modelContext)
+                    try? SampleProgram.installSecondRoutine(into: modelContext)
+                }
                 // Screenshot helper: `-PeakLoadSampleHistory YES` loads the program and its history.
                 if UserDefaults.standard.bool(forKey: "PeakLoadSampleHistory") {
                     loadSampleHistory()

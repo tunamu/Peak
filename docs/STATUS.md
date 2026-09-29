@@ -61,8 +61,8 @@
 
 | ID | Task | Status |
 | --- | --- | --- |
-| F5-01 | Title + WeekStrip | ✅ Tap, swipe to another week, double-tap the title for today; the week starts on the locale's first weekday |
-| F5-02 | TodayWorkoutCard, all states | ✅ Planned, running, completed, rest day (with the next date), no workout, no routine, several; `DayPlanner` turns stored routines and sessions into cards (tests) |
+| F5-01 | Title + WeekStrip | ✅ One glass capsule like the tab bar; pages of seven days start yesterday, so today is always second (as in the design); the selected day's pill can be dragged, swipes page seven days, workout days are underlined, double-tap the title for today |
+| F5-02 | TodayWorkoutCard, all states | ✅ Planned, running, completed, rest day (with the next date), no workout, no routine, several (stacked, labelled with their routine; while one runs the others' Start waits); `DayPlanner` turns stored routines and sessions into cards (tests) |
 | F5-03 | HealthService: real + mock, access, observer and background delivery | ✅ `HealthService` protocol and `MockHealthService` in PeakCore, `HealthKitService` in the app; without access every card still works. Access and real numbers still need a check on a device |
 | F5-04 | StepsCard | ✅ Day total from a statistics collection query (same method as the Health app); needs the side-by-side check with Health on a device |
 | F5-05 | WaterTile + water sheet + one Health sample per day | ✅ Sync identifier + version replaces the day's sample; a zero total deletes it |

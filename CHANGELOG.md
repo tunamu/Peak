@@ -33,7 +33,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Engines: progressive overload targets, routine scheduling, energy score and session statistics.
 - Settings screen: step, water and progressive overload goals; creating, editing and archiving workouts and movements;
   routines on weekdays or every N days; units, Apple Health status and About. English and Turkish.
-- Home screen: week strip (tap a day, swipe for another week, double-tap the title for today), the day's workout
+- Home screen: week strip in a glass capsule like the tab bar, with today always second and workout days underlined
+  (tap a day or drag the selected pill, swipe for seven days back or ahead, double-tap the title for today), the day's workout
   cards (planned, running, completed, rest day, no routine, several routines), daily steps with the weekly average,
   energy level with its reasons and data sources, and water intake with add and remove. Past days show what was done,
   future days what is planned.
