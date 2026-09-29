@@ -3,7 +3,7 @@ import SwiftData
 
 /// Workout sessions: starting one from a template, finishing it, and reading history.
 ///
-/// Pause/resume timing and targets belong to `WorkoutSessionController` and `ProgressionEngine` (F3); this type only
+/// Pause/resume timing and targets belong to `WorkoutSessionController` and `ProgressionEngine`; this type only
 /// stores and reads.
 @MainActor
 public final class SessionRepository {
@@ -13,12 +13,17 @@ public final class SessionRepository {
         self.context = context
     }
 
-    /// Starts a session from a template: one exercise per template item, with its number of empty sets, and a snapshot
-    /// of every name.
+    /// Starts a session from a template: one exercise per template item, with its number of sets, and a snapshot of
+    /// every name.
+    ///
+    /// Each strength set gets its target (the "Reference") from the exercise's last completed performance through
+    /// `ProgressionEngine`, and its weight is prefilled with the target weight; reps stay empty until the set is done.
+    /// Without history the targets stay empty.
     @discardableResult
     public func start(
         from template: WorkoutTemplate,
         routine: Routine? = nil,
+        rule: ProgressionRule = .init(),
         at date: Date = .now
     ) -> WorkoutSession {
         let session = WorkoutSession(title: template.name, startedAt: date)
@@ -29,12 +34,31 @@ public final class SessionRepository {
             if item.exercise?.kind == .cardio {
                 exercise.segments = [CardioSegment(order: 0)]
             } else {
-                exercise.sets = (0..<item.targetSets).map { SetEntry(order: $0) }
+                let targets = targets(for: item.exercise, setCount: item.targetSets, rule: rule)
+                exercise.sets = (0..<item.targetSets).map { order in
+                    let set = SetEntry(order: order)
+                    if order < targets.count {
+                        set.targetWeightKg = targets[order].weightKg
+                        set.targetReps = targets[order].reps
+                        set.weightKg = targets[order].weightKg
+                    }
+                    return set
+                }
             }
             return exercise
         }
         context.insert(session)
         return session
+    }
+
+    private func targets(for exercise: Exercise?, setCount: Int, rule: ProgressionRule) -> [SetTarget] {
+        guard let exercise, let last = try? history(of: exercise).first else { return [] }
+        return ProgressionEngine.targets(
+            after: last.orderedSets.map { SetPerformance(weightKg: $0.weightKg, reps: $0.reps) },
+            setCount: setCount,
+            incrementKg: exercise.incrementKg,
+            rule: rule
+        )
     }
 
     public func complete(_ session: WorkoutSession, at date: Date = .now) {

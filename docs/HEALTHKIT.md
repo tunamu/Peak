@@ -18,7 +18,7 @@
 | Type | How |
 | --- | --- |
 | `dietaryWater` | **One total sample per day.** When the total changes, the old sample is deleted and a new one is written, so "Remove" stays consistent |
-| Workouts | `HKWorkoutBuilder`: `.traditionalStrengthTraining` for strength, `.walking` with distance for walks |
+| Workouts | `HKWorkoutBuilder`: `.traditionalStrengthTraining` for strength, `.walking` (indoor) with `distanceWalkingRunning` for walks when every segment has a duration. Only the total pause is known, so it is written as one pause right before the end |
 
 ## How the numbers are read
 

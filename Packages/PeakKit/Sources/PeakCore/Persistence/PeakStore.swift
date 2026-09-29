@@ -20,6 +20,8 @@ public enum PeakStore {
         case appGroup
         /// Memory only, for tests and previews.
         case inMemory
+        /// A file at the given URL, for tests that close and reopen the store.
+        case file(URL)
     }
 
     /// - Parameters:
@@ -45,6 +47,12 @@ public enum PeakStore {
                 schema: schema,
                 isStoredInMemoryOnly: true,
                 groupContainer: .none,
+                cloudKitDatabase: .none
+            )
+        case .file(let url):
+            configuration = ModelConfiguration(
+                schema: schema,
+                url: url,
                 cloudKitDatabase: .none
             )
         }

@@ -56,6 +56,26 @@ public struct EnergySignals: Hashable, Sendable {
     public static let none = EnergySignals()
 }
 
+/// A finished workout as Health stores it: strength training, or walking with its distance when known.
+public struct HealthWorkout: Hashable, Sendable {
+    public var start: Date
+    public var end: Date
+    /// Paused time; Health leaves it out of the workout's duration.
+    public var pausedDuration: TimeInterval
+    public var isWalk: Bool
+    public var distanceKm: Double?
+
+    public init(
+        start: Date, end: Date, pausedDuration: TimeInterval = 0, isWalk: Bool = false, distanceKm: Double? = nil
+    ) {
+        self.start = start
+        self.end = end
+        self.pausedDuration = pausedDuration
+        self.isWalk = isWalk
+        self.distanceKm = distanceKm
+    }
+}
+
 /// Apple Health, behind a protocol: `HealthKitService` in the app, `MockHealthService` in previews, tests and
 /// screenshots (docs/HEALTHKIT.md).
 @MainActor
@@ -68,6 +88,8 @@ public protocol HealthService: AnyObject {
     func energySignals(on day: Date) async -> EnergySignals
     /// Replaces the day's water sample with one total (one sample per day, so Remove stays consistent).
     func setWaterTotal(_ milliliters: Int, on day: Date) async throws
+    /// Saves a finished workout and returns the Health workout's ID.
+    func saveWorkout(_ workout: HealthWorkout) async throws -> UUID
     /// Calls `onChange` whenever step data changes, also in the background.
     func observeSteps(_ onChange: @escaping @MainActor @Sendable () -> Void)
 }
@@ -150,6 +172,14 @@ public final class MockHealthService: HealthService {
 
     public func setWaterTotal(_ milliliters: Int, on day: Date) async throws {
         waterTotals[calendar.startOfDay(for: day)] = milliliters
+    }
+
+    /// Workouts saved so far, oldest first.
+    public private(set) var savedWorkouts: [HealthWorkout] = []
+
+    public func saveWorkout(_ workout: HealthWorkout) async throws -> UUID {
+        savedWorkouts.append(workout)
+        return UUID()
     }
 
     public func observeSteps(_ onChange: @escaping @MainActor @Sendable () -> Void) {}

@@ -35,6 +35,18 @@ struct RootTabView: View {
         .sheet(item: Bindable(launcher).presented) { session in
             WorkoutSessionSheet(session: session)
         }
+        .alert(
+            "Start anyway?",
+            isPresented: Binding(
+                get: { launcher.pendingStart != nil },
+                set: { if !$0 { launcher.pendingStart = nil } }
+            )
+        ) {
+            Button("Start Anyway") { launcher.confirmPendingStart() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Your energy is Not Ready. You should rest at least 1 day to workout again.")
+        }
         #if DEBUG
             // Screenshot helper: launch with `-PeakTab settings`.
             .onAppear {

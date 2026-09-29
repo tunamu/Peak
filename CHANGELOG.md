@@ -9,6 +9,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Starting a workout while energy is Not Ready asks "Start anyway?" first (Home card, bottom accessory and Start
+  Another Workout alike); it never blocks.
+- "Start Another Workout" under today's cards starts any template outside the plan; it is saved without a
+  routine, so the rotation is untouched. Hidden while a workout runs.
+- Finishing a workout shows its summary (duration, volume, targets hit or walk distance, weights going up next
+  time) and writes it to Apple Health as strength training or an indoor walk with distance; paused time is left out.
+- Walking in a workout: segments with speed (km/h), incline (%) and an optional duration (min), Add Segment,
+  swipe to delete; the distance is only computed when every segment has a duration.
+- Workout bottom bar: 00:02:16 clock with Pause/Resume and Finish Workout, which asks first when sets are empty.
+  Close and Discard moved to the toolbar; the sheet no longer closes by swiping.
+- Home card and bottom accessory pause and resume a running workout directly; tapping the card opens it.
+- Complete Movement: fills empty sets with their targets, folds the movement into a summary row (tap to reopen)
+  and scrolls to the next open movement; the header's % Completed follows.
+- Workout session screen: header with date, size, time and % completed; one set table per movement with
+  Reference (targets from the last performance), editable weight and reps, Add Set, drag to reorder and swipe to
+  delete. Weights are prefilled with the target; entering reps completes a set.
+- Workout session state machine (`WorkoutSessionController`): pause, resume, finish and discard, saved on every
+  change so a workout survives the app being killed. Paused timers freeze on Home, the accessory and the sheet.
 - Xcode project with the `Peak` app target (iOS 26.0+, iPhone) and the local `PeakKit` package (`PeakCore`,
   `PeakDesign`).
 - SwiftLint, swift-format and EditorConfig; SwiftLint runs on every Xcode build.

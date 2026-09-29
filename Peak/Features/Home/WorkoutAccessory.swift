@@ -10,6 +10,7 @@ import SwiftUI
 /// glass, so there the bar is left out and Home's Start button does the job.
 struct WorkoutAccessory: ViewModifier {
     @Environment(WorkoutLauncher.self) private var launcher
+    @Environment(SettingsStore.self) private var settings
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
 
@@ -21,7 +22,7 @@ struct WorkoutAccessory: ViewModifier {
             let pending = pendingWorkout
             content.tabViewBottomAccessory(isEnabled: pending != nil) {
                 if let pending {
-                    AccessoryContent(workout: pending) { perform(pending) }
+                    AccessoryContent(workout: pending, action: { perform(pending) }, togglePause: togglePause)
                 }
             }
         } else {
@@ -37,45 +38,79 @@ struct WorkoutAccessory: ViewModifier {
 
     private func perform(_ workout: DayWorkout) {
         switch workout {
-        case .planned(let template, let routine): launcher.start(template, routine: routine, in: modelContext)
+        case .planned(let template, let routine):
+            launcher.start(template, routine: routine, rule: settings.progressionRule, in: modelContext)
         case .active(let session): launcher.resume(session)
         case .completed: break
         }
+    }
+
+    private func togglePause(_ session: WorkoutSession) {
+        let controller = WorkoutSessionController(session: session, context: modelContext)
+        try? session.status == .paused ? controller.resume() : controller.pause()
     }
 }
 
 private struct AccessoryContent: View {
     let workout: DayWorkout
     let action: () -> Void
+    let togglePause: (WorkoutSession) -> Void
 
     var body: some View {
+        Group {
+            switch workout {
+            case .active(let session): running(session)
+            default: start
+            }
+        }
+        .font(.peakRow)
+        .foregroundStyle(.peakTextPrimary)
+    }
+
+    private var start: some View {
         Button(action: action) {
             HStack(spacing: Spacing.xSmall) {
-                switch workout {
-                case .active(let session):
-                    Image(systemName: "figure.strengthtraining.traditional")
-                        .accessibilityHidden(true)
-                    Text(verbatim: session.title)
-                        .lineLimit(1)
-                    Text(verbatim: "·")
-                        .accessibilityHidden(true)
-                    Text(
-                        timerInterval: session.startedAt.addingTimeInterval(session.pausedTotal)...Date.distantFuture,
-                        countsDown: false
-                    )
-                    .monospacedDigit()
-                default:
-                    Image(systemName: "play.fill")
-                        .accessibilityHidden(true)
-                    Text("Start Today's Workout")
-                        .lineLimit(1)
-                }
+                Image(systemName: "play.fill")
+                    .accessibilityHidden(true)
+                Text("Start Today's Workout")
+                    .lineLimit(1)
             }
-            .font(.peakRow)
-            .foregroundStyle(.peakTextPrimary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
+    }
+
+    /// Like Music's mini player: the workout on the left opens it, Pause/Resume sits on the right.
+    private func running(_ session: WorkoutSession) -> some View {
+        let isPaused = session.status == .paused
+        return HStack(spacing: 0) {
+            Button(action: action) {
+                HStack(spacing: Spacing.xSmall) {
+                    Image(systemName: "figure.strengthtraining.traditional")
+                        .accessibilityHidden(true)
+                    Text(verbatim: session.title)
+                        .lineLimit(1)
+                    Spacer(minLength: Spacing.xSmall)
+                    SessionTimerText(session: session)
+                        .monospacedDigit()
+                        .foregroundStyle(isPaused ? .peakTextSecondary : .peakTextPrimary)
+                }
+                .padding(.leading, Spacing.medium)
+                .frame(maxHeight: .infinity)
+                .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            Button {
+                togglePause(session)
+            } label: {
+                Image(systemName: isPaused ? "play.fill" : "pause.fill")
+                    .frame(width: Metrics.minTouchTarget, height: Metrics.minTouchTarget)
+                    .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isPaused ? "Resume" : "Pause")
+            .padding(.trailing, Spacing.xxSmall)
+        }
     }
 }

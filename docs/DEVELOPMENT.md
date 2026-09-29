@@ -98,6 +98,12 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakMockHealth YES` | Uses sample Health data (7,598 steps, a rested night, steady heart data) instead of HealthKit |
 | `-PeakHomeDay yesterday\|tomorrow\|nextWeek` | Selects that day on Home (a bare `-1` would be read as another argument) |
 | `-PeakStartWorkout YES` | Starts the first workout from Home, to see the running state |
+| `-PeakEnergy notReady` | Forces the energy level the "Start anyway?" alert checks (with `-PeakStartWorkout`, shows the alert) |
+| `-PeakStartWalk YES` | Discards the running workout and starts a walk (creates a Walking template if missing) |
+| `-PeakPauseWorkout YES` | Pauses the running workout, to see the paused state |
+| `-PeakOpenWorkout YES` | Opens the running workout's sheet |
+| `-PeakCompleteMovement YES` | Completes the running workout's first movement |
+| `-PeakFinishWorkout YES` | With `-PeakOpenWorkout`, logs every set three reps over its target and finishes, to show the summary |
 | `-AppleLanguages "(tr)"` | Runs in Turkish (system argument); add `-AppleLocale tr_TR` for Turkish number formats |
 
 ```bash
