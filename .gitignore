@@ -1,0 +1,26 @@
+# Xcode
+build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcworkspace
+xcuserdata/
+DerivedData/
+.DS_Store
+*.xcarchive
+*.ipa
+
+# Swift
+.build/
+.swiftpm/
+*.resolved
+**/Package.resolved
+
+# IDE
+.vscode/
+*.swiftformat
+
+# Runtime
+.env
+.env.local
