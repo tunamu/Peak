@@ -78,7 +78,7 @@ Numbers (durations, tables, steps) use `.monospacedDigit()`.
   Named uses: `screenMargin` 16, `cardHorizontal` 24, `cardVertical` 16, `section` 24.
 - **Radius** (`Radius`): `card` 20 · `control` 16 (tables and buttons) · pill = `Capsule`. Nested corners use
   `ConcentricRectangle`.
-- **Sizes** (`Metrics`): `dayChip` 46 pt circle · `minTouchTarget` 44 pt; smaller rows grow their hit area with
+- **Sizes** (`Metrics`): `minTouchTarget` 44 pt; smaller rows grow their hit area with
   `contentShape`.
 
 ## Liquid Glass
@@ -121,6 +121,20 @@ the call site in the app are picked up by the app's String Catalog (strings insi
 | `SheetActionBar(cancel:confirm:isConfirmEnabled:…)` | S-05, S-07 | Cancel (red) and Update/Create (green) glass buttons for the bottom of an editing sheet, via `.safeAreaInset(edge: .bottom)` |
 | `ResultSheet(.success, title: "Success", message: Text(…)) { buttons }` | S-09 | 52 pt checkmark or cross (scales with Dynamic Type), success or error haptic, context actions |
 | `.fittedSheet()` | D-14 | Sizes a sheet to its content instead of a fixed detent, so it grows with Dynamic Type; very tall content scrolls. Shows the drag indicator |
+
+### Home components (app target, `Peak/Features/Home/`)
+
+Screen-specific views, kept in the app rather than the package because they read the app's environment (settings,
+Health, the workout launcher).
+
+| View | Design | Notes |
+| --- | --- | --- |
+| `WeekStrip` | C-02 | One glass capsule like the tab bar. Pages of seven days start yesterday, so today is always second. The selected day is a `fill.control` pill that slides between days and can be dragged (it swells while held); swiping elsewhere pages seven days. Workout days get a 14 × 3 pt underline |
+| `TodayWorkoutCard` | C-03 | Label, name (`.peakEmphasis`), subtitle, and a 102 × 68-style glass button (symbol over title). States: planned, running, completed, rest day, no workout, no routine. No action = no button (other days) |
+| `StepsCard` | C-04 | Tappable card (step goal sheet); connect, denied and unavailable states |
+| `EnergyTile` + `EnergySheet` | C-05, S-08 | Level color on `bolt.fill`; reasons with their points, data sources, "Not medical advice." |
+| `WaterTile` + `WaterSheet` | C-06, S-01 | Four-stop slider with labels under each stop; Remove (red) / Add (green, trailing plus) |
+| `WorkoutAccessory` | C-13 | `tabViewBottomAccessory(isEnabled:)`, iOS 26.1+ |
 
 Known limit: the system wheel picker does not scale its rows with Dynamic Type; the labels around it do.
 
