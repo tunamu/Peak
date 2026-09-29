@@ -1,6 +1,7 @@
 # HealthKit
 
-> Status: skeleton. Capabilities are set up (F0-03); `HealthService` is built in F2–F5 and this file is updated with it.
+> Status: implemented (F5). `HealthService` (protocol), `HealthConnection` (shared status) and `MockHealthService` live
+> in `PeakCore/Health/`; `HealthKitService` lives in the app (`Peak/Services/`).
 
 ## Read
 
@@ -18,6 +19,19 @@
 | --- | --- |
 | `dietaryWater` | **One total sample per day.** When the total changes, the old sample is deleted and a new one is written, so "Remove" stays consistent |
 | Workouts | `HKWorkoutBuilder`: `.traditionalStrengthTraining` for strength, `.walking` with distance for walks |
+
+## How the numbers are read
+
+| Value | Query |
+| --- | --- |
+| Day's steps | `HKStatisticsCollectionQueryDescriptor`, cumulative sum per calendar day |
+| Weekly average | The seven days before the selected day; days without steps are left out |
+| Sleep | Asleep samples (core, deep, REM, unspecified) from 18:00 the evening before to noon; overlapping iPhone and Watch samples are merged |
+| HRV, resting heart rate | Daily averages; the day's value against the previous days (the engine needs five) |
+| Water | Written, not read: the app's own log is the source. Sync identifier `peak.water.<yyyy-MM-dd>` with a millisecond version, so each write replaces the day's sample; a total of zero deletes it |
+
+HealthKit never tells whether *read* access was granted. The status comes from `statusForAuthorizationRequest` and
+write access to water; a denied read just returns no data.
 
 ## Rules
 

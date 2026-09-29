@@ -124,7 +124,7 @@ struct NewMovementSheet: View {
 }
 
 extension MuscleGroup {
-    var title: LocalizedStringKey {
+    var title: LocalizedStringResource {
         switch self {
         case .chest: "Chest"
         case .back: "Back"

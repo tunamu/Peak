@@ -91,4 +91,44 @@ public enum SampleProgram {
         }
         try context.save()
     }
+
+    /// Debug only: three completed sessions of the sample routine on its last three scheduled days before `now`, so
+    /// Home has history to show. Needs the program installed; does nothing when the routine already has sessions.
+    public static func installHistory(into context: ModelContext, now: Date = .now, calendar: Calendar = .current)
+        throws
+    {
+        guard
+            let routine = try RoutineRepository(context: context).all().first(where: {
+                $0.name.matchingKey == routineName.matchingKey
+            }),
+            (routine.sessions ?? []).isEmpty
+        else { return }
+
+        let weekdays = Set(routine.weekdays)
+        var days: [Date] = []
+        var day = calendar.startOfDay(for: now)
+        while days.count < 3, let previous = calendar.date(byAdding: .day, value: -1, to: day) {
+            day = previous
+            if weekdays.contains(Weekday(of: day, calendar: calendar)) {
+                days.insert(day, at: 0)
+            }
+        }
+
+        let sessions = SessionRepository(context: context)
+        for (template, day) in zip(routine.orderedEntries.compactMap(\.template), days) {
+            let start = calendar.date(bySettingHour: 18, minute: 30, second: 0, of: day) ?? day
+            let session = sessions.start(from: template, routine: routine, at: start)
+            for exercise in session.orderedExercises {
+                for set in exercise.orderedSets {
+                    set.weightKg = exercise.exercise?.equipment == .dumbbell ? 15 : 40
+                    set.reps = 10
+                    set.isCompleted = true
+                    set.completedAt = start
+                }
+                exercise.isCompleted = true
+            }
+            sessions.complete(session, at: start.addingTimeInterval(48 * 60))
+        }
+        try context.save()
+    }
 }

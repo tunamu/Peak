@@ -1,3 +1,4 @@
+import PeakCore
 import PeakDesign
 import SwiftUI
 
@@ -10,13 +11,14 @@ struct RootTabView: View {
     }
 
     @State private var selection: TabID = .home
+    @Environment(WorkoutLauncher.self) private var launcher
 
     var body: some View {
         // iOS 26 draws every tab symbol filled; the selected tab is marked by the glass pill and the tint. Filling
         // only the selected symbol (V-01) was tried, but the tab bar ignores the override on the first render.
         TabView(selection: $selection) {
             Tab("Home", systemImage: "house", value: .home) {
-                HomeView().tint(Color?.none)
+                HomeView { selection = .settings }.tint(Color?.none)
             }
             Tab("Analysis", systemImage: "chart.line.uptrend.xyaxis", value: .analysis) {
                 AnalysisPlaceholderView().tint(Color?.none)
@@ -29,6 +31,10 @@ struct RootTabView: View {
         // default tint back so their own controls are unaffected.
         .tint(.peakTextPrimary)
         .tabBarMinimizeBehavior(.onScrollDown)
+        .modifier(WorkoutAccessory())
+        .sheet(item: Bindable(launcher).presented) { session in
+            WorkoutSessionSheet(session: session)
+        }
         #if DEBUG
             // Screenshot helper: launch with `-PeakTab settings`.
             .onAppear {
@@ -40,6 +46,9 @@ struct RootTabView: View {
     }
 }
 
-#Preview {
-    RootTabView()
-}
+#if DEBUG
+    #Preview {
+        RootTabView()
+            .previewEnvironment()
+    }
+#endif
