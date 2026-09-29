@@ -78,15 +78,58 @@ extension WorkoutSession {
         let end = endedAt ?? pausedAt ?? now
         return max(0, end.timeIntervalSince(startedAt) - pausedTotal)
     }
+    /// Strength sets in the session ("13 Sets"); a cardio movement has none.
+    public var setCount: Int {
+        orderedExercises.reduce(0) { $0 + ($1.sets ?? []).count }
+    }
+
+    /// The session as the statistics see it.
+    public var results: [ExerciseResult] {
+        orderedExercises.map { exercise in
+            let sets = exercise.orderedSets
+            return ExerciseResult(
+                name: exercise.exerciseName,
+                isCardio: exercise.isCardio,
+                sets: sets.map { SetPerformance(weightKg: $0.weightKg, reps: $0.reps) },
+                targets: sets.compactMap { set in
+                    set.targetWeightKg.map { SetTarget(weightKg: $0, reps: set.targetReps ?? 0) }
+                },
+                isCompleted: exercise.isCompleted
+            )
+        }
+    }
+
+    /// Completed sets / all sets (0…1), a cardio movement counting as one: the header's "12% Completed".
+    public var completion: Double {
+        SessionStatistics.completion(results)
+    }
 }
 
 extension SessionExercise {
+    /// A walk: logged as segments instead of sets.
+    public var isCardio: Bool {
+        exercise?.kind == .cardio || !(segments ?? []).isEmpty
+    }
+
     public var orderedSets: [SetEntry] {
         (sets ?? []).sorted { $0.order < $1.order }
     }
 
     public var orderedSegments: [CardioSegment] {
         (segments ?? []).sorted { $0.order < $1.order }
+    }
+
+    /// Walked distance: Σ speed × duration. `nil` unless every segment has both, since a segment without a duration
+    /// means "the rest of the session" and the walk's own length is unknown (D-12).
+    public var distanceKm: Double? {
+        let segments = orderedSegments
+        guard !segments.isEmpty else { return nil }
+        var total = 0.0
+        for segment in segments {
+            guard let speed = segment.speedKmh, let seconds = segment.durationSec else { return nil }
+            total += speed * Double(seconds) / 3_600
+        }
+        return total
     }
 }
 

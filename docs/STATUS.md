@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F5 done · next: F6 — Workout Session
+**Current Phase**: F6 done · next: F7 — Import / Export
 
 ## F0 — Repository and infrastructure
 
@@ -70,9 +70,14 @@
 | F5-07 | Bottom accessory + conditional visibility | ✅ Start / running workout / hidden with `tabViewBottomAccessory(isEnabled:)` (iOS 26.1+); left out on iOS 26.0 |
 | F5-08 | Past and future days | ✅ Past: completed sessions and that day's steps and water; future: planned workouts, no Start |
 
+## F6: Workout Session ✅
+
+State machine with persistence (a workout survives the app being killed), set tables with targets from the last
+performance, Complete Movement, bottom bar with pause and finish check, walking segments, finish pipeline (summary +
+Apple Health workout), start another workout outside the plan. Device checks pending: Health write, touch flows.
+
 ## Upcoming phases (⬜)
 
-- F6: Workout Session
 - F7: Import / Export
 - F8: iCloud sync
 - F9: Widgets and Live Activity

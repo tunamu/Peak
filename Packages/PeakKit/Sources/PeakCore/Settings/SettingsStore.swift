@@ -190,3 +190,10 @@ extension Comparable {
         min(max(self, range.lowerBound), range.upperBound)
     }
 }
+
+extension SettingsStore {
+    /// The overload rule the user set (S-04), for new targets.
+    public var progressionRule: ProgressionRule {
+        ProgressionRule(thresholdReps: overloadThresholdReps, resetReps: overloadResetReps)
+    }
+}

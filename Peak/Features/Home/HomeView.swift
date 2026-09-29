@@ -69,6 +69,16 @@ struct HomeView: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             today = .now
         }
+        // The launcher asks "Start anyway?" while today's energy is Not Ready, wherever the start comes from.
+        .onChange(of: isToday ? energy.level : nil, initial: true) { _, level in
+            if let level { launcher.energyLevel = level }
+            #if DEBUG
+                // Screenshot helper: `-PeakEnergy notReady` forces the level the alert checks.
+                if let forced = UserDefaults.standard.string(forKey: "PeakEnergy").flatMap(EnergyLevel.init(rawValue:)) {
+                    launcher.energyLevel = forced
+                }
+            #endif
+        }
         #if DEBUG
             .onAppear(perform: applyLaunchArguments)
         #endif
@@ -123,22 +133,45 @@ struct HomeView: View {
                 TodayWorkoutCard(
                     label: Text(verbatim: label(base, for: workout, isOneOfMany: overview.workouts.count > 1)),
                     state: state(of: workout),
-                    action: action(for: workout)
+                    action: action(for: workout),
+                    open: open(workout)
                 )
                 .disabled(isRunning && workout.isPlanned)
             }
+            if canStartAnother(isRunning: isRunning) {
+                Menu {
+                    anotherWorkoutButtons
+                } label: {
+                    Label("Start Another Workout", systemImage: "plus")
+                        .font(.peakRow)
+                        .foregroundStyle(.peakTextSecondary)
+                        .frame(maxWidth: .infinity, minHeight: Metrics.minTouchTarget)
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .contextMenu {
-            if isToday && !templates.isEmpty {
+            if canStartAnother(isRunning: isRunning) {
                 Menu {
-                    ForEach(templates) { template in
-                        Button(template.name) {
-                            launcher.start(template, routine: nil, in: modelContext)
-                        }
-                    }
+                    anotherWorkoutButtons
                 } label: {
                     Label("Start Another Workout", systemImage: "plus")
                 }
+            }
+        }
+    }
+
+    /// F6-07: any template can be started today outside the plan, unless a workout already runs (one at a time).
+    private func canStartAnother(isRunning: Bool) -> Bool {
+        isToday && !isRunning && !templates.isEmpty
+    }
+
+    /// One button per template. The session is saved without a routine, so the rotation carries on untouched.
+    private var anotherWorkoutButtons: some View {
+        ForEach(templates) { template in
+            Button(template.name) {
+                launcher.start(template, routine: nil, rule: settings.progressionRule, in: modelContext)
             }
         }
     }
@@ -159,7 +192,11 @@ struct HomeView: View {
         case .planned(let template, _):
             .planned(name: template.name, movements: template.movementCount, sets: template.setCount)
         case .active(let session):
-            .active(name: session.title, timerStart: session.startedAt.addingTimeInterval(session.pausedTotal))
+            .active(
+                name: session.title,
+                timerStart: session.startedAt.addingTimeInterval(session.pausedTotal),
+                pausedElapsed: session.status == .paused ? session.duration() : nil
+            )
         case .completed(let session):
             .completed(
                 name: session.title,
@@ -175,12 +212,23 @@ struct HomeView: View {
         guard isToday else { return nil }
         switch workout {
         case .planned(let template, let routine):
-            return { launcher.start(template, routine: routine, in: modelContext) }
+            return { launcher.start(template, routine: routine, rule: settings.progressionRule, in: modelContext) }
         case .active(let session):
-            return { launcher.resume(session) }
+            return { togglePause(session) }
         case .completed:
             return nil
         }
+    }
+
+    /// A running workout's card opens its sheet; the button pauses or resumes it.
+    private func open(_ workout: DayWorkout) -> (() -> Void)? {
+        guard isToday, case .active(let session) = workout else { return nil }
+        return { launcher.resume(session) }
+    }
+
+    private func togglePause(_ session: WorkoutSession) {
+        let controller = WorkoutSessionController(session: session, context: modelContext)
+        try? session.status == .paused ? controller.resume() : controller.pause()
     }
 
     // MARK: Dashboard
@@ -240,9 +288,59 @@ struct HomeView: View {
             }
             // `-PeakStartWorkout YES` starts the first workout, to see the running state.
             if UserDefaults.standard.bool(forKey: "PeakStartWorkout"), let template = templates.first {
-                launcher.start(template, routine: nil, in: modelContext)
+                launcher.start(template, routine: nil, rule: settings.progressionRule, in: modelContext)
                 launcher.presented = nil
             }
+            // `-PeakStartWalk YES` throws away the running workout and starts a walk (made if missing), to see C-12.
+            if UserDefaults.standard.bool(forKey: "PeakStartWalk") {
+                startSampleWalk()
+            }
+            // `-PeakPauseWorkout YES` pauses the running workout, to see the paused state.
+            if UserDefaults.standard.bool(forKey: "PeakPauseWorkout"),
+                let session = try? SessionRepository(context: modelContext).current()
+            {
+                try? WorkoutSessionController(session: session, context: modelContext).pause()
+            }
+            // `-PeakCompleteMovement YES` completes the running workout's first movement.
+            if UserDefaults.standard.bool(forKey: "PeakCompleteMovement"),
+                let session = try? SessionRepository(context: modelContext).current(),
+                let first = session.orderedExercises.first
+            {
+                try? WorkoutSessionController(session: session, context: modelContext).completeMovement(first)
+            }
+            // `-PeakOpenWorkout YES` opens the running workout's sheet.
+            if UserDefaults.standard.bool(forKey: "PeakOpenWorkout"),
+                let session = try? SessionRepository(context: modelContext).current()
+            {
+                launcher.resume(session)
+            }
+        }
+
+        private func startSampleWalk() {
+            let sessions = SessionRepository(context: modelContext)
+            if let current = try? sessions.current() {
+                sessions.discard(current)
+            }
+            let templates = TemplateRepository(context: modelContext)
+            let template: WorkoutTemplate
+            if let walking = self.templates.first(where: { $0.name == "Walking" }) {
+                template = walking
+            } else {
+                guard
+                    let walk = try? ExerciseRepository(context: modelContext)
+                        .findOrCreate(name: "Incline Walk", kind: .cardio),
+                    let created = try? templates.create(name: "Walking", kind: .cardio)
+                else { return }
+                templates.setItems([(walk, 1)], of: created)
+                template = created
+            }
+            let session = sessions.start(from: template, rule: settings.progressionRule)
+            if let segment = session.orderedExercises.first?.orderedSegments.first {
+                segment.speedKmh = 5.5
+                segment.inclinePercent = 12
+                segment.durationSec = 1_800
+            }
+            try? modelContext.save()
         }
     #endif
 }

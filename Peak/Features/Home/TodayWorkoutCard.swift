@@ -6,8 +6,9 @@ struct TodayWorkoutCard: View {
     enum State {
         /// Planned and not started: Start.
         case planned(name: String, movements: Int, sets: Int)
-        /// Running: Resume and the time so far. `timerStart` is the start moved forward by the paused time.
-        case active(name: String, timerStart: Date)
+        /// Running or paused: Pause or Resume, and the time so far. `timerStart` is the start moved forward by the
+        /// paused time; `pausedElapsed` is set while paused.
+        case active(name: String, timerStart: Date, pausedElapsed: TimeInterval? = nil)
         /// Done: duration and movements done.
         case completed(name: String, duration: TimeInterval, movementsDone: Int, movements: Int)
         /// Nothing planned; `next` is the next planned day.
@@ -23,34 +24,46 @@ struct TodayWorkoutCard: View {
     let state: State
     /// The button's action; without one (days other than today) the card has no button.
     let action: (() -> Void)?
+    /// Tapping the rest of the card: opens the running workout.
+    var open: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: Spacing.medium) {
-            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                label
-                    .font(.peakCardLabel)
-                    .foregroundStyle(.peakTextSecondary)
-                title
-                    .font(.peakEmphasis)
-                    .foregroundStyle(.peakTextPrimary)
-                subtitle
-                    .font(.peakDetail)
-                    .monospacedDigit()
-                    .foregroundStyle(.peakTextTertiary)
+            if let open {
+                Button(action: open) { text.contentShape(.rect) }
+                    .buttonStyle(.plain)
+                    .accessibilityHint(Text("Opens the workout"))
+            } else {
+                text
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityElement(children: .combine)
 
             trailing
         }
         .glassCard()
     }
 
+    private var text: some View {
+        VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+            label
+                .font(.peakCardLabel)
+                .foregroundStyle(.peakTextSecondary)
+            title
+                .font(.peakEmphasis)
+                .foregroundStyle(.peakTextPrimary)
+            subtitle
+                .font(.peakDetail)
+                .monospacedDigit()
+                .foregroundStyle(.peakTextTertiary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+    }
+
     // MARK: Parts
 
     private var title: Text {
         switch state {
-        case .planned(let name, _, _), .active(let name, _), .completed(let name, _, _, _): Text(verbatim: name)
+        case .planned(let name, _, _), .active(let name, _, _), .completed(let name, _, _, _): Text(verbatim: name)
         case .restDay: Text("Rest day")
         case .noWorkout: Text("No workout")
         case .noRoutine: Text("No routine yet")
@@ -66,8 +79,8 @@ struct TodayWorkoutCard: View {
                 parts.append(String(localized: "\(sets) Sets"))
             }
             return Text(verbatim: parts.joined(separator: " · "))
-        case .active(_, let timerStart):
-            return Text(timerInterval: timerStart...Date.distantFuture, countsDown: false)
+        case .active(_, let timerStart, let pausedElapsed):
+            return SessionTimerText.text(timerStart: timerStart, pausedElapsed: pausedElapsed)
         case .completed(_, let duration, let done, let movements):
             let time = Duration.seconds(duration).formatted(.units(allowed: [.hours, .minutes], width: .abbreviated))
             return Text(verbatim: "\(time) · \(done)/\(movements)")
@@ -86,6 +99,8 @@ struct TodayWorkoutCard: View {
         switch state {
         case .planned:
             if let action { button("Start", systemImage: "play.fill", action: action) }
+        case .active(_, _, nil):
+            if let action { button("Pause", systemImage: "pause.fill", action: action) }
         case .active:
             if let action { button("Resume", systemImage: "play.fill", action: action) }
         case .noRoutine:
@@ -112,7 +127,13 @@ struct TodayWorkoutCard: View {
                 Image(systemName: systemImage)
                     .font(.title3)
                     .accessibilityHidden(true)
-                Text(title)
+                // Sized for the widest title, so switching between Start, Pause and Resume never resizes the button.
+                ZStack {
+                    Text("Start").hidden()
+                    Text("Pause").hidden()
+                    Text("Resume").hidden()
+                    Text(title)
+                }
             }
             .padding(.vertical, Spacing.xSmall)
         }

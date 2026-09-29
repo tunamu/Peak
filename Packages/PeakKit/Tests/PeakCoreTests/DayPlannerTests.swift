@@ -55,6 +55,27 @@ import Testing
         #expect(names(friday.workouts) == ["planned Back & Triceps"])
     }
 
+    /// F6-07: a workout started outside the routine is saved without it, so it neither advances nor replaces the
+    /// rotation, even when it is the very template the routine plans.
+    @Test func anotherWorkoutLeavesTheRotationAlone() throws {
+        let (context, routine) = try sampleStore()
+        let templates = try TemplateRepository(context: context).all()
+        let planned = try #require(templates.first { $0.name == "Chest & Biceps" })
+        let sessions = SessionRepository(context: context)
+        let wednesday = Self.day("2026-09-30")
+        sessions.complete(sessions.start(from: planned, at: wednesday), at: wednesday + 3_600)
+        try context.save()
+
+        let overview = Self.planner.overview(
+            of: wednesday, today: wednesday, routines: [routine], sessions: try self.sessions(context))
+        #expect(names(overview.workouts) == ["completed Chest & Biceps", "planned Chest & Biceps"])
+        #expect(try sessions.lastCompleted(in: routine) == nil)
+
+        let friday = Self.planner.overview(
+            of: Self.day("2026-10-02"), today: wednesday, routines: [routine], sessions: try self.sessions(context))
+        #expect(names(friday.workouts) == ["planned Back & Triceps"])
+    }
+
     @Test func restDayPointsAtTheNextWorkout() throws {
         let (context, routine) = try sampleStore()
         let tuesday = Self.planner.overview(

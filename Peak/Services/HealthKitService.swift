@@ -7,7 +7,9 @@ final class HealthKitService: HealthService {
     private var stepObserver: HKObserverQuery?
     private var calendar: Calendar { .current }
 
-    static let writeTypes: Set<HKSampleType> = [HKQuantityType(.dietaryWater), HKObjectType.workoutType()]
+    static let writeTypes: Set<HKSampleType> = [
+        HKQuantityType(.dietaryWater), HKObjectType.workoutType(), HKQuantityType(.distanceWalkingRunning),
+    ]
     static let readTypes: Set<HKObjectType> = [
         HKQuantityType(.stepCount), HKCategoryType(.sleepAnalysis), HKQuantityType(.heartRateVariabilitySDNN),
         HKQuantityType(.restingHeartRate), HKQuantityType(.dietaryWater), HKObjectType.workoutType(),
@@ -181,6 +183,39 @@ final class HealthKitService: HealthService {
         try await store.save(sample)
     }
 
+    // MARK: Workouts
+
+    /// Strength training, or an indoor walk with its distance. Health knows only the total pause, so it is written as
+    /// one pause right before the end: the workout's duration comes out right, its start and end stay the real ones.
+    func saveWorkout(_ workout: HealthWorkout) async throws -> UUID {
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = workout.isWalk ? .walking : .traditionalStrengthTraining
+        configuration.locationType = .indoor
+        let builder = HKWorkoutBuilder(healthStore: store, configuration: configuration, device: .local())
+        try await builder.beginCollection(at: workout.start)
+        if workout.pausedDuration > 0 {
+            let pauseStart = max(workout.start, workout.end.addingTimeInterval(-workout.pausedDuration))
+            try await builder.addWorkoutEvents([
+                HKWorkoutEvent(type: .pause, dateInterval: DateInterval(start: pauseStart, duration: 0), metadata: nil),
+                HKWorkoutEvent(
+                    type: .resume, dateInterval: DateInterval(start: workout.end, duration: 0), metadata: nil),
+            ])
+        }
+        if let distanceKm = workout.distanceKm, distanceKm > 0 {
+            try await builder.addSamples([
+                HKQuantitySample(
+                    type: HKQuantityType(.distanceWalkingRunning),
+                    quantity: HKQuantity(unit: .meterUnit(with: .kilo), doubleValue: distanceKm),
+                    start: workout.start,
+                    end: workout.end
+                )
+            ])
+        }
+        try await builder.endCollection(at: workout.end)
+        guard let saved = try await builder.finishWorkout() else { throw HealthWorkoutError.notSaved }
+        return saved.uuid
+    }
+
     // MARK: Helpers
 
     /// One value per day from `from` to `to`, keyed by the day's start.
@@ -207,4 +242,9 @@ final class HealthKitService: HealthService {
         }
         return result
     }
+}
+
+enum HealthWorkoutError: Error {
+    /// HealthKit finished the builder without returning a workout.
+    case notSaved
 }
