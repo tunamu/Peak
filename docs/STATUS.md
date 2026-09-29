@@ -11,9 +11,9 @@
 | F0-02 | Xcode 27 project: `Peak` app target (iOS 26.0, iPhone only), synchronized folders, `Packages/PeakKit` | ✅ Launches on iOS 26.3 and 27.0 simulators |
 | F0-03 | Capabilities and entitlements, App Group, CloudKit container | ⏸️ Blocked: needs an Apple ID in Xcode and a physical iPhone |
 | F0-04 | SwiftLint + swift-format + EditorConfig | ✅ `swiftlint` and `swift-format lint` clean |
-| F0-05 | GitHub Actions (`xcodebuild build test`), PR and issue templates | ⬜ |
-| F0-06 | Docs skeleton, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, THIRD_PARTY_NOTICES | ⬜ |
-| F0-07 | `Localizable.xcstrings` (EN base + TR) | ⬜ |
+| F0-05 | GitHub Actions (`xcodebuild build test`), PR and issue templates | 🔶 Every step passes locally; waiting for the first green PR run |
+| F0-06 | Docs skeleton, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, THIRD_PARTY_NOTICES | ✅ |
+| F0-07 | `Localizable.xcstrings` (EN base + TR) | ✅ "Welcome Back" shows in English and Turkish |
 
 ## Upcoming phases (⬜)
 

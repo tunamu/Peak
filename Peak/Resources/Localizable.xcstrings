@@ -1,0 +1,19 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Peak" : {
+      "shouldTranslate" : false
+    },
+    "Welcome Back" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekrar Hoş Geldin"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

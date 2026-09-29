@@ -68,26 +68,16 @@ xcrun swift-format lint --strict --recursive \
   Peak Packages/PeakKit/Package.swift Packages/PeakKit/Sources Packages/PeakKit/Tests
 ```
 
-## HealthKit Permissions
+## Localization
 
-Add to `Peak/Peak.entitlements`:
-```xml
-<key>com.apple.developer.healthkit</key>
-<array>
-  <string>HKQuantityTypeIdentifierStepCount</string>
-  <string>HKQuantityTypeIdentifierWaterConsumed</string>
-  <!-- See PERMISSIONS.md for full list -->
-</array>
-```
+The UI ships in English (base) and Turkish, from one String Catalog: `Peak/Resources/Localizable.xcstrings`.
 
-## iCloud Sync
+- String literals in SwiftUI (`Text("Welcome Back")`) are localizable keys. Building in Xcode adds new keys to the
+  catalog automatically; add the Turkish value in the catalog editor.
+- Names that must not be translated (such as "Peak") are marked "Don't Translate" in the catalog.
+- Try another language without changing the simulator: Product > Scheme > Edit Scheme > Run > Options > App Language.
 
-`SwiftData` + `CloudKit` are wired via:
-- `.entitlements` file (iCloud containers)
-- Model @Query/@Environment bindings in Views
-- CloudKit schema auto-sync (first app launch)
+## Apple Health and iCloud
 
-## Next Steps
-
-- [ ] Create Home screen scaffold
-- [ ] Implement HealthKit mock for testing
+Capabilities are configured in F0-03. Rules and data types: [HEALTHKIT.md](HEALTHKIT.md) and
+[DATA_MODEL.md](DATA_MODEL.md).

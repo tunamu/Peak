@@ -16,6 +16,8 @@ struct ContentView: View {
                 .foregroundStyle(DesignTokens.primary)
                 .accessibilityHidden(true)
             Text("Peak")
+            Text("Welcome Back")
+                .foregroundStyle(.secondary)
         }
         .padding()
     }
