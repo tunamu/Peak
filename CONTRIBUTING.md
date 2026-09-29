@@ -24,12 +24,31 @@ xcrun swift-format lint --strict --recursive \
   Peak Packages/PeakKit/Package.swift Packages/PeakKit/Sources Packages/PeakKit/Tests
 ```
 
-## Pull Requests
+## Branches and commits
 
-- Base branch: `main`
-- Describe what and why (not just what changed)
-- Include tests for new features
-- Ensure all tests pass (`cd Packages/PeakKit && swift test`)
+- One task per branch and pull request. Branch names carry the task ID from [docs/STATUS.md](docs/STATUS.md):
+  `feat/F5-02-today-card`, `fix/F7-03-csv-dates`, `chore/F0-05-ci`.
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org): `feat(home): …`,
+  `fix(import): …`, `docs: …`, `chore(ci): …`.
+- Pull requests are squash-merged into `main`.
+
+## Pull requests
+
+- Base branch: `main`. CI (lint, build, tests) must be green.
+- Describe what and why, not only what changed. The template has the checklist:
+  tests · `docs/STATUS.md` · dark and light screenshots for UI · English and Turkish strings · accessibility labels ·
+  `CHANGELOG.md` entry.
+- New user-facing strings need a Turkish translation in `Peak/Resources/Localizable.xcstrings`.
+- Architectural changes come with a decision record in [docs/adr/](docs/adr/README.md).
+
+## Good first issues
+
+Issues labelled `good first issue` are small and self-contained, with the files to touch listed in the issue. Comment
+on the issue before you start so work is not duplicated.
+
+## Code of Conduct
+
+Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

@@ -96,6 +96,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				tr,
 				Base,
 			);
 			mainGroup = 27DB9A0D306BD5F40062E297;
@@ -128,6 +129,9 @@
 			name = SwiftLint;
 			shellPath = /bin/sh;
 			shellScript = (
+				"# CI lints in its own job (.github/workflows/ci.yml).",
+				"if [ \"$CI\" = \"true\" ]; then exit 0; fi",
+				"",
 				"# Homebrew on Apple silicon installs to /opt/homebrew/bin, which is not on Xcode's PATH.",
 				"export PATH=\"$PATH:/opt/homebrew/bin\"",
 				"if command -v swiftlint >/dev/null 2>&1; then",
