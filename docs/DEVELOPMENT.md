@@ -93,6 +93,11 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakLoadSampleProgram YES` | With `-PeakTab settings`, loads the sample program (same as Settings › Developer › Load Sample Program) |
 | `-PeakSettingsSheet stepGoal\|waterGoal\|overload\|newWorkout\|editWorkout\|newRoutine\|editRoutine` | With `-PeakTab settings`, opens that Settings sheet (edit opens the first workout or routine) |
 | `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
+| `-PeakLoadSampleHistory YES` | With `-PeakTab settings`, loads the sample program and three finished sessions before today (Settings › Developer › Load Sample History) |
+| `-PeakLoadSecondRoutine YES` | With `-PeakTab settings`, adds an everyday second routine, so days have two workouts |
+| `-PeakMockHealth YES` | Uses sample Health data (7,598 steps, a rested night, steady heart data) instead of HealthKit |
+| `-PeakHomeDay yesterday\|tomorrow\|nextWeek` | Selects that day on Home (a bare `-1` would be read as another argument) |
+| `-PeakStartWorkout YES` | Starts the first workout from Home, to see the running state |
 | `-AppleLanguages "(tr)"` | Runs in Turkish (system argument); add `-AppleLocale tr_TR` for Turkish number formats |
 
 ```bash

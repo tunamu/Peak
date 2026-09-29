@@ -34,11 +34,22 @@ let plan = RoutineScheduler(calendar: .current).plan(
 ## Future days (week strip)
 
 From today on, every planned day moves the rotation one step and is marked "planned". Days before today show only
-what was done. The week starts on the locale's first weekday (`RoutineScheduler.week(containing:)`, V-06).
+what was done. The Home week strip shows pages of seven days starting the day before today, so today is always the
+second day (V-06, as in the design); `RoutineScheduler.week(containing:)` still gives a calendar week for other uses.
+
+## On the Home screen
+
+`DayPlanner` (`PeakCore/Home/`) turns stored routines and sessions into `RoutineScheduler` input and back into cards:
+completed sessions first, then the running one (today only), then planned workouts in routine order. A running session
+replaces its routine's planned workout. With nothing on a day from today on, it looks four weeks ahead for the next
+workout day. Several workouts on one day stack as separate cards, each labelled with its routine; only one session
+runs at a time, so while one runs the others' Start is disabled.
 
 ## Tests
 
 `RoutineSchedulerTests` covers: the six-template Monday/Wednesday/Friday rotation (from the real log on 29.09.2026 it
 plans Wednesday Back & Triceps, Friday Shoulder & Biceps and Monday Chest & Triceps, the same as the `/coach` skill),
 wrap-around, a missed day, a workout done today, archived templates, interval schedules (every other day, overdue),
-several routines on one day, inactive routines and the week's first day.
+several routines on one day, inactive routines and the week's first day. `DayPlannerTests` covers the Home side:
+rotation on scheduled days, rest days with the next date, past days, a running session, completed today, two routines
+on one day, week underlines, the energy input and template counts.

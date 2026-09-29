@@ -29,7 +29,7 @@ struct SettingsView: View {
     @Query(sort: \Routine.sortIndex) private var routines: [Routine]
 
     @State private var sheet: Sheet?
-    @State private var health = HealthAccess()
+    @Environment(HealthConnection.self) private var health
 
     var body: some View {
         NavigationStack {
@@ -83,7 +83,7 @@ struct SettingsView: View {
             SettingsRow("Daily Step Goal", accessory: .value(settings.stepGoal.formatted())) {
                 sheet = .stepGoal
             }
-            SettingsRow("Daily Water Intake Goal", accessory: .value(Self.liters(settings.waterGoalMl))) {
+            SettingsRow("Daily Water Intake Goal", accessory: .value(Formatting.liters(settings.waterGoalMl))) {
                 sheet = .waterGoal
             }
             SettingsRow("Progressive Overload", accessory: .value(">\(settings.overloadThresholdReps)")) {
@@ -184,21 +184,14 @@ struct SettingsView: View {
         @Bindable var settings = settings
         switch sheet {
         case .stepGoal:
-            ValuePickerSheet(
-                titles: .init("Daily Step Goal", pickerLabel: "New Goal", reset: "Reset", update: "Update"),
-                current: settings.stepGoal,
-                defaultValue: SettingsStore.Defaults.stepGoal,
-                options: Array(stride(from: 1_000, through: 50_000, by: 500)),
-                format: { $0.formatted() },
-                onSave: { settings.stepGoal = $0 }
-            )
+            StepGoalSheet()
         case .waterGoal:
             ValuePickerSheet(
                 titles: .init("Daily Water Intake Goal", pickerLabel: "New Goal", reset: "Reset", update: "Update"),
                 current: settings.waterGoalMl,
                 defaultValue: SettingsStore.Defaults.waterGoalMl,
                 options: Array(stride(from: 1_000, through: 6_000, by: 250)),
-                format: Self.liters,
+                format: { Formatting.liters($0) },
                 onSave: { settings.waterGoalMl = $0 }
             )
         case .overload:
@@ -221,11 +214,6 @@ struct SettingsView: View {
     }
 
     // MARK: Helpers
-
-    /// "4.0 L", "3.25 L" in the user's locale ("4,0 L" in Turkish).
-    static func liters(_ milliliters: Int) -> String {
-        "\((Double(milliliters) / 1_000).formatted(.number.precision(.fractionLength(1...2)))) L"
-    }
 
     static var version: String {
         let info = Bundle.main.infoDictionary

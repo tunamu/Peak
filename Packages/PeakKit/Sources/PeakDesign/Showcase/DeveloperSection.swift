@@ -26,6 +26,10 @@
                 SettingsRow("Load Sample Program", accessory: .icon("square.and.arrow.down")) {
                     loadSampleProgram()
                 }
+                // Three finished sessions before today, so Home has history to show.
+                SettingsRow("Load Sample History", accessory: .icon("clock.arrow.circlepath")) {
+                    loadSampleHistory()
+                }
             }
             .navigationDestination(isPresented: $isGalleryShown) {
                 DesignShowcase()
@@ -40,6 +44,15 @@
                 // Screenshot helper: `-PeakLoadSampleProgram YES` taps "Load Sample Program".
                 if UserDefaults.standard.bool(forKey: "PeakLoadSampleProgram") {
                     loadSampleProgram()
+                }
+                // Screenshot helper: `-PeakLoadSecondRoutine YES` adds an everyday routine (two workouts a day).
+                if UserDefaults.standard.bool(forKey: "PeakLoadSecondRoutine") {
+                    try? SampleProgram.install(into: modelContext)
+                    try? SampleProgram.installSecondRoutine(into: modelContext)
+                }
+                // Screenshot helper: `-PeakLoadSampleHistory YES` loads the program and its history.
+                if UserDefaults.standard.bool(forKey: "PeakLoadSampleHistory") {
+                    loadSampleHistory()
                 }
             }
             .sheet(isPresented: isResultShown) {
@@ -62,6 +75,18 @@
                 sampleResult != nil
             } set: {
                 if !$0 { sampleResult = nil }
+            }
+        }
+
+        private func loadSampleHistory() {
+            do {
+                try SampleProgram.install(into: modelContext)
+                try SampleProgram.installHistory(into: modelContext)
+                sampleError = nil
+                sampleResult = .success
+            } catch {
+                sampleError = error.localizedDescription
+                sampleResult = .failure
             }
         }
 

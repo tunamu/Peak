@@ -1,6 +1,7 @@
 # Testing
 
-> Status: skeleton. Grows with each phase.
+> Status: 88 package tests (F2–F5), green on the Mac host and the iOS simulator. No UI test target yet: taps and
+> drags are checked by hand, screenshots come from debug launch arguments (see DEVELOPMENT.md).
 
 ## Layers
 

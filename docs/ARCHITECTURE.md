@@ -37,8 +37,12 @@ flowchart TD
 - Engines never touch SwiftData. They take and return value types (struct DTOs), so they are fully unit-testable.
 - Conversion between `@Model` types and DTOs happens at the repository boundary.
 - Data read from HealthKit is never stored in SwiftData or CloudKit (see [HEALTHKIT.md](HEALTHKIT.md)).
-- `HealthService` is a protocol with a real `HealthKitService` and a `MockHealthService` for previews, tests and the
-  simulator.
+- `HealthService` is a protocol in `PeakCore` with a `MockHealthService` for previews, tests and screenshots. The real
+  `HealthKitService` lives in the app target (`Peak/Services/`), so the package still builds and tests on a Mac host.
+  `HealthConnection` (`@Observable`) holds the access status and is shared through the environment.
+- `DayPlanner` (`PeakCore/Home/`) is the bridge between SwiftData models and `RoutineScheduler` for the Home screen.
+- Shared app objects go into the environment at the root: `SettingsStore`, `HealthConnection` and `WorkoutLauncher`
+  (starts or reopens a workout; the root view presents its sheet).
 
 ## State and settings
 

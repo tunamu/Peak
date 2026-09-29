@@ -28,8 +28,6 @@ public enum Radius {
 
 /// Fixed sizes from the design and the HIG.
 public enum Metrics {
-    /// Diameter of a day chip in the week strip.
-    public static let dayChip: CGFloat = 46
     /// Smallest tappable area; smaller rows grow theirs with `contentShape`.
     public static let minTouchTarget: CGFloat = 44
 }

@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F4 done · next: F5 — Home screen
+**Current Phase**: F5 done · next: F6 — Workout Session
 
 ## F0 — Repository and infrastructure
 
@@ -57,9 +57,21 @@
 | F4-04 | Set Routine (weekdays / interval, several active) | ✅ Weekday chips in the locale's week order; interval with start date |
 | F4-05 | General: units, Apple Health status, About | ✅ kg/lb switch (weights appear from F5 on); Health status from HealthKit's request status; version, source, license, privacy |
 
+## F5 — Home screen
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F5-01 | Title + WeekStrip | ✅ One glass capsule like the tab bar; pages of seven days start yesterday, so today is always second (as in the design); the selected day's pill can be dragged, swipes page seven days, workout days are underlined, double-tap the title for today |
+| F5-02 | TodayWorkoutCard, all states | ✅ Planned, running, completed, rest day (with the next date), no workout, no routine, several (stacked, labelled with their routine; while one runs the others' Start waits); `DayPlanner` turns stored routines and sessions into cards (tests) |
+| F5-03 | HealthService: real + mock, access, observer and background delivery | ✅ `HealthService` protocol and `MockHealthService` in PeakCore, `HealthKitService` in the app; without access every card still works. Access and real numbers still need a check on a device |
+| F5-04 | StepsCard | ✅ Day total from a statistics collection query (same method as the Health app); needs the side-by-side check with Health on a device |
+| F5-05 | WaterTile + water sheet + one Health sample per day | ✅ Sync identifier + version replaces the day's sample; a zero total deletes it |
+| F5-06 | EnergyTile + detail sheet | ✅ Reasons as sentences, data sources, "not medical advice"; score only for today |
+| F5-07 | Bottom accessory + conditional visibility | ✅ Start / running workout / hidden with `tabViewBottomAccessory(isEnabled:)` (iOS 26.1+); left out on iOS 26.0 |
+| F5-08 | Past and future days | ✅ Past: completed sessions and that day's steps and water; future: planned workouts, no Start |
+
 ## Upcoming phases (⬜)
 
-- F5: Home screen
 - F6: Workout Session
 - F7: Import / Export
 - F8: iCloud sync

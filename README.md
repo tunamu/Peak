@@ -17,16 +17,16 @@ No accounts, no servers, no analytics. Your data stays on your device and in you
 
 | Feature | Status |
 | --- | --- |
-| Progressive overload targets per set | ⬜ |
-| Routines with rotation (weekdays or every N days, several at once) | ⬜ |
-| Home: week strip, today's workout, steps, water, Energy Level | ⬜ |
+| Progressive overload targets per set | 🔶 engine done, used in the workout screen (F6) |
+| Routines with rotation (weekdays or every N days, several at once) | ✅ |
+| Home: week strip, today's workout, steps, water, Energy Level | ✅ |
 | Workout session: strength sets and walking cardio | ⬜ |
 | Import JSON, Excel and CSV; export JSON | ⬜ |
-| Apple Health: steps, sleep, HRV, water, workouts | ⬜ |
+| Apple Health: steps, sleep, HRV, water, workouts | 🔶 all but workouts (F6) |
 | iCloud sync | ⬜ |
 | Widgets and Live Activity | ⬜ |
 | English and Turkish | 🔶 |
-| Dark and light themes | ⬜ |
+| Dark and light themes | ✅ |
 
 Detailed progress: [docs/STATUS.md](docs/STATUS.md) · Timeline: [docs/ROADMAP.md](docs/ROADMAP.md)
 
