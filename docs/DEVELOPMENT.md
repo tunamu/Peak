@@ -44,6 +44,36 @@ xcodebuild -project Peak.xcodeproj -scheme Peak \
 cd Packages/PeakKit && swift test
 ```
 
+## Running on a device
+
+1. Connect the iPhone with a cable and tap **Trust** on the device.
+2. In Xcode, open the run destination menu and choose **Manage Devices…** (Device Hub). Select the iPhone and click
+   **Pair** if it appears.
+3. On the iPhone: **Settings > Privacy & Security > Developer Mode**, turn it on and restart. The switch only appears
+   after pairing has started.
+4. Choose the iPhone as the run destination and press Run (⌘R).
+
+Signing is automatic. The project uses the maintainer's team (`DEVELOPMENT_TEAM`). Contributors pick their own team in
+the `Peak` target's **Signing & Capabilities** tab and use their own bundle identifier and App Group, because
+`com.tunamu.peak` is registered to the maintainer's team.
+
+With a free Personal Team:
+
+- The first launch is blocked until you trust the developer: **Settings > General > VPN & Device Management >
+  Developer App > Trust**.
+- The provisioning profile is valid for 7 days. Run from Xcode again to renew it.
+- iCloud and Push Notifications are not available. HealthKit and App Groups work.
+
+From the command line:
+
+```bash
+xcodebuild build -project Peak.xcodeproj -scheme Peak \
+  -destination 'platform=iOS,id=<UDID>' -allowProvisioningUpdates
+xcrun devicectl list devices
+xcrun devicectl device install app --device <UDID> <path/to/Peak.app>
+xcrun devicectl device process launch --device <UDID> com.tunamu.peak
+```
+
 ## Formatting & Linting
 
 Two tools with separate jobs, like Prettier and ESLint:

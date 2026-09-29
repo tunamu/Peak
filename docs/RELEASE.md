@@ -13,7 +13,8 @@
 - [ ] Privacy nutrition label: **Data Not Collected**
 - [ ] Privacy policy ([privacy.md](privacy.md)) published on GitHub Pages
 - [ ] HealthKit review: usage descriptions, Guideline 5.1.3 compliance, "not medical advice" note on Energy Level
-- [ ] `PrivacyInfo.xcprivacy`: no tracking, no collected data, required-reason API `UserDefaults` (`CA92.1`)
+- [ ] `Peak/Resources/PrivacyInfo.xcprivacy` still matches the app: no tracking, no collected data, required-reason API
+  `UserDefaults` (`CA92.1` app-only, `1C8F.1` App Group)
 - [ ] `ITSAppUsesNonExemptEncryption = NO`
 - [ ] Screenshots (6.9", English and Turkish), description and keywords
 - [ ] TestFlight: internal, then external testers; no critical crashes in Xcode Organizer
