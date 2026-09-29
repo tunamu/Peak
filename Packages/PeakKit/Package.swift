@@ -33,5 +33,12 @@ let package = Package(
                 .enableUpcomingFeature("ApproachableConcurrency")
             ]
         ),
+        .testTarget(
+            name: "PeakDesignTests",
+            dependencies: ["PeakDesign"],
+            swiftSettings: [
+                .enableUpcomingFeature("ApproachableConcurrency")
+            ]
+        ),
     ]
 )

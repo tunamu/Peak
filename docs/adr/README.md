@@ -21,6 +21,7 @@ edited away. If it changes, a new ADR supersedes it and the old one is marked **
 | [0014](0014-native-sheets.md) | Large cards in the design are native sheets |
 | [0015](0015-multiple-active-routines.md) | Multiple routines can be active at the same time |
 | [0016](0016-week-strip-selected-day.md) | The week strip shows the selected day |
+| [0017](0017-color-tokens-and-contrast.md) | Color tokens in code, design grays with an Increase Contrast fallback |
 
 ## Open assumptions
 

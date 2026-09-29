@@ -20,3 +20,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Code of Conduct (Contributor Covenant 3.0), security policy and third-party notices.
 - Automatic signing; HealthKit (with background delivery) and App Group entitlements.
 - Apple Health usage descriptions in English and Turkish, and a privacy manifest.
+- Design tokens in `PeakDesign`: colors for dark, light and Increase Contrast, typography, spacing and radius, with
+  WCAG AA contrast tests.

@@ -1,21 +1,49 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "NSHealthShareUsageDescription" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Peak"
+          }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription" : {
+      "comment" : "Privacy - Health Share Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level."
+          }
+        },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Peak, günlük ilerlemeni ve Enerji Seviyeni göstermek için adım, uyku, kalp atış hızı değişkenliği, dinlenik nabız ve su verilerini okur."
           }
         }
       }
     },
     "NSHealthUpdateUsageDescription" : {
+      "comment" : "Privacy - Health Update Usage Description",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Peak saves your water intake and completed workouts to Apple Health."
+          }
+        },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Peak, içtiğin suyu ve tamamladığın antrenmanları Sağlık uygulamasına kaydeder."
           }
         }

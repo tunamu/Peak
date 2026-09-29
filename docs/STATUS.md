@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F0 done · next: F1 — Design system and app skeleton
+**Current Phase**: F1 — Design system and app skeleton
 
 ## F0 — Repository and infrastructure
 
@@ -15,9 +15,19 @@
 | F0-06 | Docs skeleton, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, THIRD_PARTY_NOTICES | ✅ |
 | F0-07 | `Localizable.xcstrings` (EN base + TR) | ✅ "Welcome Back" shows in English and Turkish |
 
+## F1 — Design system and app skeleton
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F1-01 | Color tokens (dark/light/Increase Contrast), typography, spacing and radius | ✅ In code, not an Asset Catalog ([ADR 0017](adr/0017-color-tokens-and-contrast.md)); `ContrastTests` enforce AA, report in DESIGN_SYSTEM |
+| F1-02 | Glass primitives: `GlassCard`, `TintedGlassButton`, `GlassPill`, container use | ⬜ |
+| F1-03 | Shared components: SectionHeader, SettingsRow, ProgressRing, ValuePickerSheet, ResultSheet | ⬜ |
+| F1-04 | TabView skeleton + Analysis placeholder | ⬜ |
+| F1-05 | DEBUG-only Component Gallery | ⬜ |
+| F1-06 | App icon (Icon Composer, 4 variants) | ⬜ |
+
 ## Upcoming phases (⬜)
 
-- F1: Design system and app skeleton
 - F2: Data layer
 - F3: Engines (progression, routine, energy)
 - F4: Settings screen
@@ -34,4 +44,3 @@
 - The project is signed with a free Personal Team for now. Personal Teams cannot use iCloud (CloudKit, key-value store)
   or Push Notifications, so those capabilities are added once the paid Apple Developer Program membership is active,
   before F8 (iCloud sync). Until then, settings live in App Group `UserDefaults` only.
-- Design tokens from `figma-spec.md` pending import (F1-01).

@@ -10,19 +10,30 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "figure.strengthtraining.traditional")
+        VStack(spacing: Spacing.xSmall) {
+            Image(systemName: "flag.fill")
                 .imageScale(.large)
-                .foregroundStyle(DesignTokens.primary)
+                .foregroundStyle(.peakBrandFlag)
                 .accessibilityHidden(true)
             Text("Peak")
+                .font(.peakScreenTitle)
+                .foregroundStyle(.peakTextPrimary)
             Text("Welcome Back")
-                .foregroundStyle(.secondary)
+                .font(.peakCardLabel)
+                .foregroundStyle(.peakTextSecondary)
         }
-        .padding()
+        .padding(Spacing.screenMargin)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.peakCanvas)
     }
 }
 
-#Preview {
+#Preview("Dark") {
     ContentView()
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Light") {
+    ContentView()
+        .preferredColorScheme(.light)
 }
