@@ -47,7 +47,11 @@ struct WorkoutAccessory: ViewModifier {
 
     private func togglePause(_ session: WorkoutSession) {
         let controller = WorkoutSessionController(session: session, context: modelContext)
-        try? session.status == .paused ? controller.resume() : controller.pause()
+        if session.status == .paused {
+            try? controller.resume()
+        } else {
+            try? controller.pause()
+        }
     }
 }
 

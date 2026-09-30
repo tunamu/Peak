@@ -92,14 +92,13 @@ struct SettingsView: View {
         }
     }
 
-    /// Import and export arrive in F7.
+    /// Import arrives with F7-06.
     private var workoutDataSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader("Workout Settings")
             SettingsRow("Import Workout Data", accessory: .icon("square.and.arrow.down")) {}
                 .disabled(true)
-            SettingsRow("Export Workout Data", accessory: .icon("square.and.arrow.up")) {}
-                .disabled(true)
+            ExportDataRow()
         }
     }
 
@@ -162,6 +161,10 @@ struct SettingsView: View {
             }
             SettingsRow("License", accessory: .value("MIT")) {
                 open("https://github.com/tunamu/Peak/blob/main/LICENSE")
+            }
+            // Licenses of the third-party code in the app (ZIPFoundation, MIT), as the licenses ask.
+            SettingsRow("Third-Party Notices", accessory: .icon("arrow.up.right")) {
+                open("https://github.com/tunamu/Peak/blob/main/THIRD_PARTY_NOTICES.md")
             }
             SettingsRow("Privacy Policy", accessory: .icon("arrow.up.right")) {
                 open("https://github.com/tunamu/Peak/blob/main/docs/privacy.md")

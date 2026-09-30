@@ -1,7 +1,8 @@
 # Import Format
 
-> Status: Peak JSON v1 is final (F7-01): DTOs, JSON Schema and examples. The importer, exporter and spreadsheet
-> readers follow in F7-02…F7-08.
+> Status: Peak JSON v1 (F7-01), export with its round-trip test (F7-02) and the JSON importer with validation, merge
+> and undated sessions (F7-03), the spreadsheet readers (F7-04) and layout detection with conversion (F7-05) are
+> done. The import screens follow in F7-06…F7-08.
 
 Peak imports JSON, XLSX and CSV/TSV through a single Import button ([ADR 0005](adr/0005-single-import-flow.md)).
 Export always writes Peak JSON, and an exported file imported into an empty store recreates exactly the same data.
@@ -64,8 +65,10 @@ allowed; export writes milliseconds in UTC). Enum values are the ones in the sch
 - Ids are free strings ("chest-biceps" or a UUID) that only link records inside one file.
 - If an `exerciseId` is not found, the importer matches on `exerciseName`, ignoring case and diacritics
   ("İncline" = "Incline"). If nothing matches, the exercise is created and listed in the preview.
-- `date` is optional. Undated sessions (no `date`, no `startedAt`) are placed one day apart, in array order, before the
-  first dated session, and marked `dateEstimated`. The preview shows a warning for them.
+- `date` is optional. Undated sessions (no `date`, no `startedAt`) are placed one day apart, in array order, ending the
+  day before the earliest dated session (or before today when none has a date), and marked `dateEstimated`. The preview
+  lists each one as a warning.
+- A `date` without `startedAt` starts the session at noon of that day; a finished session without `endedAt` lasts 0.
 - `weight` and `targetWeight` are read in `units.weight` and stored in kg; fields ending in `Kg` are always kilograms.
 - Settings outside the app's ranges are clamped.
 - A new schema version increases `schemaVersion`; the importer keeps reading older versions.
@@ -81,27 +84,88 @@ Give the model the schema file and your log, then ask:
 
 The layout is detected automatically. If confidence is low, a mapping screen asks for each column's role.
 
+**Reading the file** ([ADR 0018](adr/0018-spreadsheet-readers.md)):
+
+- **XLSX:** every visible sheet, in the workbook's order (hidden sheets are left out). Cells are read as text: numbers
+  as Excel stores them ("27.5" in every language), date cells as `2026-09-28` (with the time when the cell's format
+  shows one), formulas as their last calculated value, booleans as `TRUE`/`FALSE`. Both the 1900 and 1904 date
+  systems are read.
+- **CSV / TSV:** the encoding (UTF-8 with or without BOM, UTF-16 with BOM, else Windows-1254 as Turkish Excel writes
+  it), the delimiter (`,` `;` tab `|`) and the decimal separator are detected; .tsv files are read with tabs. Quoted
+  fields may hold delimiters, `""` and line breaks.
+- Cells are trimmed, short rows padded, empty rows and columns at the end dropped. Numbers are read with the file's
+  decimal separator, grouping included ("1.002,5").
+
 | Layout | Shape |
 | --- | --- |
 | Long | One row per set: Date · Exercise · Set · Weight · Reps (· Workout · Note) |
-| Wide | One row per session × exercise; sets as `27.5 x 9` cells or Weight1/Reps1 column pairs |
-| Block | A row with a single filled cell is an exercise header; the rows below are sessions with set cells |
+| Wide | One row per session × exercise; sets as `27.5 x 9` cells or Weight 1 / Reps 1 column pairs |
+| Block | A name alone on a row is an exercise (a name above it, a section); rows below are sessions with set cells |
 
-- **Header synonyms (EN/TR):** date/tarih/gün · exercise/movement/hareket/egzersiz · weight/ağırlık/kg/lbs ·
-  reps/tekrar/rep · set · workout/antrenman/program · note/not
-- **Set cell pattern:** `^\s*(\d+(?:[.,]\d+)?)\s*(kg|lb|lbs)?\s*[x×*]\s*(\d+)(?::(\d+))?\s*$`. `27.5x8:9` means target 8,
-  actual 9. `-` or an empty cell means no set.
-- **CSV:** the delimiter (`,` `;` tab), decimal commas ("27,5") and the date format (dd.MM.yyyy, yyyy-MM-dd, M/d/yyyy)
-  are detected. When unsure, the mapping screen asks.
-- **Mapping roles:** Date, Exercise, Set #, Weight, Reps, Set cell, Workout, Note, Ignore; plus the date format and the
+**Detection** (`SheetAnalyzer`): among the first 10 rows, the one naming the most roles is the header. With an
+exercise column and either weight and reps or set-cell columns, the sheet is long (one weight and reps column) or wide
+(set cells, or several pairs); unnamed columns whose cells are mostly sets become set cells. Otherwise, lone names
+followed by session rows make a block sheet. Anything else gets a guessed mapping marked unsure, and the mapping
+screen asks. It also asks when there are two exercise or date columns, or when dates fit both day and month first.
+
+- **Header names (EN/TR),** compared ignoring case and accents, whole name first, then word by word in this order:
+  date/day/tarih/tarihi/gün/seans/session · exercise/movement/lift/hareket/egzersiz ·
+  weight/load/kg/lb/lbs/ağırlık/yük · reps/rep/repetitions/tekrar · set/set no/set #/# · workout/routine/program/
+  template/antrenman/rutin · note/comment/not/notlar/açıklama. A number with "set" ("1. Set", "Set 2", "S3"), or
+  weight and reps in one name ("Ağırlık x Tekrar"), is a set-cell column; "Weight 1" / "Reps 1" pair up in order.
+  "lb" or "lbs" in a header, or in most set cells, means pounds.
+- **Set cells:** `27.5 x 9`, `27,5x9`, `60 kg × 8`, `135lb*5`; `27.5x8:9` means target 8, done 9 (the `/coach`
+  form). `-`, `–` or an empty cell is no set. A lone comma or point in a set cell is always a decimal.
+- **Dates:** `2026-09-28`, `28.09.2026`, `9/28/26` and dates inside text ("3. Seans (07.09.2026)"). A first part
+  above 12 means day first, a second part above 12 month first; without such a date, `.` and `-` mean day first and
+  `/` month first (unsure). Two-digit years are 20xx.
+- **Sessions:** long and wide rows with the same date and workout are one session, and an empty date, workout or
+  exercise cell repeats the one above. In block sheets, rows of the same date are one session across exercises and
+  sections ("Sırt (Back) & Biceps (Pazu)"); undated rows ("1. Seans") are one session per section and number, and the
+  importer dates them. Sets follow the Set column when every set has one, else row order.
+- **Unreadable cells** are skipped with a warning naming the cell ("Antrenman!C5").
+- **Mapping roles:** Date, Exercise, Set #, Weight, Reps, Set cell, Workout, Note, Ignore; plus the date order and the
   weight unit. The first 5 rows are previewed live.
 - **Templates:** [import-templates/](import-templates/README.md).
 
 ## Merge and replace
 
-- **Merge** (default): a set whose date + exercise + set fingerprint already exists is skipped.
-- **Replace all:** asks for confirmation and writes an automatic JSON backup first.
+The import first shows a preview (`PeakImporter.preview`): sessions in the file, new and duplicate, sets, the date
+range, the exercises it creates, and the problems it found. Nothing is written until the import is confirmed
+(`commit`), and then in one save.
+
+- **Merge** (default): records already in the store win and are not changed.
+  - An exercise, template or routine is the same record when its id is a UUID the store has, or, when it has no such
+    id, when the store has one of that name (case and accent insensitive). Otherwise it is added.
+  - A session is a duplicate when the store has its UUID, or has a session on the same day with the same movements
+    and sets. Duplicates are skipped, so **importing the same file twice adds nothing the second time**. Sessions with
+    an estimated date match on their movements and sets alone, since the estimate can differ between imports.
+  - Water logs are skipped when the store has one at the same millisecond with the same amount and source.
+- **Replace all:** writes a backup of the store (`peak-backup-YYYY-MM-DD-HHmmss.json`, the export format) and then
+  deletes everything before adding the file. If the backup cannot be written, nothing is deleted.
+- Settings in the file are not applied by the importer; the import screen offers them.
+
+### Problems
+
+| Problem | Blocks the import |
+| --- | --- |
+| Another `schema`, a newer `schemaVersion` | Yes |
+| A blank name; a movement with neither `exerciseId` nor `exerciseName` | Yes |
+| Negative weight, reps, speed or paused time; `incrementKg` ≤ 0; `targetSets`, `everyDays` < 1; `durationMin` ≤ 0 | Yes |
+| A weekday schedule without days; `endedAt` before `startedAt` | Yes |
+| An id that finds nothing (the link is left out; an exercise falls back to its name) | No, warning |
+| An estimated date | No, warning |
+
+Each problem names where it is, for example `sessions[2].exercises[0].sets[1].reps`.
 
 ## Export
 
-`peak-export-YYYY-MM-DD.json`, shared with the system file exporter or share sheet.
+Settings › Export Workout Data writes `peak-export-YYYY-MM-DD.json` and opens the system file exporter (`PeakExporter`).
+
+- Everything is written: archived exercises and templates, running and paused workouts, water logs and settings.
+- Ids are the stored UUIDs; weights are kg (`units.weight` is `kg`); timestamps are UTC with milliseconds.
+- Records come in a fixed order (templates and routines by list order, sessions by start time, ties by id), so the same
+  data always gives the same file.
+- A routine keeps only its chosen schedule: the weekdays of an interval routine (or the reverse) are not written.
+- **Round trip:** the file imported into an empty store (`PeakImporter`) and exported again gives the same bytes
+  (`PeakRoundTripTests`).

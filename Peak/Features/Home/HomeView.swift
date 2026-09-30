@@ -74,7 +74,8 @@ struct HomeView: View {
             if let level { launcher.energyLevel = level }
             #if DEBUG
                 // Screenshot helper: `-PeakEnergy notReady` forces the level the alert checks.
-                if let forced = UserDefaults.standard.string(forKey: "PeakEnergy").flatMap(EnergyLevel.init(rawValue:)) {
+                let forced = UserDefaults.standard.string(forKey: "PeakEnergy").flatMap(EnergyLevel.init(rawValue:))
+                if let forced {
                     launcher.energyLevel = forced
                 }
             #endif
@@ -228,10 +229,18 @@ struct HomeView: View {
 
     private func togglePause(_ session: WorkoutSession) {
         let controller = WorkoutSessionController(session: session, context: modelContext)
-        try? session.status == .paused ? controller.resume() : controller.pause()
+        if session.status == .paused {
+            try? controller.resume()
+        } else {
+            try? controller.pause()
+        }
     }
 
-    // MARK: Dashboard
+}
+
+// MARK: Dashboard
+
+extension HomeView {
 
     private var stepsState: StepsCard.State {
         switch health.status {

@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F7 — Import / Export (F7-01 done)
+**Current Phase**: F7 — Import / Export (F7-01…F7-05 done)
 
 ## F0 — Repository and infrastructure
 
@@ -81,6 +81,10 @@ Apple Health workout), start another workout outside the plan. Device checks pen
 | ID | Task | Status |
 | --- | --- | --- |
 | F7-01 | JSON v1 DTOs + JSON Schema + IMPORT_FORMAT | ✅ `PeakExportV1` + `PeakJSON`; both examples validate against the schema (tests and Ajv), DTOs keep every field |
+| F7-02 | Exporter + round-trip test | ✅ `PeakExporter` + plain `PeakImporter`; export → import into an empty store → export gives the same bytes. Settings › Export Workout Data opens the file exporter |
+| F7-03 | JSON importer: validation, merge/dedupe, undated sessions | ✅ Preview + commit; the same file imported twice adds nothing (both examples and an export); replace all writes a backup first |
+| F7-04 | RawTable readers: XLSX, CSV/TSV (delimiter and decimal detection) | ✅ Turkish Excel CSV (Windows-1254, `;`, "27,5") reads right; XLSX with ZIPFoundation, checked on Excel, Numbers and Google Sheets files ([ADR 0018](adr/0018-spreadsheet-readers.md)) |
+| F7-05 | Layout detection (long/wide/block) + header names + set cell parser | ✅ All 11 fixture sheets classified right; `SheetConverter` turns them into Peak JSON. The real `/coach` history (153 rows) reads as its 22 sessions and 165 sets |
 
 ## Upcoming phases (⬜)
 

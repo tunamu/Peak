@@ -75,7 +75,7 @@ public enum PeakJSON {
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
         encoder.dateEncodingStrategy = .custom { date, encoder in
             var container = encoder.singleValueContainer()
-            try container.encode(date.formatted(withFraction))
+            try container.encode(timestamp(date))
         }
         return encoder
     }
@@ -92,6 +92,23 @@ public enum PeakJSON {
                 in: container, debugDescription: "Expected an ISO 8601 timestamp, found \"\(text)\"")
         }
         return decoder
+    }
+
+    /// Whole milliseconds since 1970: what a timestamp keeps once written. Exports sort by it, so records that differ
+    /// only below a millisecond keep their order after a round trip.
+    public static func milliseconds(_ date: Date) -> Int64 {
+        Int64((date.timeIntervalSince1970 * 1_000).rounded())
+    }
+
+    /// "2026-09-29T07:00:00.250Z". Built from whole milliseconds: the formatter truncates fractions, so a parsed
+    /// ".028" (really .02799…) would come back as ".027".
+    static func timestamp(_ date: Date) -> String {
+        let milliseconds = milliseconds(date)
+        let (seconds, fraction) = milliseconds.quotientAndRemainder(dividingBy: 1_000)
+        let whole = Date(timeIntervalSince1970: TimeInterval(seconds))
+            .formatted(withoutFraction)
+            .dropLast()  // "Z"
+        return "\(whole).\(String(format: "%03d", fraction))Z"
     }
 
     public static func encode(_ data: PeakExportV1) throws -> Data {
