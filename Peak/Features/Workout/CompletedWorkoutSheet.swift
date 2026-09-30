@@ -1,0 +1,147 @@
+import PeakCore
+import PeakDesign
+import SwiftData
+import SwiftUI
+
+/// A finished workout, read-only: opened by tapping a completed card on Home, today or any past day. The same
+/// header and tables as the running workout, without the timer, the bottom bar or editing.
+struct CompletedWorkoutSheet: View {
+    let session: WorkoutSession
+
+    @Environment(\.dismiss) private var dismiss
+    @Environment(SettingsStore.self) private var settings
+
+    private var indexedExercises: [(offset: Int, element: SessionExercise)] {
+        Array(session.orderedExercises.enumerated())
+    }
+
+    var body: some View {
+        NavigationStack {
+            List {
+                SessionHeader(session: session)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init(top: Spacing.xSmall, leading: 0, bottom: Spacing.xSmall, trailing: 0))
+
+                ForEach(indexedExercises, id: \.element.persistentModelID) { index, exercise in
+                    Section {
+                        if exercise.isCardio {
+                            segmentRows(of: exercise)
+                        } else {
+                            setRows(of: exercise)
+                        }
+                    } header: {
+                        Text(verbatim: "\(index + 1)- \(exercise.exerciseName)")
+                            .font(.peakCardValue)
+                            .foregroundStyle(.peakTextPrimary)
+                            .textCase(nil)
+                    }
+                }
+            }
+            .listSectionSpacing(Spacing.medium)
+            .contentMargins(.top, 0, for: .scrollContent)
+            .environment(\.defaultMinListRowHeight, 0)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close", systemImage: "xmark") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.large])
+    }
+
+    @ViewBuilder
+    private func setRows(of exercise: SessionExercise) -> some View {
+        let sets = exercise.orderedSets
+        if sets.isEmpty {
+            Text("No sets logged")
+                .font(.peakRow)
+                .foregroundStyle(.peakTextTertiary)
+        } else {
+            SetColumnsRow(unit: settings.unitSystem)
+                .listRowInsets(.init(top: Spacing.small, leading: Spacing.medium, bottom: 0, trailing: Spacing.medium))
+                .listRowSeparator(.hidden)
+            ForEach(Array(sets.enumerated()), id: \.element.persistentModelID) { index, set in
+                LoggedSetRow(number: index + 1, set: set, unit: settings.unitSystem)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func segmentRows(of exercise: SessionExercise) -> some View {
+        SegmentColumnsRow()
+            .listRowInsets(.init(top: Spacing.small, leading: Spacing.medium, bottom: 0, trailing: Spacing.medium))
+            .listRowSeparator(.hidden)
+        ForEach(Array(exercise.orderedSegments.enumerated()), id: \.element.persistentModelID) { index, segment in
+            LoggedSegmentRow(number: index + 1, segment: segment)
+        }
+    }
+}
+
+/// A set as it was logged: the same columns as the running table (C-09), as text.
+private struct LoggedSetRow: View {
+    let number: Int
+    let set: SetEntry
+    let unit: UnitSystem
+
+    var body: some View {
+        HStack(spacing: Spacing.xSmall) {
+            Color.clear.frame(width: SetColumns.handle)
+            Text(number, format: .number)
+                .foregroundStyle(set.isCompleted ? .peakTintPositive : .peakTextSecondary)
+                .frame(width: SetColumns.number, alignment: .leading)
+            Text(verbatim: reference)
+                .foregroundStyle(.peakTextTertiary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(verbatim: set.reps > 0 || set.weightKg > 0 ? format(set.weightKg) : "—")
+                .foregroundStyle(.peakTextPrimary)
+                .frame(width: SetColumns.value)
+            Text(verbatim: set.reps > 0 ? String(set.reps) : "—")
+                .foregroundStyle(.peakTextPrimary)
+                .frame(width: SetColumns.value)
+        }
+        .font(.peakRow.monospacedDigit())
+        .frame(minHeight: 36)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Set \(number)"))
+        .accessibilityValue(Text(verbatim: "\(format(set.weightKg)) \(unit.weightSymbol) × \(set.reps)"))
+    }
+
+    /// The target it was measured against, "27.5kg × 6", or "—".
+    private var reference: String {
+        guard let weightKg = set.targetWeightKg, let reps = set.targetReps else { return "—" }
+        return "\(format(weightKg))\(unit.weightSymbol) × \(reps)"
+    }
+
+    private func format(_ weightKg: Double) -> String {
+        WeightUnits.displayValue(kg: weightKg, in: unit).formatted(.number.precision(.fractionLength(0...2)))
+    }
+}
+
+/// A walking segment as it was logged: speed, incline and minutes, "—" where empty.
+private struct LoggedSegmentRow: View {
+    let number: Int
+    let segment: CardioSegment
+
+    var body: some View {
+        HStack(spacing: Spacing.xSmall) {
+            Text(number, format: .number)
+                .foregroundStyle(.peakTextSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            value(segment.speedKmh)
+            value(segment.inclinePercent)
+            value(segment.durationSec.map { Double($0) / 60 })
+        }
+        .font(.peakRow.monospacedDigit())
+        .frame(minHeight: 36)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func value(_ number: Double?) -> some View {
+        Text(verbatim: number.map { $0.formatted(.number.precision(.fractionLength(0...1))) } ?? "—")
+            .foregroundStyle(.peakTextPrimary)
+            .frame(width: SetColumns.value)
+    }
+}

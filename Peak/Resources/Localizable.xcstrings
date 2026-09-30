@@ -744,6 +744,16 @@
         }
       }
     },
+    "Every workout in this file is already in Peak." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dosyadaki tüm antrenmanlar zaten Peak'te."
+          }
+        }
+      }
+    },
     "Export Failed" : {
       "localizations" : {
         "tr" : {
@@ -770,6 +780,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenmanı Bitir"
+          }
+        }
+      }
+    },
+    "Finish workout?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman bitirilsin mi?"
           }
         }
       }
@@ -834,12 +854,52 @@
         }
       }
     },
+    "Import" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktar"
+          }
+        }
+      }
+    },
+    "Import Failed" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarılamadı"
+          }
+        }
+      }
+    },
     "Import Workout Data" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Verisi İçe Aktar"
+          }
+        }
+      }
+    },
+    "Import Workouts?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlar İçe Aktarılsın mı?"
+          }
+        }
+      }
+    },
+    "Imported" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarıldı"
           }
         }
       }
@@ -1032,6 +1092,26 @@
         }
       }
     },
+    "New exercises: %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni hareketler: %@"
+          }
+        }
+      }
+    },
+    "New exercises: %lld" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni hareket sayısı: %lld"
+          }
+        }
+      }
+    },
     "Next" : {
       "localizations" : {
         "tr" : {
@@ -1092,6 +1172,16 @@
         }
       }
     },
+    "No sets logged" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set girilmemiş"
+          }
+        }
+      }
+    },
     "No workout" : {
       "localizations" : {
         "tr" : {
@@ -1148,6 +1238,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bugün seni geri tutan bir şey yok."
+          }
+        }
+      }
+    },
+    "Nothing to Import" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarılacak Bir Şey Yok"
           }
         }
       }
@@ -1288,6 +1388,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gizlilik Politikası"
+          }
+        }
+      }
+    },
+    "Problems in the file: %lld. The first is at %@." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyadaki sorun sayısı: %1$lld. İlki şurada: %2$@."
           }
         }
       }
@@ -1692,12 +1802,32 @@
         }
       }
     },
+    "The workout is saved and the timer stops." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman kaydedilir ve sayaç durur."
+          }
+        }
+      }
+    },
     "Third-Party Notices" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Üçüncü Taraf Bildirimleri"
+          }
+        }
+      }
+    },
+    "This file is not Peak JSON. Excel and CSV files arrive in a later update." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dosya Peak JSON değil. Excel ve CSV desteği sonraki bir güncellemeyle gelecek."
           }
         }
       }
@@ -1832,6 +1962,16 @@
         }
       }
     },
+    "Warnings: %lld" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyarılar: %lld"
+          }
+        }
+      }
+    },
     "Water Intake" : {
       "localizations" : {
         "tr" : {
@@ -1938,6 +2078,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenmanlar"
+          }
+        }
+      }
+    },
+    "Workouts added: %lld" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eklenen antrenman: %lld"
+          }
+        }
+      }
+    },
+    "Workouts: %lld new (%lld sets), %lld already in Peak." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlar: %1$lld yeni (%2$lld set), %3$lld tanesi zaten Peak'te."
           }
         }
       }

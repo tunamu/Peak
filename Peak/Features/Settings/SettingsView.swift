@@ -92,12 +92,11 @@ struct SettingsView: View {
         }
     }
 
-    /// Import arrives with F7-06.
+    /// Import reads Peak JSON for now; spreadsheets and the mapping screen arrive with F7-06.
     private var workoutDataSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader("Workout Settings")
-            SettingsRow("Import Workout Data", accessory: .icon("square.and.arrow.down")) {}
-                .disabled(true)
+            ImportDataRow()
             ExportDataRow()
         }
     }

@@ -74,7 +74,8 @@
 
 State machine with persistence (a workout survives the app being killed), set tables with targets from the last
 performance, Complete Movement, bottom bar with pause and finish check, walking segments, finish pipeline (summary +
-Apple Health workout), start another workout outside the plan. Device checks pending: Health write, touch flows.
+Apple Health workout), start another workout outside the plan. After first use (2026-09-30): Finish always asks,
+and a finished workout opens read-only from its card. Device checks pending: Health write, touch flows.
 
 ## F7: Import / Export 🔶
 
@@ -85,6 +86,9 @@ Apple Health workout), start another workout outside the plan. Device checks pen
 | F7-03 | JSON importer: validation, merge/dedupe, undated sessions | ✅ Preview + commit; the same file imported twice adds nothing (both examples and an export); replace all writes a backup first |
 | F7-04 | RawTable readers: XLSX, CSV/TSV (delimiter and decimal detection) | ✅ Turkish Excel CSV (Windows-1254, `;`, "27,5") reads right; XLSX with ZIPFoundation, checked on Excel, Numbers and Google Sheets files ([ADR 0018](adr/0018-spreadsheet-readers.md)) |
 | F7-05 | Layout detection (long/wide/block) + header names + set cell parser | ✅ All 11 fixture sheets classified right; `SheetConverter` turns them into Peak JSON. The real `/coach` history (153 rows) reads as its 22 sessions and 165 sets |
+
+Ahead of F7-06: Settings › Import Workout Data reads Peak JSON (pick a file, see what it adds, confirm, merge).
+Spreadsheets, the mapping screen and the full preview remain for F7-06.
 
 ## Upcoming phases (⬜)
 

@@ -7,9 +7,9 @@ import SwiftUI
 /// swipe to delete and keyboard avoidance come for free.
 ///
 /// "Complete Movement" folds a movement into a summary row and scrolls to the next open one; tapping the summary opens
-/// it again. The bottom bar (C-11) holds the timer with Pause/Resume and Finish Workout; Close and Discard sit in the
-/// toolbar. Swiping the sheet down is off so a workout is never closed by accident. Walking arrives with F6-05, the
-/// finish pipeline and summary with F6-06.
+/// it again. The bottom bar (C-11) holds the timer with Pause/Resume and Finish Workout (always confirmed); Close and
+/// Discard sit in the toolbar. Swiping the sheet down is off so a workout is never closed by accident. A finished
+/// workout opens read-only in `CompletedWorkoutSheet`.
 struct WorkoutSessionSheet: View {
     let session: WorkoutSession
 
@@ -99,12 +99,11 @@ struct WorkoutSessionSheet: View {
         }
         .presentationDetents([.large])
         .interactiveDismissDisabled()
-        .alert(
-            "\(controller.emptySetCount) sets are empty. Finish anyway?",
-            isPresented: $isFinishConfirmationShown
-        ) {
+        .alert(finishQuestion, isPresented: $isFinishConfirmationShown) {
             Button("Finish Workout") { finish() }
             Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("The workout is saved and the timer stops.")
         }
         .confirmationDialog(
             "Discard this workout?", isPresented: $isDiscardConfirmationShown, titleVisibility: .visible
@@ -243,13 +242,10 @@ struct WorkoutSessionSheet: View {
                     }
                 }
                 .buttonStyle(.peakGlassPill)
+                // Always asked: a stray tap must not end the workout.
                 Button {
                     focus = nil
-                    if controller.emptySetCount > 0 {
-                        isFinishConfirmationShown = true
-                    } else {
-                        finish()
-                    }
+                    isFinishConfirmationShown = true
                 } label: {
                     Label("Finish Workout", systemImage: "checkmark")
                         .frame(maxWidth: .infinity)
@@ -263,6 +259,12 @@ struct WorkoutSessionSheet: View {
 
     /// The finish pipeline: save the session, show the summary, then write the workout to Health in the background.
     /// Live Activity and widgets join with F9.
+    /// "Finish workout?", or with empty sets "3 sets are empty. Finish anyway?".
+    private var finishQuestion: Text {
+        let empty = controller.emptySetCount
+        return empty > 0 ? Text("\(empty) sets are empty. Finish anyway?") : Text("Finish workout?")
+    }
+
     private func finish() {
         guard (try? controller.finish()) != nil else { return }
         summary = WorkoutSummary(session: session, rule: settings.progressionRule)
