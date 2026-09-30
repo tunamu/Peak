@@ -290,6 +290,8 @@ extension HomeView {
         steps = try? await health.service.steps(on: day)
         if calendar.isDate(day, inSameDayAs: .now) {
             signals = await health.service.energySignals(on: day)
+            // The widgets cannot read Health themselves: leave today's values for them.
+            WidgetSnapshot.save(steps: steps?.count, energy: energy.level)
         }
     }
 

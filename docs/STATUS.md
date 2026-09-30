@@ -1,7 +1,7 @@
 # Peak Development Status
 
-**Last Updated**: 2026-09-29  
-**Current Phase**: F7 — Import / Export (F7-01…F7-05 done)
+**Last Updated**: 2026-09-30  
+**Current Phase**: F9 — Widgets and Live Activity (F9-01, F9-03 done; F9-02 on device) · F8 waits for the membership to activate
 
 ## F0 — Repository and infrastructure
 
@@ -77,7 +77,7 @@ performance, Complete Movement, bottom bar with pause and finish check, walking 
 Apple Health workout), start another workout outside the plan. After first use (2026-09-30): Finish always asks,
 and a finished workout opens read-only from its card. Device checks pending: Health write, touch flows.
 
-## F7: Import / Export 🔶
+## F7: Import / Export ✅
 
 | ID | Task | Status |
 | --- | --- | --- |
@@ -87,13 +87,22 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | F7-04 | RawTable readers: XLSX, CSV/TSV (delimiter and decimal detection) | ✅ Turkish Excel CSV (Windows-1254, `;`, "27,5") reads right; XLSX with ZIPFoundation, checked on Excel, Numbers and Google Sheets files ([ADR 0018](adr/0018-spreadsheet-readers.md)) |
 | F7-05 | Layout detection (long/wide/block) + header names + set cell parser | ✅ All 11 fixture sheets classified right; `SheetConverter` turns them into Peak JSON. The real `/coach` history (153 rows) reads as its 22 sessions and 165 sets |
 
-Ahead of F7-06: Settings › Import Workout Data reads Peak JSON (pick a file, see what it adds, confirm, merge).
-Spreadsheets, the mapping screen and the full preview remain for F7-06.
+| F7-06 | Mapping screen + preview (S-10) + commit + S-09 | ✅ Settings › Import Workout Data takes Peak JSON, .xlsx, .csv and .tsv: S-10 shows the sheet, layout, header row, column roles, date order, unit (and CSV separator and decimal), the first five workouts as imported, the summary and problems, and merge or replace all (with a backup in Files › Peak › Backups); S-09 reports the result. End to end on the simulator with Turkish CSV, block and wide files |
+| F7-07 | Template files (xlsx/csv) + sharing in the app | ✅ English and Turkish templates (docs/import-templates), written by `ImportTemplate`; each reads back as a confident long layout and imports without problems; the .xlsx files open in openpyxl and Quick Look. Settings › Import Template saves one in the phone's language |
+| F7-08 | Fixtures: the real `/coach` history as Excel (block), synthetic long/wide, broken files | ✅ The real history reads as its 22 sessions and 165 sets; 12 weeks of sets preview in well under a second; every broken file (cut or damaged workbook, bad XML, hidden sheets only, damaged or foreign JSON, a photo, an old .xls, an empty file, a ZIP bomb) ends in its own readable message |
+
+## F9: Widgets and Live Activity 🔶
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F9-01 | Widget extension + App Group data + snapshot provider | ✅ `PeakWidgetsExtension` reads the shared store and settings; the app leaves today's steps and Energy Level in an App Group file (Health data stays out of the store) and reloads the widgets on every save; `WidgetContent` builds what they show (tests) |
+| F9-02 | W-01 (interactive water), W-02, W-03; rendering modes | 🔶 Water with a +quick-amount button (`AddWaterIntent`), steps ring, today's workout with Energy Level; English and Turkish; shown in the Component Gallery at real sizes. Tinted and clear Home Screen styles still to be checked on a device |
+| F9-03 | Live Activity + Dynamic Island + Pause/Resume intent | ✅ One activity per running workout, kept in line with the store after every save, at launch and on return (so a relaunch after the app was killed shows the right clock, anchored to the start); Lock Screen with movement, set progress, clock and Pause/Resume (`TogglePauseIntent`, runs in the app); Dynamic Island compact, minimal and expanded. On the simulator the system rendered it on start and removed it on finish; the Lock Screen and island still to be seen on a device |
+| F9-04 | Deep links (`peak://`) + App Intents | ⬜ The widgets already link to `peak://workout/start`, `peak://workout/open` and `peak://home` |
 
 ## Upcoming phases (⬜)
 
 - F8: iCloud sync
-- F9: Widgets and Live Activity
 - F10: Polish, accessibility, localization
 - F11: App Store release
 

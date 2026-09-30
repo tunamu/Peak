@@ -9,6 +9,7 @@ struct CompletedWorkoutSheet: View {
     let session: WorkoutSession
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @Environment(SettingsStore.self) private var settings
 
     private var indexedExercises: [(offset: Int, element: SessionExercise)] {
@@ -61,8 +62,11 @@ struct CompletedWorkoutSheet: View {
             SetColumnsRow(unit: settings.unitSystem)
                 .listRowInsets(.init(top: Spacing.small, leading: Spacing.medium, bottom: 0, trailing: Spacing.medium))
                 .listRowSeparator(.hidden)
+            let previous = (try? SessionRepository(context: modelContext).previousSets(before: exercise)) ?? []
             ForEach(Array(sets.enumerated()), id: \.element.persistentModelID) { index, set in
-                LoggedSetRow(number: index + 1, set: set, unit: settings.unitSystem)
+                LoggedSetRow(
+                    number: index + 1, set: set, unit: settings.unitSystem,
+                    previous: previous.indices.contains(index) ? previous[index] : previous.last)
             }
         }
     }
@@ -83,6 +87,8 @@ private struct LoggedSetRow: View {
     let number: Int
     let set: SetEntry
     let unit: UnitSystem
+    /// The same set the time before this workout.
+    let previous: SetPerformance?
 
     var body: some View {
         HStack(spacing: Spacing.xSmall) {
@@ -109,10 +115,10 @@ private struct LoggedSetRow: View {
         .accessibilityValue(Text(verbatim: "\(format(set.weightKg)) \(unit.weightSymbol) × \(set.reps)"))
     }
 
-    /// The target it was measured against, "27.5kg × 6", or "—".
+    /// The same set the time before, "50kg × 9", or "—".
     private var reference: String {
-        guard let weightKg = set.targetWeightKg, let reps = set.targetReps else { return "—" }
-        return "\(format(weightKg))\(unit.weightSymbol) × \(reps)"
+        guard let previous else { return "—" }
+        return "\(format(previous.weightKg))\(unit.weightSymbol) × \(previous.reps)"
     }
 
     private func format(_ weightKg: Double) -> String {

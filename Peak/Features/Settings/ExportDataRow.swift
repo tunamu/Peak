@@ -9,7 +9,7 @@ import UniformTypeIdentifiers
 struct ExportDataRow: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(SettingsStore.self) private var settings
-    @State private var document: PeakJSONDocument?
+    @State private var document: ExportedFile?
     @State private var failure: String?
 
     var body: some View {
@@ -43,26 +43,33 @@ struct ExportDataRow: View {
     private func prepare() {
         do {
             let data = try PeakExporter(context: modelContext).export(settings: settings.transferSettings)
-            document = PeakJSONDocument(data: try PeakJSON.encode(data))
+            document = ExportedFile(data: try PeakJSON.encode(data), contentType: .json, name: PeakExporter.fileName())
         } catch {
             failure = error.localizedDescription
         }
     }
 }
 
-/// A Peak JSON file for the file exporter.
-struct PeakJSONDocument: FileDocument {
-    static let readableContentTypes: [UTType] = [.json]
+/// A file for the system file exporter: Peak JSON exports and the import templates.
+struct ExportedFile: FileDocument {
+    static let xlsx = UTType("org.openxmlformats.spreadsheetml.sheet") ?? .data
+    static let readableContentTypes: [UTType] = [.json, .commaSeparatedText, xlsx]
 
     let data: Data
+    let contentType: UTType
+    let name: String
 
-    init(data: Data) {
+    init(data: Data, contentType: UTType, name: String) {
         self.data = data
+        self.contentType = contentType
+        self.name = name
     }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents else { throw CocoaError(.fileReadCorruptFile) }
         self.data = data
+        self.contentType = configuration.contentType
+        self.name = configuration.file.filename ?? ""
     }
 
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {

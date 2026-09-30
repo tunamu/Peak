@@ -13,8 +13,9 @@ func sets(_ text: String) -> [SetPerformance] {
 @Suite struct ProgressionEngineTests {
     @Test(arguments: [
         ("50x17", 5.0, "55x6"),  // above 12: +increment, reps reset to 6
-        ("27.5x9", 2.5, "27.5x9"),  // at or below 12: same weight, reps as done
-        ("45x12", 5.0, "45x12"),  // exactly 12 is not enough
+        ("50x9", 5.0, "50x10"),  // at or below 12: same weight, one rep more
+        ("27.5x9", 2.5, "27.5x10"),
+        ("45x12", 5.0, "45x13"),  // exactly 12 is not enough: the target is to pass it
         ("45x13", 5.0, "50x6"),
     ])
     func singleSet(_ done: String, _ increment: Double, _ expected: String) {
@@ -23,7 +24,7 @@ func sets(_ text: String) -> [SetPerformance] {
     }
 
     /// The `/coach` skill's next targets after the 28.09.2026 state (Program.md › "Bir Sonraki Hedef"),
-    /// from each exercise's last session and increment.
+    /// from each exercise's last session and increment: its rule (no rep added) is still reproduced exactly.
     @Test(arguments: [
         ("Dumbbell Chest Press", 2.5, "27.5x9, 22.5x13", "27.5x9, 25x6"),
         ("Incline Smith Machine Press", 5.0, "55x6, 45x9", "55x6, 45x9"),
@@ -41,14 +42,27 @@ func sets(_ text: String) -> [SetPerformance] {
     ])
     func matchesCoachProgram(_ name: String, _ increment: Double, _ last: String, _ expected: String) {
         let done = sets(last)
-        let targets = ProgressionEngine.targets(after: done, setCount: done.count, incrementKg: increment)
+        let targets = ProgressionEngine.targets(
+            after: done, setCount: done.count, incrementKg: increment, rule: .coach)
         #expect(targets == sets(expected), "\(name)")
+    }
+
+    /// Peak's rule on the same state: one rep more wherever the weight stays (2026-09-30, Tuna).
+    @Test(arguments: [
+        ("27.5x9, 22.5x13", 2.5, "27.5x10, 25x6"),
+        ("60x8, 55x9", 5.0, "60x9, 55x10"),
+        ("65x14, 65x13, 60x15", 5.0, "70x6, 70x6, 65x6"),
+        ("15x12, 15x10", 2.5, "15x13, 15x11"),
+    ])
+    func peakAddsARep(_ last: String, _ increment: Double, _ expected: String) {
+        let done = sets(last)
+        #expect(ProgressionEngine.targets(after: done, setCount: done.count, incrementKg: increment) == sets(expected))
     }
 
     @Test func extraSetsCopyTheLastTargetAndFewerDropTheRest() {
         let done = sets("60x8, 55x13")
-        #expect(ProgressionEngine.targets(after: done, setCount: 3, incrementKg: 5) == sets("60x8, 60x6, 60x6"))
-        #expect(ProgressionEngine.targets(after: done, setCount: 1, incrementKg: 5) == sets("60x8"))
+        #expect(ProgressionEngine.targets(after: done, setCount: 3, incrementKg: 5) == sets("60x9, 60x6, 60x6"))
+        #expect(ProgressionEngine.targets(after: done, setCount: 1, incrementKg: 5) == sets("60x9"))
     }
 
     @Test func noHistoryMeansNoTargets() {
@@ -57,13 +71,13 @@ func sets(_ text: String) -> [SetPerformance] {
     }
 
     @Test func unfinishedSetsAreIgnored() {
-        #expect(ProgressionEngine.targets(after: sets("60x8, 0x0"), setCount: 2, incrementKg: 5) == sets("60x8, 60x8"))
+        #expect(ProgressionEngine.targets(after: sets("60x8, 0x0"), setCount: 2, incrementKg: 5) == sets("60x9, 60x9"))
     }
 
     @Test func customRule() {
         let rule = ProgressionRule(thresholdReps: 10, resetReps: 8)
         #expect(ProgressionEngine.target(after: sets("40x11")[0], incrementKg: 2.5, rule: rule) == sets("42.5x8")[0])
-        #expect(ProgressionEngine.target(after: sets("40x10")[0], incrementKg: 2.5, rule: rule) == sets("40x10")[0])
+        #expect(ProgressionEngine.target(after: sets("40x10")[0], incrementKg: 2.5, rule: rule) == sets("40x11")[0])
     }
 
     @Test func poundsRoundToHalf() {
@@ -86,7 +100,9 @@ func sets(_ text: String) -> [SetPerformance] {
     static func result(_ exercise: Exercise) -> ExerciseResult {
         let done = sets(exercise.done)
         let targets = exercise.previous.map {
-            ProgressionEngine.targets(after: sets($0), setCount: done.count, incrementKg: exercise.increment)
+            // The log was kept with the /coach rule: replay it with that rule.
+            ProgressionEngine.targets(
+                after: sets($0), setCount: done.count, incrementKg: exercise.increment, rule: .coach)
         }
         return ExerciseResult(name: exercise.name, sets: done, targets: targets ?? [])
     }

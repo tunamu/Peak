@@ -33,7 +33,7 @@ let package = Package(
         ),
         .testTarget(
             name: "PeakCoreTests",
-            dependencies: ["PeakCore"],
+            dependencies: ["PeakCore", .product(name: "ZIPFoundation", package: "ZIPFoundation")],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency")
             ]

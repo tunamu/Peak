@@ -132,10 +132,13 @@ struct WorkoutSessionSheet: View {
             .listRowSeparator(.hidden)
             .moveDisabled(true)
             .deleteDisabled(true)
+        let previous = (try? SessionRepository(context: modelContext).previousSets(before: exercise)) ?? []
         ForEach(Array(exercise.orderedSets.enumerated()), id: \.element.persistentModelID) { index, set in
             SetRow(
                 number: index + 1,
                 set: set,
+                // Extra sets compare with the last set done, as their targets do.
+                previous: previous.indices.contains(index) ? previous[index] : previous.last,
                 unit: settings.unitSystem,
                 focus: $focus,
                 onWeight: { try? controller.setWeight($0, of: set) },

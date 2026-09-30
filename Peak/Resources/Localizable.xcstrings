@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "“%@” is out of range" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” geçerli aralığın dışında"
+          }
+        }
+      }
+    },
+    "“%@” was not found; the link is left out" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” bulunamadı; bağlantı atlandı"
+          }
+        }
+      }
+    },
     "%@ / day" : {
       "localizations" : {
         "tr" : {
@@ -17,6 +37,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ Tamamlandı"
+          }
+        }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld dk"
           }
         }
       }
@@ -49,40 +79,24 @@
         }
       }
     },
-    "%lld Sets" : {
+    "%lld Movements · %lld Sets" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Set"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Sets"
-                }
-              }
-            }
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Set"
+            "value" : "%1$lld Hareket · %2$lld Set"
           }
         }
       }
     },
-    "%lld min" : {
+    "%lld of %lld sets" : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld dk"
+            "value" : "%1$lld / %2$lld set"
           }
         }
       }
@@ -111,6 +125,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld set"
+          }
+        }
+      }
+    },
+    "%lld Sets" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Set"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Sets"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Set"
           }
         }
       }
@@ -153,12 +195,83 @@
         }
       }
     },
+    "+%lld ml" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld ml"
+          }
+        }
+      }
+    },
+    "A backup was saved first." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önce yedek kaydedildi."
+          }
+        }
+      }
+    },
     "A missed day never skips a workout: the next one moves to the next routine day." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kaçırılan gün antrenman atlatmaz: sıradaki antrenman bir sonraki rutin gününe kayar."
+          }
+        }
+      }
+    },
+    "A movement has no exercise name" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir hareketin adı yok"
+          }
+        }
+      }
+    },
+    "A name is empty" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir ad boş"
+          }
+        }
+      }
+    },
+    "A routine has no days" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir rutinin günü yok"
+          }
+        }
+      }
+    },
+    "A spreadsheet with the columns Peak reads and two example workouts to replace with yours." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'in okuduğu sütunlarla bir tablo ve kendi antrenmanlarınla değiştireceğin iki örnek antrenman."
+          }
+        }
+      }
+    },
+    "A workout ends before it starts" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir antrenman başlamadan bitiyor"
           }
         }
       }
@@ -243,6 +356,47 @@
         }
       }
     },
+    "Adds what is new. Workouts already in Peak are skipped, so importing a file twice adds nothing." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yenileri ekler. Peak'te zaten olan antrenmanlar atlanır; aynı dosyayı iki kez içe aktarmak bir şey eklemez."
+          }
+        }
+      }
+    },
+    "Adds your quick water amount to today." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hızlı su miktarını bugüne ekler."
+          }
+        }
+      }
+    },
+    "Already in Peak" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaten Peak'te"
+          }
+        }
+      }
+    },
+    "An exercise name alone on a row, then one row per session with its sets, as in the /coach history." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir satırda tek başına hareket adı, altında her seans için setleriyle bir satır; /coach geçmişindeki gibi."
+          }
+        }
+      }
+    },
     "Analysis" : {
       "localizations" : {
         "tr" : {
@@ -283,6 +437,16 @@
         }
       }
     },
+    "Apply the File's Settings" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyadaki Ayarları Uygula"
+          }
+        }
+      }
+    },
     "Back" : {
       "localizations" : {
         "tr" : {
@@ -309,6 +473,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biceps"
+          }
+        }
+      }
+    },
+    "Blocks" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloklar"
           }
         }
       }
@@ -373,6 +547,16 @@
         }
       }
     },
+    "Check the columns: Peak is not sure how this file is laid out." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sütunları kontrol et: Peak bu dosyanın düzeninden emin değil."
+          }
+        }
+      }
+    },
     "Chest" : {
       "localizations" : {
         "tr" : {
@@ -389,6 +573,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
+          }
+        }
+      }
+    },
+    "Column %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Sütunu"
+          }
+        }
+      }
+    },
+    "Column Names" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sütun Adları"
           }
         }
       }
@@ -473,12 +677,32 @@
         }
       }
     },
+    "Could not read “%@”; the row is left out" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” okunamadı; satır atlandı"
+          }
+        }
+      }
+    },
     "Create" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oluştur"
+          }
+        }
+      }
+    },
+    "CSV" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CSV"
           }
         }
       }
@@ -543,6 +767,26 @@
         }
       }
     },
+    "Date" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarih"
+          }
+        }
+      }
+    },
+    "Dates" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarihler"
+          }
+        }
+      }
+    },
     "Day After" : {
       "localizations" : {
         "tr" : {
@@ -553,22 +797,22 @@
         }
       }
     },
+    "Decimal Separator" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ondalık Ayracı"
+          }
+        }
+      }
+    },
     "Delete Routine" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rutini Sil"
-          }
-        }
-      }
-    },
-    "Delete Workout" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanı Sil"
           }
         }
       }
@@ -593,6 +837,26 @@
         }
       }
     },
+    "Delete Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Sil"
+          }
+        }
+      }
+    },
+    "Deletes everything in Peak first, after saving a backup." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önce yedek alır, sonra Peak'teki her şeyi siler."
+          }
+        }
+      }
+    },
     "Discard" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -604,22 +868,22 @@
         }
       }
     },
-    "Discard Workout" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanı Sil"
-          }
-        }
-      }
-    },
     "Discard this workout?" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu antrenman silinsin mi?"
+          }
+        }
+      }
+    },
+    "Discard Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Sil"
           }
         }
       }
@@ -640,6 +904,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bitti"
+          }
+        }
+      }
+    },
+    "Done Today" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün Yapıldı"
           }
         }
       }
@@ -670,6 +945,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Düzenle"
+          }
+        }
+      }
+    },
+    "Energy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enerji"
           }
         }
       }
@@ -744,12 +1030,32 @@
         }
       }
     },
-    "Every workout in this file is already in Peak." : {
+    "Everything in Peak is replaced with this file. A backup is saved first in Files › Peak › Backups." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu dosyadaki tüm antrenmanlar zaten Peak'te."
+            "value" : "Peak'teki her şey bu dosyayla değiştirilir. Önce Dosyalar › Peak › Backups içine yedek kaydedilir."
+          }
+        }
+      }
+    },
+    "Excel (.xlsx)" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excel (.xlsx)"
+          }
+        }
+      }
+    },
+    "Exercise" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hareket"
           }
         }
       }
@@ -770,6 +1076,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Verisini Dışa Aktar"
+          }
+        }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya"
           }
         }
       }
@@ -804,6 +1120,16 @@
         }
       }
     },
+    "First Workouts" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İlk Antrenmanlar"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "tr" : {
@@ -820,6 +1146,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hedef Ayarları"
+          }
+        }
+      }
+    },
+    "Goal: %@ steps" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hedef: %@ adım"
           }
         }
       }
@@ -854,12 +1191,42 @@
         }
       }
     },
+    "How to Read It" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nasıl Okunacak"
+          }
+        }
+      }
+    },
+    "Ignore" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yoksay"
+          }
+        }
+      }
+    },
     "Import" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İçe Aktar"
+          }
+        }
+      }
+    },
+    "Import Complete" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarma Tamamlandı"
           }
         }
       }
@@ -874,32 +1241,32 @@
         }
       }
     },
+    "Import Mode" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarma Şekli"
+          }
+        }
+      }
+    },
+    "Import Template" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İçe Aktarma Şablonu"
+          }
+        }
+      }
+    },
     "Import Workout Data" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Verisi İçe Aktar"
-          }
-        }
-      }
-    },
-    "Import Workouts?" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanlar İçe Aktarılsın mı?"
-          }
-        }
-      }
-    },
-    "Imported" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İçe Aktarıldı"
           }
         }
       }
@@ -952,6 +1319,16 @@
         }
       }
     },
+    "Layout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzen"
+          }
+        }
+      }
+    },
     "Legs" : {
       "localizations" : {
         "tr" : {
@@ -982,6 +1359,17 @@
         }
       }
     },
+    "Log Water" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su Ekle"
+          }
+        }
+      }
+    },
     "Low" : {
       "localizations" : {
         "tr" : {
@@ -998,6 +1386,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Makine"
+          }
+        }
+      }
+    },
+    "Made by a newer Peak (version %lld)" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha yeni bir Peak ile yapılmış (sürüm %lld)"
+          }
+        }
+      }
+    },
+    "Merge" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birleştir"
+          }
+        }
+      }
+    },
+    "min" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dk"
           }
         }
       }
@@ -1052,6 +1470,16 @@
         }
       }
     },
+    "New Exercises" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni Hareketler"
+          }
+        }
+      }
+    },
     "New Goal" : {
       "localizations" : {
         "tr" : {
@@ -1092,22 +1520,12 @@
         }
       }
     },
-    "New exercises: %@" : {
+    "New Workouts" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yeni hareketler: %@"
-          }
-        }
-      }
-    },
-    "New exercises: %lld" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yeni hareket sayısı: %lld"
+            "value" : "Yeni Antrenman"
           }
         }
       }
@@ -1142,12 +1560,43 @@
         }
       }
     },
+    "Next: %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sıradaki: %@"
+          }
+        }
+      }
+    },
     "No data" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veri yok"
+          }
+        }
+      }
+    },
+    "No date" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarih yok"
+          }
+        }
+      }
+    },
+    "No date; placed on %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarih yok; %@ gününe yerleştirildi"
           }
         }
       }
@@ -1202,12 +1651,22 @@
         }
       }
     },
-    "Not Ready" : {
+    "None" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hazır Değil"
+            "value" : "Yok"
+          }
+        }
+      }
+    },
+    "Not a Peak file (“%@”)" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak dosyası değil (“%@”)"
           }
         }
       }
@@ -1232,6 +1691,26 @@
         }
       }
     },
+    "Not Ready" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazır Değil"
+          }
+        }
+      }
+    },
+    "Note" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not"
+          }
+        }
+      }
+    },
     "Nothing is holding you back today." : {
       "localizations" : {
         "tr" : {
@@ -1242,22 +1721,23 @@
         }
       }
     },
-    "Nothing to Import" : {
+    "Nothing planned soon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İçe Aktarılacak Bir Şey Yok"
+            "value" : "Yakında planlı bir şey yok"
           }
         }
       }
     },
-    "OK" : {
+    "Nothing to import with these settings." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tamam"
+            "value" : "Bu ayarlarla içe aktarılacak bir şey yok."
           }
         }
       }
@@ -1282,6 +1762,36 @@
         }
       }
     },
+    "OK" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamam"
+          }
+        }
+      }
+    },
+    "Old Excel files (.xls) cannot be read. Save it as .xlsx in Excel or Numbers." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eski Excel dosyaları (.xls) okunamıyor. Excel ya da Numbers'ta .xlsx olarak kaydet."
+          }
+        }
+      }
+    },
+    "One row per set, or per exercise with sets across. Give each column its role; Ignore leaves it out." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her set bir satırda ya da her hareket bir satırda, setler yan yana. Her sütuna rolünü ver; Yoksay dışarıda bırakır."
+          }
+        }
+      }
+    },
     "Only for today" : {
       "localizations" : {
         "tr" : {
@@ -1292,12 +1802,34 @@
         }
       }
     },
+    "Open" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aç"
+          }
+        }
+      }
+    },
     "Open Health" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sağlık'ı Aç"
+          }
+        }
+      }
+    },
+    "Open Peak to update" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Güncellemek için Peak'i aç"
           }
         }
       }
@@ -1362,12 +1894,53 @@
         }
       }
     },
+    "Pause or Resume Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Duraklat ya da Sürdür"
+          }
+        }
+      }
+    },
+    "Paused" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duraklatıldı"
+          }
+        }
+      }
+    },
     "Peak can't read steps. Allow it in the Health app." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Peak adımları okuyamıyor. Sağlık uygulamasından izin ver."
+          }
+        }
+      }
+    },
+    "Peak cannot read this file. Use Peak JSON, Excel (.xlsx), CSV or TSV." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak bu dosyayı okuyamıyor. Peak JSON, Excel (.xlsx), CSV ya da TSV kullan."
+          }
+        }
+      }
+    },
+    "Peak JSON" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak JSON"
           }
         }
       }
@@ -1382,6 +1955,16 @@
         }
       }
     },
+    "Previous" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki"
+          }
+        }
+      }
+    },
     "Privacy Policy" : {
       "localizations" : {
         "tr" : {
@@ -1392,12 +1975,12 @@
         }
       }
     },
-    "Problems in the file: %lld. The first is at %@." : {
+    "Problems (%lld)" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dosyadaki sorun sayısı: %1$lld. İlki şurada: %2$@."
+            "value" : "Sorunlar (%lld)"
           }
         }
       }
@@ -1432,22 +2015,32 @@
         }
       }
     },
-    "Reference" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Referans"
-          }
-        }
-      }
-    },
     "Remove" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çıkar"
+          }
+        }
+      }
+    },
+    "Replace All" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Değiştir"
+          }
+        }
+      }
+    },
+    "Replace all data?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm veriler değiştirilsin mi?"
           }
         }
       }
@@ -1532,6 +2125,16 @@
         }
       }
     },
+    "Row %lld" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld. Satır"
+          }
+        }
+      }
+    },
     "See your steps from Apple Health." : {
       "localizations" : {
         "tr" : {
@@ -1562,6 +2165,16 @@
         }
       }
     },
+    "Separator" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayraç"
+          }
+        }
+      }
+    },
     "Set" : {
       "localizations" : {
         "tr" : {
@@ -1572,12 +2185,43 @@
         }
       }
     },
+    "Set (27.5 x 9)" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set (27,5 x 9)"
+          }
+        }
+      }
+    },
+    "Set #" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set No"
+          }
+        }
+      }
+    },
     "Set %lld" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set %lld"
+          }
+        }
+      }
+    },
+    "Set one up in Peak" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'te bir rutin oluştur"
           }
         }
       }
@@ -1632,12 +2276,32 @@
         }
       }
     },
+    "Sets" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ayarlar"
+          }
+        }
+      }
+    },
+    "Sheet" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sayfa"
           }
         }
       }
@@ -1742,22 +2406,22 @@
         }
       }
     },
-    "Start Today's Workout" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugünün Antrenmanını Başlat"
-          }
-        }
-      }
-    },
     "Start anyway?" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yine de başlatılsın mı?"
+          }
+        }
+      }
+    },
+    "Start Today's Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugünün Antrenmanını Başlat"
           }
         }
       }
@@ -1772,6 +2436,17 @@
         }
       }
     },
+    "Steps" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adımlar"
+          }
+        }
+      }
+    },
     "Strength" : {
       "localizations" : {
         "tr" : {
@@ -1782,12 +2457,72 @@
         }
       }
     },
+    "Summary" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özet"
+          }
+        }
+      }
+    },
+    "Table" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tablo"
+          }
+        }
+      }
+    },
     "Targets Hit" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hedef Başarısı"
+          }
+        }
+      }
+    },
+    "The Excel file is damaged. Open it in Excel or Numbers and save it again." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excel dosyası bozuk. Excel ya da Numbers'ta açıp yeniden kaydet."
+          }
+        }
+      }
+    },
+    "The file has no rows to import." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyada içe aktarılacak satır yok."
+          }
+        }
+      }
+    },
+    "The file is too large for a training log." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya bir antrenman kaydı için fazla büyük."
+          }
+        }
+      }
+    },
+    "The Peak file is damaged: %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak dosyası bozuk: %@"
           }
         }
       }
@@ -1822,12 +2557,22 @@
         }
       }
     },
-    "This file is not Peak JSON. Excel and CSV files arrive in a later update." : {
+    "This is not a spreadsheet. Use Peak JSON, Excel (.xlsx), CSV or TSV." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu dosya Peak JSON değil. Excel ve CSV desteği sonraki bir güncellemeyle gelecek."
+            "value" : "Bu bir tablo dosyası değil. Peak JSON, Excel (.xlsx), CSV ya da TSV kullan."
+          }
+        }
+      }
+    },
+    "This JSON file is not Peak data." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu JSON dosyası Peak verisi değil."
           }
         }
       }
@@ -1872,12 +2617,45 @@
         }
       }
     },
+    "Today's steps against your goal." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hedefine göre bugünkü adımların."
+          }
+        }
+      }
+    },
+    "Today's water, and a button to log more." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugünkü su ve daha fazlasını eklemek için bir buton."
+          }
+        }
+      }
+    },
     "Today's Workout" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bugünün Antrenmanı"
+          }
+        }
+      }
+    },
+    "Today's workout and your Energy Level." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugünün antrenmanı ve Enerji Seviyen."
           }
         }
       }
@@ -1962,12 +2740,23 @@
         }
       }
     },
-    "Warnings: %lld" : {
+    "Warnings do not stop the import; errors must be fixed in the file first." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uyarılar: %lld"
+            "value" : "Uyarılar içe aktarmayı durdurmaz; hatalar önce dosyada düzeltilmeli."
+          }
+        }
+      }
+    },
+    "Water" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su"
           }
         }
       }
@@ -2012,6 +2801,16 @@
         }
       }
     },
+    "Weight Unit" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağırlık Birimi"
+          }
+        }
+      }
+    },
     "Welcome Back" : {
       "localizations" : {
         "tr" : {
@@ -2032,12 +2831,32 @@
         }
       }
     },
+    "Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman"
+          }
+        }
+      }
+    },
     "Workout Complete" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Tamamlandı"
+          }
+        }
+      }
+    },
+    "Workout day" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman günü"
           }
         }
       }
@@ -2052,22 +2871,23 @@
         }
       }
     },
+    "Workout Running" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Sürüyor"
+          }
+        }
+      }
+    },
     "Workout Settings" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Ayarları"
-          }
-        }
-      }
-    },
-    "Workout day" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenman günü"
           }
         }
       }
@@ -2088,16 +2908,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eklenen antrenman: %lld"
-          }
-        }
-      }
-    },
-    "Workouts: %lld new (%lld sets), %lld already in Peak." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanlar: %1$lld yeni (%2$lld set), %3$lld tanesi zaten Peak'te."
           }
         }
       }
@@ -2148,16 +2958,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enerjin Hazır Değil. Tekrar antrenman yapmak için en az 1 gün dinlenmelisin."
-          }
-        }
-      }
-    },
-    "min" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "dk"
           }
         }
       }

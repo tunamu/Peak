@@ -220,7 +220,7 @@ struct SetColumnsRow: View {
         HStack(spacing: Spacing.xSmall) {
             Color.clear.frame(width: SetColumns.handle)
             Text("Set").frame(width: SetColumns.number, alignment: .leading)
-            Text("Reference").frame(maxWidth: .infinity, alignment: .leading)
+            Text("Previous").frame(maxWidth: .infinity, alignment: .leading)
             Text(verbatim: unit.weightSymbol).frame(width: SetColumns.value)
             Text("Reps").frame(width: SetColumns.value)
         }
@@ -235,6 +235,8 @@ struct SetColumnsRow: View {
 struct SetRow: View {
     let number: Int
     let set: SetEntry
+    /// The same set last time ("50kg × 9"); the target (one rep more) is the reps field's placeholder.
+    let previous: SetPerformance?
     let unit: UnitSystem
     var focus: FocusState<SetField?>.Binding
     let onWeight: (Double) -> Void
@@ -272,10 +274,10 @@ struct SetRow: View {
         .accessibilityLabel(Text("Set \(number)"))
     }
 
-    /// "27.5kg × 6", or "—" before there is any history.
+    /// "50kg × 9", or "—" before there is any history.
     private var reference: String {
-        guard let weightKg = set.targetWeightKg, let reps = set.targetReps else { return "—" }
-        return "\(format(weightKg))\(unit.weightSymbol) × \(reps)"
+        guard let previous else { return "—" }
+        return "\(format(previous.weightKg))\(unit.weightSymbol) × \(previous.reps)"
     }
 
     private var weight: Binding<Double?> {
