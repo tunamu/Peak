@@ -1,11 +1,11 @@
 import PeakCore
 import SwiftUI
 
-/// A workout's elapsed time: ticking while it runs, frozen while it is paused.
+/// A workout's elapsed time: ticking while it runs, frozen while it is paused or once it is finished.
 struct SessionTimerText: View {
     /// When the timer would have started had there been no pauses.
     let timerStart: Date
-    /// The elapsed time to show while paused; `nil` while running.
+    /// The elapsed time to show while paused or finished; `nil` while running.
     let pausedElapsed: TimeInterval?
 
     init(timerStart: Date, pausedElapsed: TimeInterval?) {
@@ -16,7 +16,7 @@ struct SessionTimerText: View {
     init(session: WorkoutSession) {
         self.init(
             timerStart: session.startedAt.addingTimeInterval(session.pausedTotal),
-            pausedElapsed: session.status == .paused ? session.duration() : nil
+            pausedElapsed: session.status == .active ? nil : session.duration()
         )
     }
 

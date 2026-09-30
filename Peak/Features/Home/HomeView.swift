@@ -26,6 +26,8 @@ struct HomeView: View {
     @State private var today = Date.now
     @State private var steps: StepSummary?
     @State private var signals: EnergySignals?
+    /// A finished workout opened from its card, shown read-only.
+    @State private var reviewed: WorkoutSession?
 
     var body: some View {
         ScrollView {
@@ -60,6 +62,7 @@ struct HomeView: View {
             .padding(.vertical, Spacing.medium)
         }
         .background(.peakCanvas)
+        .sheet(item: $reviewed) { CompletedWorkoutSheet(session: $0) }
         .task(id: healthKey) {
             await loadHealth()
         }
@@ -222,9 +225,13 @@ struct HomeView: View {
     }
 
     /// A running workout's card opens its sheet; the button pauses or resumes it.
+    /// Tapping the card: the running workout today, or a finished one on any day, read-only.
     private func open(_ workout: DayWorkout) -> (() -> Void)? {
-        guard isToday, case .active(let session) = workout else { return nil }
-        return { launcher.resume(session) }
+        switch workout {
+        case .active(let session) where isToday: { launcher.resume(session) }
+        case .completed(let session): { reviewed = session }
+        default: nil
+        }
     }
 
     private func togglePause(_ session: WorkoutSession) {
@@ -316,6 +323,10 @@ extension HomeView {
                 let first = session.orderedExercises.first
             {
                 try? WorkoutSessionController(session: session, context: modelContext).completeMovement(first)
+            }
+            // `-PeakOpenCompleted YES` opens the latest finished workout, read-only.
+            if UserDefaults.standard.bool(forKey: "PeakOpenCompleted") {
+                reviewed = try? SessionRepository(context: modelContext).completed().first
             }
             // `-PeakOpenWorkout YES` opens the running workout's sheet.
             if UserDefaults.standard.bool(forKey: "PeakOpenWorkout"),

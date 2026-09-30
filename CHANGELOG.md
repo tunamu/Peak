@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Tapping a finished workout's card on Home (today or any past day) opens it read-only: the header with date,
+  duration and % completed, and every movement's sets as logged, without the timer or editing.
+- Settings › Import Workout Data imports Peak JSON files: it shows how many workouts are new and how many are
+  already in Peak, then merges on confirmation. Importing the same file again adds nothing.
 - Spreadsheet layouts for import: long (a row per set), wide (set cells or weight/reps pairs) and block (the `/coach`
   history) are recognized from English and Turkish column names and cell contents, including `27.5x8:9` set cells and
   day-first or month-first dates, and turned into Peak JSON for the importer.
@@ -74,7 +78,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - "Start Today's Workout" bar above the tab bar (iOS 26.1+), showing the running workout and its time.
 - Starting a workout from Home; the workout sheet can be closed or discarded until the Workout Session screen arrives.
 
+### Changed
+
+- Finish Workout always asks first ("Finish workout?"), not only when sets are empty, so a stray tap cannot end a
+  workout.
+
 ### Fixed
+
+- A finished workout's time no longer keeps counting when shown again.
 
 - SwiftLint and swift-format are clean again (nine violations from F6 had turned the Lint job red on `main`);
   the workout sheet's rows moved to `WorkoutSessionRows.swift`.
