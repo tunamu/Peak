@@ -12,11 +12,14 @@ let package = Package(
         .library(name: "PeakCore", targets: ["PeakCore"]),
         .library(name: "PeakDesign", targets: ["PeakDesign"]),
     ],
-    dependencies: [],
+    dependencies: [
+        // Reads .xlsx files (a ZIP of XML) for import. 0.x: minor versions may break, so they are taken by hand.
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMinor(from: "0.9.20"))
+    ],
     targets: [
         .target(
             name: "PeakCore",
-            dependencies: [],
+            dependencies: [.product(name: "ZIPFoundation", package: "ZIPFoundation")],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency")
             ]

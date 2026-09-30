@@ -9,6 +9,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Spreadsheet layouts for import: long (a row per set), wide (set cells or weight/reps pairs) and block (the `/coach`
+  history) are recognized from English and Turkish column names and cell contents, including `27.5x8:9` set cells and
+  day-first or month-first dates, and turned into Peak JSON for the importer.
+- Spreadsheet readers for import: .xlsx (with ZIPFoundation, the first third-party package), .csv and .tsv with the
+  encoding, delimiter and decimal comma detected, so Turkish Excel's `;` files with "27,5" read right.
+- JSON import in PeakCore: a preview of what is new, duplicate or wrong (with the field's place in the file), merge
+  that skips what the store already has so a file imported twice adds nothing, undated sessions placed before the
+  first dated one, and replace all with an automatic backup. The import screen arrives with F7-06.
+- Settings › Export Workout Data saves everything as `peak-export-YYYY-MM-DD.json` (Peak JSON v1). Exporting,
+  importing into an empty store and exporting again gives the same file.
+- Peak JSON v1, the import and export format: `PeakExportV1` DTOs, a JSON Schema
+  (`docs/schema/peak-workout-data.v1.schema.json`) with full and minimal examples, and the format documented in
+  `docs/IMPORT_FORMAT.md`.
 - Starting a workout while energy is Not Ready asks "Start anyway?" first (Home card, bottom accessory and Start
   Another Workout alike); it never blocks.
 - "Start Another Workout" under today's cards starts any template outside the plan; it is saved without a
@@ -60,3 +73,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   observer with background delivery, and one water sample per day. Works without Health access.
 - "Start Today's Workout" bar above the tab bar (iOS 26.1+), showing the running workout and its time.
 - Starting a workout from Home; the workout sheet can be closed or discarded until the Workout Session screen arrives.
+
+### Fixed
+
+- SwiftLint and swift-format are clean again (nine violations from F6 had turned the Lint job red on `main`);
+  the workout sheet's rows moved to `WorkoutSessionRows.swift`.

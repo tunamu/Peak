@@ -744,6 +744,16 @@
         }
       }
     },
+    "Export Failed" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dışa Aktarılamadı"
+          }
+        }
+      }
+    },
     "Export Workout Data" : {
       "localizations" : {
         "tr" : {
@@ -1138,6 +1148,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bugün seni geri tutan bir şey yok."
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamam"
           }
         }
       }
@@ -1668,6 +1688,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir set bu tekrar sayısını geçince ağırlık otomatik artar."
+          }
+        }
+      }
+    },
+    "Third-Party Notices" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üçüncü Taraf Bildirimleri"
           }
         }
       }

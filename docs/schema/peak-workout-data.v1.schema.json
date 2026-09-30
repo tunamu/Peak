@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/tunamu/Peak/main/docs/schema/peak-workout-data.v1.schema.json",
+  "title": "Peak workout data, version 1",
+  "description": "Training history for the Peak iOS app. The same format is used for import and export. Only `sessions` is required. Ids are free strings that link records inside one file. Weights (`weight`, `targetWeight`) are in `units.weight` (kg when missing); fields ending in `Kg` are always kilograms.",
+  "type": "object",
+  "required": ["sessions"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "peak.workout-data" },
+    "schemaVersion": { "const": 1 },
+    "exportedAt": { "$ref": "#/$defs/timestamp" },
+    "units": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "weight": { "enum": ["kg", "lb"], "description": "Unit of every `weight` and `targetWeight`." }
+      },
+      "required": ["weight"]
+    },
+    "exercises": { "type": "array", "items": { "$ref": "#/$defs/exercise" } },
+    "workoutTemplates": {
+      "type": "array",
+      "description": "Array order is the list order.",
+      "items": { "$ref": "#/$defs/workoutTemplate" }
+    },
+    "routines": {
+      "type": "array",
+      "description": "Array order is the list order.",
+      "items": { "$ref": "#/$defs/routine" }
+    },
+    "sessions": { "type": "array", "items": { "$ref": "#/$defs/session" } },
+    "waterLogs": { "type": "array", "items": { "$ref": "#/$defs/waterLog" } },
+    "settings": { "$ref": "#/$defs/settings" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "A calendar day, yyyy-MM-dd."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$",
+      "description": "ISO 8601 with a time zone, for example 2026-09-29T07:00:00Z."
+    },
+    "exerciseKind": { "enum": ["strength", "cardio"] },
+    "exercise": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/name" },
+        "muscleGroup": {
+          "enum": ["chest", "back", "shoulders", "biceps", "triceps", "legs", "core", "cardio", "other"]
+        },
+        "kind": { "$ref": "#/$defs/exerciseKind" },
+        "equipment": { "enum": ["dumbbell", "barbell", "machine", "smith", "cable", "bodyweight", "other"] },
+        "incrementKg": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Weight added when a set passes the rep threshold. Default 2.5."
+        },
+        "archived": { "type": "boolean" },
+        "createdAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "workoutTemplate": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/name" },
+        "kind": { "$ref": "#/$defs/exerciseKind" },
+        "note": { "type": "string" },
+        "archived": { "type": "boolean" },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "anyOf": [{ "required": ["exerciseId"] }, { "required": ["exerciseName"] }],
+            "additionalProperties": false,
+            "properties": {
+              "exerciseId": {
+              "$ref": "#/$defs/id",
+              "description": "Found by id, else by `exerciseName` ignoring case and accents. An unknown name creates the exercise."
+            },
+              "exerciseName": { "$ref": "#/$defs/name" },
+              "targetSets": { "type": "integer", "minimum": 1, "description": "Default 2." }
+            }
+          }
+        }
+      }
+    },
+    "routine": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/name" },
+        "note": { "type": "string" },
+        "active": { "type": "boolean", "description": "Default true. Several routines can be active." },
+        "schedule": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Fixed weekdays.",
+              "required": ["type", "days"],
+              "additionalProperties": false,
+              "properties": {
+                "type": { "const": "weekdays" },
+                "days": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": { "enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "description": "The next workout is the last one plus `everyDays`; `startDate` is the reference before the first workout.",
+              "required": ["type", "everyDays"],
+              "additionalProperties": false,
+              "properties": {
+                "type": { "const": "interval" },
+                "everyDays": { "type": "integer", "minimum": 1 },
+                "startDate": { "$ref": "#/$defs/date" }
+              }
+            }
+          ]
+        },
+        "templateIds": {
+          "type": "array",
+          "description": "The rotation, in order. The same template may appear more than once.",
+          "items": { "$ref": "#/$defs/id" }
+        },
+        "createdAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "session": {
+      "type": "object",
+      "required": ["exercises"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "date": {
+          "$ref": "#/$defs/date",
+          "description": "Enough on its own. Without `date` and `startedAt` the date is estimated: undated sessions go one day apart, in array order, before the first dated one."
+        },
+        "startedAt": { "$ref": "#/$defs/timestamp" },
+        "endedAt": { "$ref": "#/$defs/timestamp" },
+        "pausedTotalSec": { "type": "number", "minimum": 0 },
+        "pausedAt": { "$ref": "#/$defs/timestamp" },
+        "status": { "enum": ["active", "paused", "completed", "discarded"], "description": "Default completed." },
+        "title": { "type": "string", "description": "The workout's name. Default: the template's name." },
+        "templateId": { "$ref": "#/$defs/id" },
+        "routineId": { "$ref": "#/$defs/id" },
+        "note": { "type": "string" },
+        "source": { "enum": ["app", "importJSON", "importSheet"] },
+        "dateEstimated": { "type": "boolean" },
+        "healthKitWorkoutId": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+        },
+        "exercises": { "type": "array", "items": { "$ref": "#/$defs/sessionExercise" } }
+      }
+    },
+    "sessionExercise": {
+      "type": "object",
+      "anyOf": [{ "required": ["exerciseId"] }, { "required": ["exerciseName"] }],
+      "additionalProperties": false,
+      "properties": {
+        "exerciseId": { "$ref": "#/$defs/id" },
+        "exerciseName": { "$ref": "#/$defs/name" },
+        "completed": { "type": "boolean" },
+        "sets": { "type": "array", "items": { "$ref": "#/$defs/set" } },
+        "segments": { "type": "array", "items": { "$ref": "#/$defs/segment" } }
+      }
+    },
+    "set": {
+      "type": "object",
+      "required": ["weight", "reps"],
+      "additionalProperties": false,
+      "properties": {
+        "weight": { "type": "number", "minimum": 0 },
+        "reps": { "type": "integer", "minimum": 0 },
+        "targetWeight": { "type": "number", "minimum": 0 },
+        "targetReps": { "type": "integer", "minimum": 0 },
+        "completed": { "type": "boolean", "description": "Default true." },
+        "completedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speedKmh": { "type": "number", "minimum": 0 },
+        "inclinePercent": { "type": "number" },
+        "durationMin": { "type": "number", "exclusiveMinimum": 0, "description": "Missing means the rest of the session." }
+      }
+    },
+    "waterLog": {
+      "type": "object",
+      "required": ["loggedAt", "amountMl"],
+      "additionalProperties": false,
+      "properties": {
+        "loggedAt": { "$ref": "#/$defs/timestamp" },
+        "amountMl": { "type": "integer", "description": "Negative amounts are removals." },
+        "source": { "enum": ["app", "widget", "intent"] }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Values outside the app's ranges are clamped on import.",
+      "additionalProperties": false,
+      "properties": {
+        "stepGoal": { "type": "integer", "minimum": 1 },
+        "waterGoalMl": { "type": "integer", "minimum": 1 },
+        "overload": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "thresholdReps": { "type": "integer", "minimum": 1, "description": "A set must pass this many reps before its weight goes up. Default 12." },
+            "resetReps": { "type": "integer", "minimum": 1, "description": "The rep target after a weight increase. Default 6." }
+          }
+        },
+        "unitSystem": { "enum": ["metric", "imperial"] },
+        "quickWaterAmounts": { "type": "array", "items": { "type": "integer", "minimum": 1 } }
+      }
+    }
+  }
+}

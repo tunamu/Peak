@@ -1,6 +1,6 @@
 # Testing
 
-> Status: 88 package tests (F2–F5), green on the Mac host and the iOS simulator. No UI test target yet: taps and
+> Status: 152 package tests (F2–F7), green on the Mac host and the iOS simulator. No UI test target yet: taps and
 > drags are checked by hand, screenshots come from debug launch arguments (see DEVELOPMENT.md).
 
 ## Layers
@@ -19,6 +19,9 @@ Engines are pure and take value types, so they are tested without SwiftData or H
 
 Real training data is used as fixtures, for example the progressive overload cases in
 [PROGRESSIVE_OVERLOAD.md](PROGRESSIVE_OVERLOAD.md#test-fixtures-real-training-data).
+
+Import reader fixtures live in `Packages/PeakKit/Tests/PeakCoreTests/Fixtures/Import/` and are written by
+`make_fixtures.py` there (Turkish Excel CSV, UTF-8 CSV, TSV, .xlsx workbooks, and one sheet per layout: long, wide, block, unsure). Change the script, not the files.
 
 ## Running
 

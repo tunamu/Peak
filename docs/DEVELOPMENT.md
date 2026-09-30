@@ -92,6 +92,7 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakShowcaseSheet stepGoal\|success\|failure` | Presents a sample sheet |
 | `-PeakLoadSampleProgram YES` | With `-PeakTab settings`, loads the sample program (same as Settings › Developer › Load Sample Program) |
 | `-PeakSettingsSheet stepGoal\|waterGoal\|overload\|newWorkout\|editWorkout\|newRoutine\|editRoutine` | With `-PeakTab settings`, opens that Settings sheet (edit opens the first workout or routine) |
+| `-PeakExport YES` | With `-PeakTab settings`, taps Export Workout Data (the system file exporter opens) |
 | `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
 | `-PeakLoadSampleHistory YES` | With `-PeakTab settings`, loads the sample program and three finished sessions before today (Settings › Developer › Load Sample History) |
 | `-PeakLoadSecondRoutine YES` | With `-PeakTab settings`, adds an everyday second routine, so days have two workouts |

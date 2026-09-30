@@ -25,7 +25,7 @@ struct TodayWorkoutCard: View {
     /// The button's action; without one (days other than today) the card has no button.
     let action: (() -> Void)?
     /// Tapping the rest of the card: opens the running workout.
-    var open: (() -> Void)? = nil
+    var open: (() -> Void)?
 
     var body: some View {
         HStack(spacing: Spacing.medium) {

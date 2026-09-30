@@ -65,9 +65,10 @@ public struct WorkoutSummary: Hashable, Sendable {
                 incrementKg: exercise.exercise?.incrementKg ?? 2.5,
                 rule: rule
             )
-            guard let from = done.map(\.weightKg).max(), let to = next.map(\.weightKg).max(), to > from + 0.000_1
+            guard let lifted = done.map(\.weightKg).max(), let target = next.map(\.weightKg).max(),
+                target > lifted + 0.000_1
             else { return nil }
-            return RisingTarget(name: exercise.exerciseName, fromKg: from, toKg: to)
+            return RisingTarget(name: exercise.exerciseName, fromKg: lifted, toKg: target)
         }
     }
 }

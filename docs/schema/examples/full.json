@@ -1,0 +1,83 @@
+{
+  "schema": "peak.workout-data",
+  "schemaVersion": 1,
+  "exportedAt": "2026-09-30T09:00:00.000Z",
+  "units": { "weight": "kg" },
+  "exercises": [
+    { "id": "dumbbell-chest-press", "name": "Dumbbell Chest Press", "muscleGroup": "chest",
+      "kind": "strength", "equipment": "dumbbell", "incrementKg": 2.5 },
+    { "id": "incline-dumbbell-curl", "name": "Incline Dumbbell Curl", "muscleGroup": "biceps",
+      "kind": "strength", "equipment": "dumbbell", "incrementKg": 2.5 },
+    { "id": "lat-pulldown", "name": "Lat Pulldown", "muscleGroup": "back",
+      "kind": "strength", "equipment": "machine", "incrementKg": 5 },
+    { "id": "v-bar-triceps-pushdown", "name": "V Bar Triceps Pushdown", "muscleGroup": "triceps",
+      "kind": "strength", "equipment": "cable", "incrementKg": 5 },
+    { "id": "incline-walk", "name": "Incline Walk", "muscleGroup": "cardio", "kind": "cardio",
+      "equipment": "machine", "createdAt": "2026-09-20T18:30:00Z" },
+    { "id": "pec-deck", "name": "Pec Deck", "muscleGroup": "chest", "equipment": "machine", "archived": true }
+  ],
+  "workoutTemplates": [
+    { "id": "chest-biceps", "name": "Chest & Biceps", "kind": "strength",
+      "items": [
+        { "exerciseId": "dumbbell-chest-press", "targetSets": 2 },
+        { "exerciseId": "incline-dumbbell-curl", "targetSets": 2 }
+      ] },
+    { "id": "back-triceps", "name": "Back & Triceps", "kind": "strength", "note": "Row last",
+      "items": [
+        { "exerciseId": "lat-pulldown", "targetSets": 2 },
+        { "exerciseName": "V Bar Triceps Pushdown" }
+      ] },
+    { "id": "walking", "name": "Walking", "kind": "cardio", "archived": false,
+      "createdAt": "2026-09-20T18:31:00Z", "items": [ { "exerciseId": "incline-walk", "targetSets": 1 } ] }
+  ],
+  "routines": [
+    { "id": "main", "name": "Main Routine", "active": true,
+      "schedule": { "type": "weekdays", "days": ["mon", "wed", "fri"] },
+      "templateIds": ["chest-biceps", "back-triceps"] },
+    { "id": "walks", "name": "Walks", "active": false, "note": "Rest days",
+      "createdAt": "2026-09-20T18:32:00Z",
+      "schedule": { "type": "interval", "everyDays": 2, "startDate": "2026-09-01" },
+      "templateIds": ["walking"] }
+  ],
+  "sessions": [
+    { "id": "2026-09-28-chest-biceps", "date": "2026-09-28", "templateId": "chest-biceps", "routineId": "main",
+      "exercises": [
+        { "exerciseId": "dumbbell-chest-press",
+          "sets": [ { "weight": 27.5, "reps": 9, "targetWeight": 27.5, "targetReps": 9 },
+                    { "weight": 22.5, "reps": 13, "targetWeight": 22.5, "targetReps": 12 } ] },
+        { "exerciseId": "incline-dumbbell-curl",
+          "sets": [ { "weight": 15, "reps": 9 }, { "weight": 12.5, "reps": 9 } ] }
+      ] },
+    { "id": "8C0E2B5A-4D1F-4F0B-9A55-2C7E1D3B6F10", "startedAt": "2026-09-30T16:05:12.250Z",
+      "endedAt": "2026-09-30T17:02:40.000Z", "pausedTotalSec": 184.5, "status": "completed",
+      "title": "Back & Triceps", "templateId": "back-triceps", "routineId": "main", "note": "Felt strong",
+      "source": "app", "healthKitWorkoutId": "1B7D9C2E-8F3A-4E6B-A0C1-5D2F7E9B4A63",
+      "exercises": [
+        { "exerciseId": "lat-pulldown", "completed": true,
+          "sets": [ { "weight": 60, "reps": 9, "targetWeight": 60, "targetReps": 8, "completed": true,
+                      "completedAt": "2026-09-30T16:12:00Z" },
+                    { "weight": 55, "reps": 10, "targetWeight": 55, "targetReps": 9, "completed": true,
+                      "completedAt": "2026-09-30T16:15:30+03:00" } ] },
+        { "exerciseName": "V Bar Triceps Pushdown", "completed": false,
+          "sets": [ { "weight": 65, "reps": 0, "targetWeight": 65, "targetReps": 12, "completed": false } ] }
+      ] },
+    { "id": "walk-1", "date": "2026-09-29", "startedAt": "2026-09-29T07:00:00Z", "endedAt": "2026-09-29T07:40:00Z",
+      "templateId": "walking",
+      "exercises": [
+        { "exerciseId": "incline-walk",
+          "segments": [ { "speedKmh": 5.5, "inclinePercent": 10, "durationMin": 30 },
+                        { "speedKmh": 4.5, "inclinePercent": 12 } ] }
+      ] },
+    { "id": "running", "startedAt": "2026-09-30T18:00:00Z", "pausedAt": "2026-09-30T18:20:00Z", "status": "paused",
+      "title": "Chest & Biceps", "templateId": "chest-biceps", "dateEstimated": false,
+      "exercises": [ { "exerciseId": "dumbbell-chest-press", "sets": [ { "weight": 27.5, "reps": 0, "completed": false } ] } ] }
+  ],
+  "waterLogs": [
+    { "loggedAt": "2026-09-30T08:10:00Z", "amountMl": 500, "source": "app" },
+    { "loggedAt": "2026-09-30T08:11:00Z", "amountMl": -200, "source": "widget" }
+  ],
+  "settings": {
+    "stepGoal": 10000, "waterGoalMl": 4000, "overload": { "thresholdReps": 12, "resetReps": 6 },
+    "unitSystem": "metric", "quickWaterAmounts": [200, 330, 500, 1000]
+  }
+}

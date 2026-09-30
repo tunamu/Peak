@@ -61,8 +61,8 @@ flowchart TD
 | Health | HealthKit |
 | Widgets | WidgetKit with App Intents |
 | Live Activity | ActivityKit with `LiveActivityIntent` |
-| CSV | Apple `TabularData` |
-| XLSX | Third-party reader, chosen in F7 |
+| CSV | Own reader (`CSVReader`), [ADR 0018](adr/0018-spreadsheet-readers.md) |
+| XLSX | ZIPFoundation + own XML reader (`XLSXReader`), [ADR 0018](adr/0018-spreadsheet-readers.md) |
 | Tests | Swift Testing (unit), XCUITest (flows and accessibility audit) |
 
 Decisions behind this structure: [adr/](adr/README.md).
