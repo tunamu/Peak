@@ -9,6 +9,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- A running workout shows as a Live Activity: on the Lock Screen with the current movement, set progress, the clock
+  and Pause/Resume, and in the Dynamic Island. It follows every change, keeps the right time after the app was
+  killed, and ends when the workout is finished or discarded.
+- Home Screen widgets: Water (small, with a button that logs the quick amount), Steps (small, a ring against the
+  goal) and Today's Workout (medium, with Energy Level). They read the shared store; the app leaves today's Health
+  values for them and refreshes them whenever data changes. Water logged from the widget reaches Apple Health the next
+  time the app opens.
+- Clear messages for files that cannot be imported: damaged Peak JSON says where ("sessions[0].date"), damaged Excel
+  files, old .xls files, photos and other binary files, empty files and oversized workbooks each get their own. A CSV
+  saved with an .xlsx name opens as CSV.
+- Import templates: Settings › Import Template saves an Excel, CSV or Peak JSON file with two example
+  workouts, in English or Turkish (Turkish CSV with `;` and decimal commas, as Turkish Excel expects). The same files
+  are in `docs/import-templates/`.
+- The import screen: Settings › Import Workout Data opens Peak JSON, Excel (.xlsx), CSV and TSV files, shows how the
+  file will be read (sheet, layout, column roles, date order, unit, CSV separator and decimal) with the first
+  workouts as they will be imported, the summary and any problems, then merges or replaces everything (after a
+  backup) and reports the result. Peak's Documents folder appears in Files for the backups.
 - Tapping a finished workout's card on Home (today or any past day) opens it read-only: the header with date,
   duration and % completed, and every movement's sets as logged, without the timer or editing.
 - Settings › Import Workout Data imports Peak JSON files: it shows how many workouts are new and how many are
@@ -80,6 +97,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Targets aim one rep higher while the weight stays: after 50 kg × 9 the next target is 50 kg × 10 (ADR 0019). The
+  set table shows **Previous** (the same set last time) instead of Reference; the target weight fills the weight field
+  and the target reps show in the reps field.
 - Finish Workout always asks first ("Finish workout?"), not only when sets are empty, so a stray tap cannot end a
   workout.
 

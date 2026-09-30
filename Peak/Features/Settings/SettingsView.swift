@@ -92,11 +92,12 @@ struct SettingsView: View {
         }
     }
 
-    /// Import reads Peak JSON for now; spreadsheets and the mapping screen arrive with F7-06.
+    /// Import (Peak JSON, Excel, CSV, TSV), a template to fill in, and export.
     private var workoutDataSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader("Workout Settings")
             ImportDataRow()
+            TemplateRow()
             ExportDataRow()
         }
     }

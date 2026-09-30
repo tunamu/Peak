@@ -16,8 +16,9 @@ public final class SessionRepository {
     /// Starts a session from a template: one exercise per template item, with its number of sets, and a snapshot of
     /// every name.
     ///
-    /// Each strength set gets its target (the "Reference") from the exercise's last completed performance through
-    /// `ProgressionEngine`, and its weight is prefilled with the target weight; reps stay empty until the set is done.
+    /// Each strength set gets its target (shown in the reps field) from the exercise's last completed performance
+    /// through `ProgressionEngine`, and its weight is prefilled with the target weight; reps stay empty until the set
+    /// is done.
     /// Without history the targets stay empty.
     @discardableResult
     public func start(
@@ -119,5 +120,28 @@ public final class SessionRepository {
                 return $0.exerciseName.matchingKey == key
             }
         }
+    }
+
+    /// The sets the movement was last done with before this session: what the set table shows as "Previous". Only
+    /// sets with reps count; empty without history. A movement whose exercise is gone matches by name.
+    public func previousSets(before item: SessionExercise) throws -> [SetPerformance] {
+        guard let session = item.session else { return [] }
+        let key = item.exerciseName.matchingKey
+        let earlier = try completed().filter {
+            $0.persistentModelID != session.persistentModelID && $0.startedAt < session.startedAt
+        }
+        for candidate in earlier {
+            let match = candidate.orderedExercises.first {
+                if let linked = $0.exercise, let exercise = item.exercise {
+                    return linked.persistentModelID == exercise.persistentModelID
+                }
+                return $0.exerciseName.matchingKey == key
+            }
+            let done = (match?.orderedSets ?? []).filter { $0.reps > 0 }
+            if !done.isEmpty {
+                return done.map { SetPerformance(weightKg: $0.weightKg, reps: $0.reps) }
+            }
+        }
+        return []
     }
 }

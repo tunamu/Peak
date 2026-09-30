@@ -23,6 +23,7 @@ edited away. If it changes, a new ADR supersedes it and the old one is marked **
 | [0016](0016-week-strip-selected-day.md) | The week strip shows the selected day |
 | [0017](0017-color-tokens-and-contrast.md) | Color tokens in code, design grays with an Increase Contrast fallback |
 | [0018](0018-spreadsheet-readers.md) | Spreadsheet readers: ZIPFoundation for .xlsx, our own CSV reader |
+| [0019](0019-one-more-rep.md) | One more rep while the weight stays, and Previous in the set table |
 
 ## Open assumptions
 

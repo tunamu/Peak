@@ -1,0 +1,80 @@
+{
+  "exercises" : [
+    {
+      "equipment" : "dumbbell",
+      "incrementKg" : 2.5,
+      "kind" : "strength",
+      "muscleGroup" : "chest",
+      "name" : "Dumbbell Chest Press"
+    },
+    {
+      "equipment" : "dumbbell",
+      "incrementKg" : 2.5,
+      "kind" : "strength",
+      "muscleGroup" : "biceps",
+      "name" : "Incline Dumbbell Curl"
+    },
+    {
+      "equipment" : "machine",
+      "incrementKg" : 5,
+      "kind" : "strength",
+      "muscleGroup" : "back",
+      "name" : "Lat Pulldown"
+    }
+  ],
+  "schema" : "peak.workout-data",
+  "schemaVersion" : 1,
+  "sessions" : [
+    {
+      "date" : "2026-09-28",
+      "exercises" : [
+        {
+          "exerciseName" : "Dumbbell Chest Press",
+          "sets" : [
+            {
+              "reps" : 9,
+              "weight" : 27.5
+            },
+            {
+              "reps" : 13,
+              "weight" : 22.5
+            }
+          ]
+        },
+        {
+          "exerciseName" : "Incline Dumbbell Curl",
+          "sets" : [
+            {
+              "reps" : 9,
+              "weight" : 15
+            }
+          ]
+        }
+      ],
+      "note" : "Replace these rows",
+      "title" : "Chest & Biceps"
+    },
+    {
+      "date" : "2026-09-30",
+      "exercises" : [
+        {
+          "exerciseName" : "Lat Pulldown",
+          "sets" : [
+            {
+              "reps" : 8,
+              "weight" : 60
+            },
+            {
+              "reps" : 9,
+              "weight" : 55
+            }
+          ]
+        }
+      ],
+      "title" : "Back & Triceps"
+    }
+  ],
+  "units" : {
+    "weight" : "kg"
+  }
+}

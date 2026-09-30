@@ -22,6 +22,7 @@
                         dashboard.id("dashboard")
                         buttons.id("buttons")
                         settings.id("settings")
+                        WidgetShowcase().id("widgets")
                     }
                     .padding(.horizontal, horizontalMargin)
                     .padding(.vertical, Spacing.large)
@@ -44,13 +45,17 @@
             }
         }
 
-        /// Screenshot helpers: launch with `-PeakShowcaseSection settings` or
+        /// Screenshot helpers: launch with `-PeakShowcaseSection settings|widgets` or
         /// `-PeakShowcaseSheet stepGoal|success|failure`.
         /// Launch arguments of the form `-key value` land in `UserDefaults`.
         private func applyLaunchArguments(_ proxy: ScrollViewProxy) {
             let defaults = UserDefaults.standard
             if let section = defaults.string(forKey: "PeakShowcaseSection") {
-                proxy.scrollTo(section, anchor: .top)
+                // After the push animation: scrolling during it is ignored.
+                Task {
+                    try? await Task.sleep(for: .milliseconds(600))
+                    proxy.scrollTo(section, anchor: .top)
+                }
             }
             switch defaults.string(forKey: "PeakShowcaseSheet") {
             case "stepGoal": isStepGoalShown = true

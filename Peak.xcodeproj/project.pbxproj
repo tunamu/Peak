@@ -9,16 +9,65 @@
 /* Begin PBXBuildFile section */
 		27DB9A30306BD5F40062E297 /* PeakCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27DB9A32306BD5F40062E297 /* PeakCore */; };
 		27DB9A31306BD5F40062E297 /* PeakDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 27DB9A33306BD5F40062E297 /* PeakDesign */; };
+		27DB9A40306BD5F40062E297 /* PeakCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27DB9A4D306BD5F40062E297 /* PeakCore */; };
+		27DB9A41306BD5F40062E297 /* PeakDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 27DB9A4E306BD5F40062E297 /* PeakDesign */; };
+		27DB9A42306BD5F40062E297 /* PeakWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		27DB9A43306BD5F40062E297 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 27DB9A0E306BD5F40062E297 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27DB9A49306BD5F40062E297;
+			remoteInfo = PeakWidgetsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		27DB9A44306BD5F40062E297 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				27DB9A42306BD5F40062E297 /* PeakWidgetsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		27DB9A16306BD5F40062E297 /* Peak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PeakWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		27DB9A46306BD5F40062E297 /* Exceptions for "PeakWidgets" folder in "PeakWidgetsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		27DB9A18306BD5F40062E297 /* Peak */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Peak;
+			sourceTree = "<group>";
+		};
+		27DB9A47306BD5F40062E297 /* PeakWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				27DB9A46306BD5F40062E297 /* Exceptions for "PeakWidgets" folder in "PeakWidgetsExtension" target */,
+			);
+			path = PeakWidgets;
+			sourceTree = "<group>";
+		};
+		27DB9A52306BD5F40062E297 /* PeakShared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PeakShared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +80,13 @@
 				27DB9A31306BD5F40062E297 /* PeakDesign in Frameworks */,
 			);
 		};
+		27DB9A48306BD5F40062E297 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				27DB9A40306BD5F40062E297 /* PeakCore in Frameworks */,
+				27DB9A41306BD5F40062E297 /* PeakDesign in Frameworks */,
+			);
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				27DB9A18306BD5F40062E297 /* Peak */,
+				27DB9A47306BD5F40062E297 /* PeakWidgets */,
+				27DB9A52306BD5F40062E297 /* PeakShared */,
 				27DB9A17306BD5F40062E297 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				27DB9A16306BD5F40062E297 /* Peak.app */,
+				27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,11 +120,16 @@
 				27DB9A12306BD5F40062E297 /* Sources */,
 				27DB9A13306BD5F40062E297 /* Frameworks */,
 				27DB9A14306BD5F40062E297 /* Resources */,
+				27DB9A44306BD5F40062E297 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
+			dependencies = (
+				27DB9A4F306BD5F40062E297 /* PBXTargetDependency */,
+			);
 			fileSystemSynchronizedGroups = (
 				27DB9A18306BD5F40062E297 /* Peak */,
+				27DB9A52306BD5F40062E297 /* PeakShared */,
 			);
 			name = Peak;
 			packageProductDependencies = (
@@ -75,6 +139,29 @@
 			productName = Peak;
 			productReference = 27DB9A16306BD5F40062E297 /* Peak.app */;
 			productType = "com.apple.product-type.application";
+		};
+		27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27DB9A4A306BD5F40062E297 /* Build configuration list for PBXNativeTarget "PeakWidgetsExtension" */;
+			buildPhases = (
+				27DB9A4B306BD5F40062E297 /* Sources */,
+				27DB9A48306BD5F40062E297 /* Frameworks */,
+				27DB9A4C306BD5F40062E297 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				27DB9A47306BD5F40062E297 /* PeakWidgets */,
+				27DB9A52306BD5F40062E297 /* PeakShared */,
+			);
+			name = PeakWidgetsExtension;
+			packageProductDependencies = (
+				27DB9A4D306BD5F40062E297 /* PeakCore */,
+				27DB9A4E306BD5F40062E297 /* PeakDesign */,
+			);
+			productName = PeakWidgetsExtension;
+			productReference = 27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -87,6 +174,9 @@
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					27DB9A15306BD5F40062E297 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					27DB9A49306BD5F40062E297 = {
 						CreatedOnToolsVersion = 27.0;
 					};
 				};
@@ -110,12 +200,18 @@
 			projectRoot = "";
 			targets = (
 				27DB9A15306BD5F40062E297 /* Peak */,
+				27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		27DB9A14306BD5F40062E297 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		27DB9A4C306BD5F40062E297 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -150,7 +246,20 @@
 			files = (
 			);
 		};
+		27DB9A4B306BD5F40062E297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		27DB9A4F306BD5F40062E297 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */;
+			targetProxy = 27DB9A43306BD5F40062E297 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		27DB9A1F306BD5F50062E297 /* Debug configuration for PBXProject "Peak" */ = {
@@ -285,11 +394,13 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIFileSharingEnabled = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -323,11 +434,13 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIFileSharingEnabled = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -341,6 +454,62 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		27DB9A50306BD5F40062E297 /* Debug configuration for PBXNativeTarget "PeakWidgetsExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PeakWidgets/PeakWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8J3TZQAADL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PeakWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Peak;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunamu.peak.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		27DB9A51306BD5F40062E297 /* Release configuration for PBXNativeTarget "PeakWidgetsExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PeakWidgets/PeakWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8J3TZQAADL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PeakWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Peak;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunamu.peak.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -367,6 +536,14 @@
 			);
 			defaultConfigurationName = Release;
 		};
+		27DB9A4A306BD5F40062E297 /* Build configuration list for PBXNativeTarget "PeakWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27DB9A50306BD5F40062E297 /* Debug configuration for PBXNativeTarget "PeakWidgetsExtension" */,
+				27DB9A51306BD5F40062E297 /* Release configuration for PBXNativeTarget "PeakWidgetsExtension" */,
+			);
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -382,6 +559,14 @@
 			productName = PeakCore;
 		};
 		27DB9A33306BD5F40062E297 /* PeakDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PeakDesign;
+		};
+		27DB9A4D306BD5F40062E297 /* PeakCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PeakCore;
+		};
+		27DB9A4E306BD5F40062E297 /* PeakDesign */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PeakDesign;
 		};

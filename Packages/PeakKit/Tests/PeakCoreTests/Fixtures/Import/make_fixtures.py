@@ -39,6 +39,13 @@ REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 PKG_REL = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 
+def zip_write(archive, name, data):
+    """A fixed time for every entry, so running the script again changes no bytes."""
+    info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+    info.compress_type = zipfile.ZIP_DEFLATED
+    archive.writestr(info, data)
+
+
 def serial(d, system1904=False):
     return (d - (date(1904, 1, 1) if system1904 else date(1899, 12, 30))).days
 
@@ -76,16 +83,16 @@ def workbook(path, sheets, shared, styles, date1904=False):
     )
     wb_rels = f'<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="{PKG_REL}">{rels}</Relationships>'
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("[Content_Types].xml", content_types)
-        z.writestr("_rels/.rels", root_rels)
-        z.writestr("xl/workbook.xml", wb)
-        z.writestr("xl/_rels/workbook.xml.rels", wb_rels)
+        zip_write(z, "[Content_Types].xml", content_types)
+        zip_write(z, "_rels/.rels", root_rels)
+        zip_write(z, "xl/workbook.xml", wb)
+        zip_write(z, "xl/_rels/workbook.xml.rels", wb_rels)
         if shared is not None:
-            z.writestr("xl/sharedStrings.xml", shared)
+            zip_write(z, "xl/sharedStrings.xml", shared)
         if styles is not None:
-            z.writestr("xl/styles.xml", styles)
+            zip_write(z, "xl/styles.xml", styles)
         for i, (_, xml, _) in enumerate(sheets):
-            z.writestr(f"xl/worksheets/sheet{i + 1}.xml", xml)
+            zip_write(z, f"xl/worksheets/sheet{i + 1}.xml", xml)
 
 
 shared = (
@@ -241,3 +248,81 @@ with open("ambiguous-dates.csv", "w", encoding="utf-8") as f:
 # No header row: the analyzer guesses and is not sure.
 with open("no-header.csv", "w", encoding="utf-8") as f:
     f.write("28.09.2026;Row;60x8;55x9\n30.09.2026;Row;60x9;55x10\n")
+
+# --- F7-08: real history, a large synthetic log, broken files ---------------------------------------------------
+
+import os
+import random
+import re
+
+
+def markdown_rows(path):
+    """The /coach history as a sheet: headings and paragraphs as lone cells, table rows as cells."""
+    rows = []
+    for line in open(path, encoding="utf-8").read().splitlines():
+        text = line.strip()
+        if not text:
+            rows.append([])
+        elif text.startswith("|"):
+            cells = [c.strip() for c in text.strip("|").split("|")]
+            if not all(re.fullmatch(r":?-+:?", c) for c in cells if c):
+                rows.append(cells)
+        else:
+            rows.append([text.lstrip("#").strip()])
+    return rows
+
+
+# Tuna's real /coach history (a copy of Antrenman-Gecmisi.md), as the Excel sheet it would be.
+workbook("antrenman-gecmisi.xlsx", [("Antrenman Geçmişi", text_sheet(markdown_rows("antrenman-gecmisi.md")), False)],
+         None, None)
+
+# Twelve weeks of a Monday/Wednesday/Friday routine in the long layout, with numbers and real dates.
+random.seed(7)
+program = [
+    ("Chest & Triceps", ["Dumbbell Chest Press", "Incline Smith Machine Press", "Fly", "V Bar Triceps Pushdown"]),
+    ("Back & Biceps", ["Lat Pulldown", "Close Grip Pulldown", "Row", "Incline Dumbbell Curl"]),
+    ("Shoulder & Legs", ["Smith Machine Shoulder Press", "Lateral Raise", "Squat", "Leg Press"]),
+]
+long_rows = []
+day = serial(date(2026, 6, 1))
+for week in range(12):
+    for slot, offset in enumerate((0, 2, 4)):
+        workout, exercises = program[slot]
+        for exercise in exercises:
+            for set_number in (1, 2, 3):
+                weight = 20 + 5 * (len(exercise) % 7) + 2.5 * (week // 3)
+                long_rows.append((day + week * 7 + offset, workout, exercise, set_number, weight, random.randint(6, 13)))
+
+
+def long_sheet(rows):
+    xml = ['<row r="1"><c r="A1" t="inlineStr"><is><t>Date</t></is></c><c r="B1" t="inlineStr"><is><t>Workout</t></is></c>'
+           '<c r="C1" t="inlineStr"><is><t>Exercise</t></is></c><c r="D1" t="inlineStr"><is><t>Set</t></is></c>'
+           '<c r="E1" t="inlineStr"><is><t>Weight</t></is></c><c r="F1" t="inlineStr"><is><t>Reps</t></is></c></row>']
+    for i, (d, workout, exercise, set_number, weight, reps) in enumerate(rows):
+        r = i + 2
+        xml.append(f'<row r="{r}"><c r="A{r}" s="2"><v>{d}</v></c><c r="B{r}" t="inlineStr"><is><t>{workout.replace("&", "&amp;")}</t></is></c>'
+                   f'<c r="C{r}" t="inlineStr"><is><t>{exercise}</t></is></c><c r="D{r}"><v>{set_number}</v></c>'
+                   f'<c r="E{r}"><v>{weight:g}</v></c><c r="F{r}"><v>{reps}</v></c></row>')
+    return f'<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="{MAIN}"><sheetData>{"".join(xml)}</sheetData></worksheet>'
+
+
+workbook("synthetic-long.xlsx", [("Log", long_sheet(long_rows), False)], None, styles)
+
+# Broken files: each must end in a clear message, never in a crash or a sheet of noise.
+os.makedirs("broken", exist_ok=True)
+good = open("workbook.xlsx", "rb").read()
+open("broken/truncated.xlsx", "wb").write(good[: len(good) // 2])
+workbook("broken/missing-sheet.xlsx", [("Antrenman", sheet1, False)], shared, styles)
+# Rewrite without the sheet part: the workbook points at a sheet that is not there.
+with zipfile.ZipFile("broken/missing-sheet.xlsx") as z:
+    parts = {n: z.read(n) for n in z.namelist() if n != "xl/worksheets/sheet1.xml"}
+with zipfile.ZipFile("broken/missing-sheet.xlsx", "w", zipfile.ZIP_DEFLATED) as z:
+    for n, b in parts.items():
+        zip_write(z, n, b)
+workbook("broken/bad-xml.xlsx", [("Antrenman", sheet1.replace("</sheetData>", ""), False)], shared, styles)
+workbook("broken/only-hidden.xlsx", [("Gizli", hidden, True)], None, None)
+open("broken/cut-short.json", "w").write('{ "sessions": [ { "date": "2026-09-28", "exercises": [ ')
+open("broken/wrong-date.json", "w").write('{ "sessions": [ { "date": "28.09.2026", "exercises": [] } ] }')
+open("broken/other-app.json", "w").write('{ "workouts": [ { "name": "Leg day" } ] }')
+open("broken/photo.csv", "wb").write(bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0, 0, 0, 0x0D]) + b"IHDR" + bytes(64))
+open("broken/empty.csv", "wb").write(b"")

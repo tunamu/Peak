@@ -1,8 +1,6 @@
 # Import Format
 
-> Status: Peak JSON v1 (F7-01), export with its round-trip test (F7-02) and the JSON importer with validation, merge
-> and undated sessions (F7-03), the spreadsheet readers (F7-04) and layout detection with conversion (F7-05) are
-> done. The import screens follow in F7-06…F7-08.
+> Status: complete (F7). Peak JSON, Excel, CSV and TSV import with the mapping screen, export, and templates.
 
 Peak imports JSON, XLSX and CSV/TSV through a single Import button ([ADR 0005](adr/0005-single-import-flow.md)).
 Export always writes Peak JSON, and an exported file imported into an empty store recreates exactly the same data.
@@ -124,9 +122,29 @@ screen asks. It also asks when there are two exercise or date columns, or when d
   sections ("Sırt (Back) & Biceps (Pazu)"); undated rows ("1. Seans") are one session per section and number, and the
   importer dates them. Sets follow the Set column when every set has one, else row order.
 - **Unreadable cells** are skipped with a warning naming the cell ("Antrenman!C5").
-- **Mapping roles:** Date, Exercise, Set #, Weight, Reps, Set cell, Workout, Note, Ignore; plus the date order and the
-  weight unit. The first 5 rows are previewed live.
-- **Templates:** [import-templates/](import-templates/README.md).
+- **Import screen (S-10):** the sheet (when there are several), the layout (table or blocks), the row with column
+  names, each column's role (Date, Exercise, Set #, Weight, Reps, Set cell, Workout, Note, Ignore), the date order and
+  the weight unit; for CSV also the separator and the decimal separator. The first 5 workouts are shown as they will
+  be imported, and they follow every change.
+- **Templates:** [import-templates/](import-templates/README.md), in English and Turkish, also saved from Settings ›
+  Import Template.
+
+## Files Peak cannot import
+
+Each ends in a message that says what to do, and nothing is written:
+
+| File | Message |
+| --- | --- |
+| Damaged Peak JSON | Where it breaks: "sessions[0].date: expected a date as yyyy-MM-dd" or "unexpected end of file" |
+| JSON from another app | Not Peak data |
+| Damaged .xlsx (cut short, missing parts, broken XML) | Open it in Excel or Numbers and save it again |
+| Old Excel (.xls) | Save it as .xlsx |
+| A photo or other binary file | Not a spreadsheet |
+| No rows, or only hidden sheets | Nothing to import |
+| Over 64 MB unpacked | Too large for a training log |
+
+A CSV saved under an .xlsx name opens as CSV. A file that reads but gives no workouts opens the import screen,
+where the mapping can be fixed.
 
 ## Merge and replace
 
@@ -141,9 +159,10 @@ range, the exercises it creates, and the problems it found. Nothing is written u
     and sets. Duplicates are skipped, so **importing the same file twice adds nothing the second time**. Sessions with
     an estimated date match on their movements and sets alone, since the estimate can differ between imports.
   - Water logs are skipped when the store has one at the same millisecond with the same amount and source.
-- **Replace all:** writes a backup of the store (`peak-backup-YYYY-MM-DD-HHmmss.json`, the export format) and then
-  deletes everything before adding the file. If the backup cannot be written, nothing is deleted.
-- Settings in the file are not applied by the importer; the import screen offers them.
+- **Replace all:** asks first, then writes a backup of the store (`peak-backup-YYYY-MM-DD-HHmmss.json`, the export format) and then
+  deletes everything before adding the file. If the backup cannot be written, nothing is deleted. Backups are in
+  Files › On My iPhone › Peak › Backups.
+- Settings in the file are applied only when "Apply the File's Settings" is on (off by default).
 
 ### Problems
 

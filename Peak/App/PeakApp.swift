@@ -21,6 +21,8 @@ struct PeakApp: App {
         do {
             // In the App Group so the widget reads the same store. iCloud sync stays off until F8.
             container = try PeakStore.makeContainer(.appGroup)
+            // The Live Activity's Pause/Resume intent runs in this process: it works on the same container.
+            WorkoutActivity.container = container
         } catch {
             fatalError("Could not open the Peak store: \(error)")
         }
@@ -31,6 +33,7 @@ struct PeakApp: App {
             RootTabView()
                 // Registers the step observer at launch, so background delivery can wake the app.
                 .task { await health.refresh() }
+                .modifier(WidgetSync())
         }
         .modelContainer(container)
         .environment(settings)

@@ -131,9 +131,33 @@ import Testing
 
         let sets = try #require(sessions.start(from: template).orderedExercises.first).orderedSets
         #expect(sets.map(\.targetWeightKg) == [30, 27.5, 27.5])
-        #expect(sets.map(\.targetReps) == [6, 10, 8])
+        #expect(sets.map(\.targetReps) == [6, 11, 9])  // one rep more where the weight stays
         #expect(sets.map(\.weightKg) == [30, 27.5, 27.5])
         #expect(sets.allSatisfy { $0.reps == 0 && !$0.isCompleted })
+    }
+
+    /// "Previous" is the last performance before the session: 50×9 last time, so the target is 50×10.
+    @Test func previousIsTheLastPerformanceBeforeTheSession() throws {
+        let context = try makeContext()
+        let row = try ExerciseRepository(context: context).findOrCreate(name: "Row")
+        let templates = TemplateRepository(context: context)
+        let template = try templates.create(name: "Back")
+        templates.setItems([(row, 1)], of: template)
+        let sessions = SessionRepository(context: context)
+
+        let first = sessions.start(from: template, at: .now.addingTimeInterval(-2 * 86_400))
+        let set = try #require(first.orderedExercises.first?.orderedSets.first)
+        let firstController = WorkoutSessionController(session: first, context: context)
+        try firstController.setWeight(50, of: set)
+        try firstController.setReps(9, of: set)
+        try firstController.finish(at: .now.addingTimeInterval(-2 * 86_400 + 3_000))
+
+        let second = sessions.start(from: template)
+        let item = try #require(second.orderedExercises.first)
+        #expect(try sessions.previousSets(before: item) == [SetPerformance(weightKg: 50, reps: 9)])
+        #expect(item.orderedSets.first?.targetWeightKg == 50 && item.orderedSets.first?.targetReps == 10)
+        // The first session had nothing before it.
+        #expect(try sessions.previousSets(before: #require(first.orderedExercises.first)).isEmpty)
     }
 
     @Test func firstSessionHasNoTargets() throws {

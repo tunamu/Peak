@@ -88,12 +88,14 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | --- | --- |
 | `-PeakTab home\|analysis\|settings` | Opens that tab |
 | `-PeakOpenGallery YES` | With `-PeakTab settings`, opens the Component Gallery |
-| `-PeakShowcaseSection dashboard\|buttons\|settings` | Scrolls the gallery to a section |
+| `-PeakShowcaseSection dashboard\|buttons\|settings\|widgets` | Scrolls the gallery to a section |
 | `-PeakShowcaseSheet stepGoal\|success\|failure` | Presents a sample sheet |
 | `-PeakLoadSampleProgram YES` | With `-PeakTab settings`, loads the sample program (same as Settings › Developer › Load Sample Program) |
 | `-PeakSettingsSheet stepGoal\|waterGoal\|overload\|newWorkout\|editWorkout\|newRoutine\|editRoutine` | With `-PeakTab settings`, opens that Settings sheet (edit opens the first workout or routine) |
 | `-PeakImportFile /path/file.json` | With `-PeakTab settings`, reads that Peak JSON file as if picked in Import Workout Data (simulator: a path on the Mac) |
-| `-PeakImportConfirm YES` | With `-PeakImportFile`, also confirms the import |
+| `-PeakImportConfirm YES` | With `-PeakImportFile`, also confirms the import (merge) and shows the result |
+| `-PeakImportScroll preview\|summary\|problems\|mode` | With `-PeakImportFile`, scrolls the import screen to that section |
+| `-PeakTemplate xlsx\|csv\|json` | With `-PeakTab settings`, chooses that import template (the file exporter opens) |
 | `-PeakExport YES` | With `-PeakTab settings`, taps Export Workout Data (the system file exporter opens) |
 | `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
 | `-PeakLoadSampleHistory YES` | With `-PeakTab settings`, loads the sample program and three finished sessions before today (Settings › Developer › Load Sample History) |

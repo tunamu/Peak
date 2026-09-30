@@ -33,6 +33,22 @@ public enum SheetAnalyzer {
         HeaderNames.role(of: header)
     }
 
+    /// Roles for the columns when `headerRow` holds their names (the mapping screen's header row choice): named
+    /// columns by their name, unnamed ones whose cells below are mostly sets as set cells, the rest ignored.
+    public static func roles(headerRow: Int, in table: RawTable) -> [ColumnRole] {
+        guard table.rows.indices.contains(headerRow) else { return Array(repeating: .ignore, count: table.columnCount) }
+        let data = Array(table.rows.dropFirst(headerRow + 1))
+        return table.rows[headerRow].enumerated().map { column, name in
+            if let role = HeaderNames.role(of: name) { return role }
+            return mostlySets(data, column: column) ? .setCell : .ignore
+        }
+    }
+
+    /// Roles guessed from the cells alone, for a sheet without a header row.
+    public static func roles(withoutHeaderIn table: RawTable) -> [ColumnRole] {
+        guessedRoles(table)
+    }
+
     // MARK: Header layouts
 
     private static func headerMapping(_ table: RawTable) -> SheetMapping? {
@@ -42,10 +58,7 @@ public enum SheetAnalyzer {
         guard let (headerRow, named) = candidates.max(by: { named($0.1) < named($1.1) }), self.named(named) >= 2
         else { return nil }
         let data = Array(table.rows.dropFirst(headerRow + 1))
-        var roles = named.map { $0 ?? .ignore }
-        for column in roles.indices where roles[column] == .ignore && mostlySets(data, column: column) {
-            roles[column] = .setCell
-        }
+        let roles = roles(headerRow: headerRow, in: table)
         let count = { (role: ColumnRole) in roles.filter { $0 == role }.count }
         guard count(.exercise) >= 1 else { return nil }
         let hasPairs = count(.weight) >= 1 && count(.weight) == count(.reps)

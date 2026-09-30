@@ -1,13 +1,14 @@
 # Progressive Overload
 
 > Status: implemented (F3) as `ProgressionEngine` and `SessionStatistics` in `Packages/PeakKit/Sources/PeakCore/Engines/`.
-> The rule is the same as the `/coach` skill that produced the author's training log.
+> Since 2026-09-30 a set that stays at its weight aims one rep higher ([ADR 0019](adr/0019-one-more-rep.md)). The
+> `/coach` skill that produced the author's training log keeps the same reps; `ProgressionRule.coach` reproduces it.
 
 ```swift
 let targets = ProgressionEngine.targets(
     after: [SetPerformance(weightKg: 27.5, reps: 9), SetPerformance(weightKg: 22.5, reps: 13)],
     setCount: 2, incrementKg: 2.5, rule: ProgressionRule(thresholdReps: 12, resetReps: 6))
-// [27.5×9, 25×6]
+// [27.5×10, 25×6]
 ```
 
 ## Inputs
@@ -15,6 +16,7 @@ let targets = ProgressionEngine.targets(
 - The sets of the exercise's last completed session
 - The exercise's `incrementKg`
 - Threshold `T` (default 12) and reset reps `R` (default 6), both configurable in Settings
+- Rep step `S`: 1 in Peak, 0 for the `/coach` rule (`ProgressionRule.coach`)
 
 ## Rules
 
@@ -23,12 +25,14 @@ Each set is evaluated on its own:
 | Last result | Next target |
 | --- | --- |
 | `reps > T` | `(weight + increment) × R` |
-| `reps ≤ T` | `weight × reps` (at least the same again) |
+| `reps ≤ T` | `weight × (reps + S)`: one rep more (50×9 → 50×10; 50×12 → 50×13, which passes `T`) |
 
 - **Set count:** if today's template asks for more sets, extra sets copy the last set's target; if fewer, the rest are
   dropped.
 - **No forward projection:** future planned sessions show today's target.
-- **No history:** the target is empty and the Reference column shows "—".
+- **No history:** the target is empty and the Previous column shows "—".
+- **In the set table:** the Previous column shows the same set last time (50kg × 9); the weight field starts at the
+  target weight and the reps field shows the target reps (10) as its placeholder.
 - **Unfinished sets** (0 reps) in the last session are ignored.
 - **lb mode:** targets are computed in kg and shown rounded to 0.5 lb. An increment entered in lb is converted to kg.
 

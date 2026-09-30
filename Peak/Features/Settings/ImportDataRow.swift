@@ -4,124 +4,112 @@ import SwiftData
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Settings › Import Workout Data, for Peak JSON files: pick a file, see what it adds, confirm, and it is merged
-/// (`PeakImporter`, docs/IMPORT_FORMAT.md). Workouts already in Peak are skipped, so a file can be imported again
-/// safely. Spreadsheets, the mapping screen and the full preview (S-10) arrive with F7-06.
+/// Settings › Import Workout Data: pick a Peak JSON, Excel, CSV or TSV file, check how it is read and what it adds
+/// (S-10, `ImportSheet`), import, and see the result (S-09). docs/IMPORT_FORMAT.md.
 struct ImportDataRow: View {
-    /// A file read and checked, waiting for the user's yes.
-    struct Pending {
-        let data: PeakExportV1
-        let preview: ImportPreview
+    /// S-09's content.
+    struct Result: Identifiable {
+        let id = UUID()
+        let kind: ResultKind
+        let title: LocalizedStringKey
+        let message: Text
     }
 
-    enum Outcome {
-        case imported(sessions: Int)
-        case nothingNew
-        case failed(Text)
-    }
+    static let fileTypes: [UTType] = [
+        .json, .commaSeparatedText, .tabSeparatedText, .delimitedText, .plainText,
+        UTType("org.openxmlformats.spreadsheetml.sheet") ?? .data,
+    ]
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(SettingsStore.self) private var settings
     @State private var isPicking = false
-    @State private var pending: Pending?
-    @State private var outcome: Outcome?
+    @State private var model: ImportModel?
+    @State private var result: Result?
+    /// Shown once the import sheet has closed: SwiftUI presents one sheet at a time.
+    @State private var pendingResult: Result?
 
     var body: some View {
         SettingsRow("Import Workout Data", accessory: .icon("square.and.arrow.down")) { isPicking = true }
-            .fileImporter(isPresented: $isPicking, allowedContentTypes: [.json]) { result in
-                if case .success(let url) = result { read(url) }
+            .fileImporter(isPresented: $isPicking, allowedContentTypes: Self.fileTypes) { picked in
+                if case .success(let url) = picked { open(url) }
             }
-            .alert("Import Workouts?", isPresented: isPresent($pending), presenting: pending) { pending in
-                Button("Import") { commit(pending) }
-                Button("Cancel", role: .cancel) {}
-            } message: { pending in
-                summary(pending.preview)
+            .sheet(item: $model, onDismiss: showPendingResult) { model in
+                ImportSheet(model: model) { outcome in
+                    pendingResult = Self.result(of: outcome)
+                    self.model = nil
+                }
             }
-            .alert(title, isPresented: isPresent($outcome), presenting: outcome) { _ in
-                Button("OK", role: .cancel) {}
-            } message: { outcome in
-                message(outcome)
+            .sheet(item: $result) { result in
+                ResultSheet(result.kind, title: result.title, message: result.message) {
+                    Button(role: .confirm) {
+                        self.result = nil
+                    } label: {
+                        Text("Done").frame(maxWidth: .infinity)
+                    }
+                }
             }
             #if DEBUG
-                // Screenshot helpers: `-PeakImportFile /path/file.json` reads that file as if it was picked, and
-                // `-PeakImportConfirm YES` also taps Import.
+                // Screenshot helpers: `-PeakImportFile /path/file` opens that file as if it was picked, and
+                // `-PeakImportConfirm YES` also imports it (merge).
                 .task {
                     guard let path = UserDefaults.standard.string(forKey: "PeakImportFile") else { return }
-                    read(URL(filePath: path))
-                    if UserDefaults.standard.bool(forKey: "PeakImportConfirm"), let pending {
-                        self.pending = nil
-                        commit(pending)
+                    open(URL(filePath: path))
+                    // As a tap on Import would: the sheet is up, then closes, then S-09 shows.
+                    guard UserDefaults.standard.bool(forKey: "PeakImportConfirm") else { return }
+                    try? await Task.sleep(for: .seconds(1))
+                    guard let model else { return }
+                    let outcome: ImportOutcome
+                    do {
+                        outcome = .imported(try model.commit(settings: settings))
+                    } catch {
+                        outcome = .failed(Text(verbatim: error.localizedDescription))
                     }
+                    pendingResult = Self.result(of: outcome)
+                    self.model = nil
                 }
             #endif
     }
 
-    // MARK: Steps
-
-    private func read(_ url: URL) {
+    private func open(_ url: URL) {
         let isScoped = url.startAccessingSecurityScopedResource()
         defer { if isScoped { url.stopAccessingSecurityScopedResource() } }
-        guard let bytes = try? Data(contentsOf: url), let data = try? PeakJSON.decode(bytes) else {
-            outcome = .failed(Text("This file is not Peak JSON. Excel and CSV files arrive in a later update."))
-            return
-        }
         do {
-            let preview = try PeakImporter(context: modelContext).preview(data)
-            if let error = preview.errors.first {
-                outcome = .failed(Text("Problems in the file: \(preview.errors.count). The first is at \(error.path)."))
-            } else if preview.newSessions == 0 && preview.newExercises.isEmpty {
-                outcome = .nothingNew
-            } else {
-                pending = Pending(data: data, preview: preview)
-            }
+            let draft = try ImportDraft.load(Data(contentsOf: url), fileName: url.lastPathComponent)
+            model = ImportModel(draft: draft, context: modelContext)
+        } catch let error as ImportFileError {
+            result = Result(kind: .failure, title: "Import Failed", message: Self.message(for: error))
         } catch {
-            outcome = .failed(Text(verbatim: error.localizedDescription))
+            result = Result(kind: .failure, title: "Import Failed", message: Text(verbatim: error.localizedDescription))
         }
     }
 
-    private func commit(_ pending: Pending) {
-        do {
-            let summary = try PeakImporter(context: modelContext).commit(pending.data)
-            outcome = .imported(sessions: summary.sessions)
-        } catch {
-            outcome = .failed(Text(verbatim: error.localizedDescription))
-        }
+    private func showPendingResult() {
+        result = pendingResult
+        pendingResult = nil
     }
 
-    // MARK: Text
-
-    private func summary(_ preview: ImportPreview) -> Text {
-        let (new, sets, known) = (preview.newSessions, preview.newSets, preview.duplicateSessions)
-        var text = Text("Workouts: \(new) new (\(sets) sets), \(known) already in Peak.")
-        // A few names help; a long list (a first import) would fill the alert.
-        let exercises = preview.newExercises
-        if exercises.count > 3 {
-            text = text + Text(verbatim: "\n") + Text("New exercises: \(exercises.count)")
-        } else if !exercises.isEmpty {
-            text = text + Text(verbatim: "\n") + Text("New exercises: \(exercises.formatted(.list(type: .and)))")
-        }
-        if !preview.warnings.isEmpty {
-            text = text + Text(verbatim: "\n") + Text("Warnings: \(preview.warnings.count)")
-        }
-        return text
-    }
-
-    private var title: LocalizedStringKey {
+    private static func result(of outcome: ImportOutcome) -> Result {
         switch outcome {
-        case .imported: "Imported"
-        case .nothingNew: "Nothing to Import"
-        case .failed, nil: "Import Failed"
+        case .imported(let summary):
+            let backup = summary.backup.map { _ in Text(verbatim: "\n") + Text("A backup was saved first.") }
+            return Result(
+                kind: .success, title: "Import Complete",
+                message: Text("Workouts added: \(summary.sessions)") + (backup ?? Text(verbatim: "")))
+        case .failed(let message):
+            return Result(kind: .failure, title: "Import Failed", message: message)
         }
     }
 
-    private func message(_ outcome: Outcome) -> Text {
-        switch outcome {
-        case .imported(let sessions): Text("Workouts added: \(sessions)")
-        case .nothingNew: Text("Every workout in this file is already in Peak.")
-        case .failed(let text): text
+    private static func message(for error: ImportFileError) -> Text {
+        switch error {
+        case .notPeakJSON: Text("This JSON file is not Peak data.")
+        case .invalidJSON(let detail): Text("The Peak file is damaged: \(detail)")
+        case .damagedWorkbook: Text("The Excel file is damaged. Open it in Excel or Numbers and save it again.")
+        case .tooLarge: Text("The file is too large for a training log.")
+        case .notASpreadsheet: Text("This is not a spreadsheet. Use Peak JSON, Excel (.xlsx), CSV or TSV.")
+        case .legacyExcel: Text("Old Excel files (.xls) cannot be read. Save it as .xlsx in Excel or Numbers.")
+        case .empty: Text("The file has no rows to import.")
+        case .unreadable: Text("Peak cannot read this file. Use Peak JSON, Excel (.xlsx), CSV or TSV.")
         }
-    }
-
-    private func isPresent<Value>(_ value: Binding<Value?>) -> Binding<Bool> {
-        Binding(get: { value.wrappedValue != nil }, set: { if !$0 { value.wrappedValue = nil } })
     }
 }

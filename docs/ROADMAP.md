@@ -7,18 +7,18 @@ Target: Q2 2027
 ### Core Features
 - ✅ Minimal iOS 26.0+ app (SwiftUI)
 - ✅ Home screen (week strip, today's workouts, metrics)
-- ⬜ Workout session (strength + cardio logging)
-- 🔶 Settings (goals and routines ✅, import/export F7)
+- ✅ Workout session (strength + cardio logging, summary, read-only history)
+- ✅ Settings (goals, routines, import from JSON/Excel/CSV, templates, export)
 - ✅ Progressive overload engine
 - ✅ Routine scheduler
-- 🔶 HealthKit integration (steps, water, sleep, heart ✅; workouts F6)
+- 🔶 HealthKit integration (steps, water, sleep, heart ✅; workout saving built, check on a device pending)
 - ⬜ iCloud sync (SwiftData + CloudKit)
-- ⬜ Widgets (small, medium)
+- 🔶 Widgets (small, medium: water with a button, steps, today's workout) and the workout's Live Activity
 - ⬜ Onboarding flow
 - 🔶 Localization (EN, TR)
 
 ### Quality
-- 🔶 Swift Testing suite (88 unit tests; UI tests later)
+- 🔶 Swift Testing suite (181 unit tests; UI tests later)
 - ✅ SwiftLint + swift-format
 - ⬜ Accessibility audit (WCAG AA)
 

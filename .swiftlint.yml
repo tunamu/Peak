@@ -3,6 +3,8 @@
 
 included:
   - Peak
+  - PeakWidgets
+  - PeakShared
   - Packages/PeakKit/Sources
   - Packages/PeakKit/Tests
 

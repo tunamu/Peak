@@ -28,7 +28,7 @@ public enum EnergyConfig {
     public static let restingHeartRatePenalty = 15
 }
 
-public enum EnergyLevel: String, Sendable {
+public enum EnergyLevel: String, Codable, Sendable {
     /// ≥ 70: "You can workout now".
     case ready
     /// 40–69: "You can workout a bit".

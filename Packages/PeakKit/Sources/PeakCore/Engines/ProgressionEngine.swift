@@ -22,16 +22,24 @@ public struct ProgressionRule: Hashable, Sendable {
     public var thresholdReps: Int
     /// The rep target after a weight increase.
     public var resetReps: Int
+    /// Reps added to the target while the weight stays: 1 in Peak (9 done → 10 next), 0 in the `/coach` skill the
+    /// author's log was kept with (9 done → at least 9 again), which the statistics tests replay.
+    public var repStep: Int
 
-    public init(thresholdReps: Int = 12, resetReps: Int = 6) {
+    public init(thresholdReps: Int = 12, resetReps: Int = 6, repStep: Int = 1) {
         self.thresholdReps = thresholdReps
         self.resetReps = resetReps
+        self.repStep = repStep
     }
+
+    /// The `/coach` skill's rule, for replaying the log it produced.
+    public static let coach = ProgressionRule(repStep: 0)
 }
 
-/// Next targets from the last performance, set by set. Same rule as the `/coach` skill:
-/// above the threshold the weight goes up by the exercise's increment and reps reset; otherwise the weight stays and
-/// the target is the reps just done. No forward projection: planned future sessions show today's targets.
+/// Next targets from the last performance, set by set (docs/PROGRESSIVE_OVERLOAD.md): above the threshold the weight
+/// goes up by the exercise's increment and reps reset; otherwise the weight stays and the target is one rep more than
+/// just done (50×9 → 50×10, and 50×12 → 50×13, which passes the threshold). No forward projection: planned future
+/// sessions show today's targets.
 public enum ProgressionEngine {
     /// The target for one set after `set` was performed.
     public static func target(after set: SetPerformance, incrementKg: Double, rule: ProgressionRule = .init())
@@ -40,7 +48,7 @@ public enum ProgressionEngine {
         if set.reps > rule.thresholdReps {
             return SetTarget(weightKg: set.weightKg + incrementKg, reps: rule.resetReps)
         }
-        return SetTarget(weightKg: set.weightKg, reps: set.reps)
+        return SetTarget(weightKg: set.weightKg, reps: set.reps + rule.repStep)
     }
 
     /// Targets for the next session.
