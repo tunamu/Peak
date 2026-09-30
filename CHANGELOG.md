@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Peak JSON v1, the import and export format: `PeakExportV1` DTOs, a JSON Schema
+  (`docs/schema/peak-workout-data.v1.schema.json`) with full and minimal examples, and the format documented in
+  `docs/IMPORT_FORMAT.md`.
 - Starting a workout while energy is Not Ready asks "Start anyway?" first (Home card, bottom accessory and Start
   Another Workout alike); it never blocks.
 - "Start Another Workout" under today's cards starts any template outside the plan; it is saved without a

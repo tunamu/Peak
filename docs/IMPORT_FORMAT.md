@@ -1,62 +1,81 @@
 # Import Format
 
-> Status: skeleton. The importer and the JSON Schema file are built in F7; this file is updated with them.
+> Status: Peak JSON v1 is final (F7-01): DTOs, JSON Schema and examples. The importer, exporter and spreadsheet
+> readers follow in F7-02…F7-08.
 
 Peak imports JSON, XLSX and CSV/TSV through a single Import button ([ADR 0005](adr/0005-single-import-flow.md)).
 Export always writes Peak JSON, and an exported file imported into an empty store recreates exactly the same data.
 
 ## Peak JSON v1
 
-The same format is used for import and export.
+The same format is used for import and export. Schema:
+[`schema/peak-workout-data.v1.schema.json`](schema/peak-workout-data.v1.schema.json). Examples:
+[`full.json`](schema/examples/full.json) (every field) and [`minimal.json`](schema/examples/minimal.json) (the
+smallest useful file). In code: `PeakExportV1`, read and written with `PeakJSON`.
+
+A minimal file is a list of workouts:
 
 ```json
 {
-  "schema": "peak.workout-data",
-  "schemaVersion": 1,
-  "exportedAt": "2026-09-29T10:00:00Z",
-  "units": { "weight": "kg", "speed": "km/h" },
-  "exercises": [
-    { "id": "dumbbell-chest-press", "name": "Dumbbell Chest Press", "muscleGroup": "chest",
-      "kind": "strength", "equipment": "dumbbell", "incrementKg": 2.5 }
-  ],
-  "workoutTemplates": [
-    { "id": "chest-biceps", "name": "Chest & Biceps", "kind": "strength",
-      "items": [ { "exerciseId": "dumbbell-chest-press", "targetSets": 2 } ] }
-  ],
-  "routines": [
-    { "id": "main", "name": "Workout routine 1", "active": true,
-      "schedule": { "type": "weekdays", "days": ["mon", "wed", "fri"] },
-      "templateIds": ["chest-biceps"] }
-  ],
+  "units": { "weight": "kg" },
   "sessions": [
-    { "id": "2026-09-28-chest-biceps", "date": "2026-09-28", "startedAt": null, "endedAt": null,
-      "templateId": "chest-biceps", "routineId": "main", "note": "",
+    { "date": "2026-09-28", "title": "Chest & Biceps",
       "exercises": [
-        { "exerciseId": "dumbbell-chest-press",
+        { "exerciseName": "Dumbbell Chest Press",
           "sets": [ { "weight": 27.5, "reps": 9 }, { "weight": 22.5, "reps": 13 } ] }
-      ] },
-    { "id": "walk-1", "date": "2026-09-29",
-      "startedAt": "2026-09-29T07:00:00Z", "endedAt": "2026-09-29T07:40:00Z",
-      "templateId": "walking",
-      "exercises": [
-        { "exerciseName": "Incline Walk",
-          "segments": [ { "speedKmh": 5.5, "inclinePercent": 10, "durationMin": 40 } ] }
       ] }
-  ],
-  "settings": { "stepGoal": 10000, "waterGoalMl": 4000, "overload": { "thresholdReps": 12, "resetReps": 6 } }
+  ]
 }
 ```
 
+### Sections
+
+| Key | Required | Content |
+| --- | --- | --- |
+| `schema`, `schemaVersion` | – | `"peak.workout-data"`, `1`. Written on export; checked when present |
+| `exportedAt` | – | Timestamp |
+| `units` | – | `{ "weight": "kg" \| "lb" }`, default kg |
+| `exercises` | – | `id`, `name`\*, `muscleGroup`, `kind`, `equipment`, `incrementKg`, `archived`, `createdAt` |
+| `workoutTemplates` | – | `id`, `name`\*, `kind`, `note`, `archived`, `createdAt`, `items` (`exerciseId` / `exerciseName`, `targetSets`) |
+| `routines` | – | `id`, `name`\*, `note`, `active`, `schedule`, `templateIds` (the rotation), `createdAt` |
+| `sessions` | ✔ | See below |
+| `waterLogs` | – | `loggedAt`\*, `amountMl`\* (negative = removal), `source` |
+| `settings` | – | `stepGoal`, `waterGoalMl`, `overload` (`thresholdReps`, `resetReps`), `unitSystem`, `quickWaterAmounts` |
+
+\* required inside its object. Array order is the list order for templates and routines.
+
+**Session:** `exercises`\* plus optional `id`, `date`, `startedAt`, `endedAt`, `pausedTotalSec`, `pausedAt`, `status`
+(`active` / `paused` / `completed` / `discarded`, default completed), `title`, `templateId`, `routineId`, `note`,
+`source`, `dateEstimated`, `healthKitWorkoutId`.
+Each exercise needs `exerciseId` or `exerciseName`, and has `completed`, `sets` or `segments`:
+
+- **Set:** `weight`\*, `reps`\* (integer), `targetWeight`, `targetReps`, `completed` (default true), `completedAt`
+- **Segment:** `speedKmh`, `inclinePercent`, `durationMin` (missing = the rest of the session)
+
+**Schedule:** `{ "type": "weekdays", "days": ["mon", "wed", "fri"] }` or
+`{ "type": "interval", "everyDays": 2, "startDate": "2026-09-01" }`.
+
+**Values:** dates are `yyyy-MM-dd`; timestamps are ISO 8601 with a zone (`2026-09-29T07:00:00Z`, fractions and offsets
+allowed; export writes milliseconds in UTC). Enum values are the ones in the schema, in English.
+
 ### Rules
 
-- `sessions` is the only required section.
+- `sessions` is the only required section. Unknown keys are rejected by the schema, so typos show up.
+- Ids are free strings ("chest-biceps" or a UUID) that only link records inside one file.
 - If an `exerciseId` is not found, the importer matches on `exerciseName`, ignoring case and diacritics
   ("İncline" = "Incline"). If nothing matches, the exercise is created and listed in the preview.
-- `date` is optional. Undated sessions are placed one day apart, in array order, before the first dated session, and
-  marked `isDateEstimated`. The preview shows a warning for them.
-- Weights are read in `units.weight` and stored in kg.
+- `date` is optional. Undated sessions (no `date`, no `startedAt`) are placed one day apart, in array order, before the
+  first dated session, and marked `dateEstimated`. The preview shows a warning for them.
+- `weight` and `targetWeight` are read in `units.weight` and stored in kg; fields ending in `Kg` are always kilograms.
+- Settings outside the app's ranges are clamped.
 - A new schema version increases `schemaVersion`; the importer keeps reading older versions.
-- Machine-readable schema: [schema/](schema/README.md).
+
+### Converting another log with an LLM
+
+Give the model the schema file and your log, then ask:
+
+> Convert this training log into JSON that validates against the attached JSON Schema. One session per workout day,
+> sets as weight and reps, exercise names as written. Leave out any field you do not know. Output only the JSON.
 
 ## Spreadsheets (XLSX, CSV, TSV)
 

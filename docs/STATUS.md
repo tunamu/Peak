@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-09-29  
-**Current Phase**: F6 done · next: F7 — Import / Export
+**Current Phase**: F7 — Import / Export (F7-01 done)
 
 ## F0 — Repository and infrastructure
 
@@ -76,9 +76,14 @@ State machine with persistence (a workout survives the app being killed), set ta
 performance, Complete Movement, bottom bar with pause and finish check, walking segments, finish pipeline (summary +
 Apple Health workout), start another workout outside the plan. Device checks pending: Health write, touch flows.
 
+## F7: Import / Export 🔶
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F7-01 | JSON v1 DTOs + JSON Schema + IMPORT_FORMAT | ✅ `PeakExportV1` + `PeakJSON`; both examples validate against the schema (tests and Ajv), DTOs keep every field |
+
 ## Upcoming phases (⬜)
 
-- F7: Import / Export
 - F8: iCloud sync
 - F9: Widgets and Live Activity
 - F10: Polish, accessibility, localization
