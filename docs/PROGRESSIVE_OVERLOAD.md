@@ -16,7 +16,9 @@ let targets = ProgressionEngine.targets(
 - The sets of the exercise's last completed session
 - The exercise's `incrementKg`
 - Threshold `T` (default 12) and reset reps `R` (default 6), both configurable in Settings
-- Rep step `S`: 1 in Peak, 0 for the `/coach` rule (`ProgressionRule.coach`)
+- Rep step `S` (default 1, 0–5): Settings › Rep Increase; 0 is the `/coach` rule (`ProgressionRule.coach`)
+- For now the three values hold for every workout and movement; per-workout and per-movement values come after the
+  Analysis screen (see ROADMAP.md)
 
 ## Rules
 
@@ -25,7 +27,7 @@ Each set is evaluated on its own:
 | Last result | Next target |
 | --- | --- |
 | `reps > T` | `(weight + increment) × R` |
-| `reps ≤ T` | `weight × (reps + S)`: one rep more (50×9 → 50×10; 50×12 → 50×13, which passes `T`) |
+| `reps ≤ T` | `weight × (reps + S)`: with `S` = 1, one rep more (50×9 → 50×10; 50×12 → 50×13, which passes `T`) |
 
 - **Set count:** if today's template asks for more sets, extra sets copy the last set's target; if fewer, the rest are
   dropped.

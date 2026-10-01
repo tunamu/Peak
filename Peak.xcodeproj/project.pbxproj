@@ -22,6 +22,13 @@
 			remoteGlobalIDString = 27DB9A49306BD5F40062E297;
 			remoteInfo = PeakWidgetsExtension;
 		};
+		27DB9A5D306BD5F40062E297 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 27DB9A0E306BD5F40062E297 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27DB9A15306BD5F40062E297;
+			remoteInfo = Peak;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +46,7 @@
 /* Begin PBXFileReference section */
 		27DB9A16306BD5F40062E297 /* Peak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PeakWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		27DB9A54306BD5F40062E297 /* PeakUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeakUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -49,11 +57,21 @@
 			);
 			target = 27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */;
 		};
+		27DB9A53306BD5F40062E297 /* Exceptions for "Peak" folder in "Peak" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 27DB9A15306BD5F40062E297 /* Peak */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		27DB9A18306BD5F40062E297 /* Peak */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				27DB9A53306BD5F40062E297 /* Exceptions for "Peak" folder in "Peak" target */,
+			);
 			path = Peak;
 			sourceTree = "<group>";
 		};
@@ -68,6 +86,11 @@
 		27DB9A52306BD5F40062E297 /* PeakShared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PeakShared;
+			sourceTree = "<group>";
+		};
+		27DB9A55306BD5F40062E297 /* PeakUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PeakUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -87,6 +110,11 @@
 				27DB9A41306BD5F40062E297 /* PeakDesign in Frameworks */,
 			);
 		};
+		27DB9A58306BD5F40062E297 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -96,6 +124,7 @@
 				27DB9A18306BD5F40062E297 /* Peak */,
 				27DB9A47306BD5F40062E297 /* PeakWidgets */,
 				27DB9A52306BD5F40062E297 /* PeakShared */,
+				27DB9A55306BD5F40062E297 /* PeakUITests */,
 				27DB9A17306BD5F40062E297 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,6 +134,7 @@
 			children = (
 				27DB9A16306BD5F40062E297 /* Peak.app */,
 				27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */,
+				27DB9A54306BD5F40062E297 /* PeakUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -163,6 +193,27 @@
 			productReference = 27DB9A45306BD5F40062E297 /* PeakWidgetsExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		27DB9A56306BD5F40062E297 /* PeakUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27DB9A5A306BD5F40062E297 /* Build configuration list for PBXNativeTarget "PeakUITests" */;
+			buildPhases = (
+				27DB9A57306BD5F40062E297 /* Sources */,
+				27DB9A58306BD5F40062E297 /* Frameworks */,
+				27DB9A59306BD5F40062E297 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				27DB9A5E306BD5F40062E297 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				27DB9A55306BD5F40062E297 /* PeakUITests */,
+			);
+			name = PeakUITests;
+			productName = PeakUITests;
+			productReference = 27DB9A54306BD5F40062E297 /* PeakUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -178,6 +229,10 @@
 					};
 					27DB9A49306BD5F40062E297 = {
 						CreatedOnToolsVersion = 27.0;
+					};
+					27DB9A56306BD5F40062E297 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 27DB9A15306BD5F40062E297;
 					};
 				};
 			};
@@ -201,6 +256,7 @@
 			targets = (
 				27DB9A15306BD5F40062E297 /* Peak */,
 				27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */,
+				27DB9A56306BD5F40062E297 /* PeakUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -212,6 +268,11 @@
 			);
 		};
 		27DB9A4C306BD5F40062E297 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		27DB9A59306BD5F40062E297 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -251,6 +312,11 @@
 			files = (
 			);
 		};
+		27DB9A57306BD5F40062E297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -258,6 +324,11 @@
 			isa = PBXTargetDependency;
 			target = 27DB9A49306BD5F40062E297 /* PeakWidgetsExtension */;
 			targetProxy = 27DB9A43306BD5F40062E297 /* PBXContainerItemProxy */;
+		};
+		27DB9A5E306BD5F40062E297 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27DB9A15306BD5F40062E297 /* Peak */;
+			targetProxy = 27DB9A5D306BD5F40062E297 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -393,6 +464,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Peak/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
@@ -433,6 +505,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Peak/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
@@ -517,6 +590,46 @@
 			};
 			name = Release;
 		};
+		27DB9A5B306BD5F40062E297 /* Debug configuration for PBXNativeTarget "PeakUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8J3TZQAADL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunamu.peak.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Peak;
+			};
+			name = Debug;
+		};
+		27DB9A5C306BD5F40062E297 /* Release configuration for PBXNativeTarget "PeakUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8J3TZQAADL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunamu.peak.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Peak;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -541,6 +654,14 @@
 			buildConfigurations = (
 				27DB9A50306BD5F40062E297 /* Debug configuration for PBXNativeTarget "PeakWidgetsExtension" */,
 				27DB9A51306BD5F40062E297 /* Release configuration for PBXNativeTarget "PeakWidgetsExtension" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		27DB9A5A306BD5F40062E297 /* Build configuration list for PBXNativeTarget "PeakUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27DB9A5B306BD5F40062E297 /* Debug configuration for PBXNativeTarget "PeakUITests" */,
+				27DB9A5C306BD5F40062E297 /* Release configuration for PBXNativeTarget "PeakUITests" */,
 			);
 			defaultConfigurationName = Release;
 		};

@@ -58,12 +58,13 @@ Signing is automatic. The project uses the maintainer's team (`DEVELOPMENT_TEAM`
 the `Peak` target's **Signing & Capabilities** tab and use their own bundle identifier and App Group, because
 `com.tunamu.peak` is registered to the maintainer's team.
 
-With a free Personal Team:
+With a free Personal Team (contributors without a paid membership):
 
 - The first launch is blocked until you trust the developer: **Settings > General > VPN & Device Management >
   Developer App > Trust**.
 - The provisioning profile is valid for 7 days. Run from Xcode again to renew it.
-- iCloud and Push Notifications are not available. HealthKit and App Groups work.
+- iCloud and Push Notifications are not available: remove the iCloud and `aps-environment` keys from your local copy
+  of `Peak/Peak.entitlements`. HealthKit and App Groups work, and the app runs without sync.
 
 From the command line:
 
@@ -97,6 +98,11 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakImportScroll preview\|summary\|problems\|mode` | With `-PeakImportFile`, scrolls the import screen to that section |
 | `-PeakTemplate xlsx\|csv\|json` | With `-PeakTab settings`, chooses that import template (the file exporter opens) |
 | `-PeakExport YES` | With `-PeakTab settings`, taps Export Workout Data (the system file exporter opens) |
+| `-PeakShowICloud YES` | With `-PeakTab settings`, taps the iCloud row once sync reports a problem, or after 30 s |
+| `-PeakToggleSync YES` | With `-PeakTab settings`, flips iCloud Sync once after launch, without the question |
+| `-PeakOpenLink peak://workout/start` | Opens a `peak://` link at launch, as a widget tap does (`simctl openurl` asks first) |
+| `-PeakOnboarding YES` | Shows onboarding even when there is data; add `-PeakOnboardingStep 0…4` to open on a step, or `-PeakOnboardingFinish import\|sample\|empty` to pick a start |
+| `-PeakDeleteAll YES` | With `-PeakTab settings`, opens Delete All Data (nothing is deleted without typing the word) |
 | `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
 | `-PeakLoadSampleHistory YES` | With `-PeakTab settings`, loads the sample program and three finished sessions before today (Settings › Developer › Load Sample History) |
 | `-PeakLoadSecondRoutine YES` | With `-PeakTab settings`, adds an everyday second routine, so days have two workouts |
@@ -151,5 +157,15 @@ The UI ships in English (base) and Turkish, from one String Catalog: `Peak/Resou
 
 ## Apple Health and iCloud
 
-Capabilities are configured in F0-03. Rules and data types: [HEALTHKIT.md](HEALTHKIT.md) and
+Capabilities are configured in F0-03 and F8-01. Rules and data types: [HEALTHKIT.md](HEALTHKIT.md) and
 [DATA_MODEL.md](DATA_MODEL.md).
+
+Debug builds sync with the CloudKit **development** environment. Before a TestFlight or App Store build, run Settings ›
+Developer › Initialize CloudKit Schema on a device signed in to iCloud, then deploy the schema to production in
+CloudKit Console. A simulator syncs only when it is signed in to an iCloud account; without one, the app works
+locally.
+
+- Use a simulator with no Peak data from earlier runs as a second device (or delete the app first): records made
+  before sign-in are uploaded too, and imported test history would double the real one.
+- "Quota Exceeded" (`CKError` 25) in the log means the iCloud account's storage is full: the private database counts
+  against it. Nothing uploads until there is room; the app keeps working locally and retries.

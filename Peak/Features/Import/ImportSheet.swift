@@ -161,7 +161,7 @@ struct ImportSheet: View {
         Section {
             let sessions = model.converted.data.sessions.prefix(5)
             if sessions.isEmpty {
-                Text("Nothing to import with these settings.")
+                Text("Nothing to import with these settings. Try another header row or layout above.")
                     .foregroundStyle(.peakTextSecondary)
             }
             ForEach(Array(sessions.enumerated()), id: \.offset) { _, session in

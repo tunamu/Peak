@@ -9,6 +9,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- iCloud Sync, off until you turn it on in Settings › General: workouts, templates, routines and water sync through
+  your private iCloud database, and settings through iCloud's key-value store. Turning it on or off takes effect at
+  once. Without an iCloud account Peak keeps working on the device. Water logged from the widget is uploaded the next
+  time the app runs.
+- A light tap when a set is done.
+- Set fields take a tap anywhere in their 44 pt cell, and VoiceOver reads them as Weight and Reps.
+- Empty lists say what they are for and offer the one thing to do (Create Workout, Create Routine).
+- Larger text: Today's Workout, the Energy and Water tiles and the workout header stack instead of breaking words;
+  fixed-column controls cap their size and show the large content viewer.
+- Onboarding on the first launch: Apple Health, your step and water goals, iCloud Sync, and a start with your own
+  data, the sample program or nothing. People who already have data skip it.
+- Shortcuts and Siri: "Log water in Peak" adds water without opening the app (your quick amount, or the amount
+  you give) and "Start today's workout in Peak" opens it on today's workout; in English and Turkish. Tapping a
+  widget or the Live Activity now goes straight to the workout or Home.
+- Settings › Rep Increase, under Progressive Overload: how many reps the next target adds while the weight stays the
+  same (+1 by default, +0 to +5). Exports and imports carry it.
+- Settings › Delete All Data, for starting over: it shows what will be deleted, asks you to type DELETE, and saves a
+  backup first that can be imported again.
+- Exercises, workouts and routines created on two devices before they synced are merged into one, keeping every past
+  session.
+- Settings › General › iCloud shows whether your data syncs: synced, not signed in, iCloud storage full, uploads
+  turned down, offline and more, each explained in a sentence with a way to the Settings app when the fix is there.
 - A running workout shows as a Live Activity: on the Lock Screen with the current movement, set progress, the clock
   and Pause/Resume, and in the Dynamic Island. It follows every change, keeps the right time after the app was
   killed, and ends when the workout is finished or discarded.
@@ -105,6 +127,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- English counts read right when one: "1 Movement · 1 Set", "1 of 1 set", "1 set is empty".
 - A finished workout's time no longer keeps counting when shown again.
 
 - SwiftLint and swift-format are clean again (nine violations from F6 had turned the Lint job red on `main`);

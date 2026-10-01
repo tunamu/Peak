@@ -30,9 +30,15 @@ enum SetField: Hashable {
 /// C-10: date, name and size on the left; time and progress on the right.
 struct SessionHeader: View {
     let session: WorkoutSession
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        HStack(alignment: .top, spacing: Spacing.medium) {
+        // Name and time side by side; one above the other at accessibility text sizes (F10-02).
+        let layout =
+            dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.medium))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: Spacing.medium))
+        layout {
             VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                 Text(session.startedAt, format: .dateTime.weekday(.wide).day().month(.wide))
                     .font(.peakDetail)
@@ -45,7 +51,7 @@ struct SessionHeader: View {
                     .foregroundStyle(.peakTextSecondary)
             }
             Spacer(minLength: 0)
-            VStack(alignment: .trailing, spacing: Spacing.xxSmall) {
+            VStack(alignment: dynamicTypeSize.isAccessibilitySize ? .leading : .trailing, spacing: Spacing.xxSmall) {
                 Text("Time")
                     .font(.peakDetail)
                     .foregroundStyle(.peakTextSecondary)
@@ -225,8 +231,12 @@ struct SetColumnsRow: View {
             Text("Reps").frame(width: SetColumns.value)
         }
         .font(.peakMeta)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .foregroundStyle(.peakTextTertiary)
-        .accessibilityHidden(true)
+        // Read once as the table's header ("Set, Previous, kg, Reps"); each row also names its fields.
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
+        .accessibilityIdentifier("peak.capped.setColumns")
     }
 }
 
@@ -256,22 +266,38 @@ struct SetRow: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            TextField(value: weight, format: .number, prompt: Text(verbatim: "0")) {
+            TextField(value: weight, format: .number, prompt: Text(verbatim: "0").foregroundStyle(.peakTextSecondary)) {
                 Text("Weight")
             }
             .keyboardType(.decimalPad)
             .focused(focus, equals: .weight(set.persistentModelID))
+            .accessibilityLabel(Text("Weight"))
             .cell()
-            TextField(value: reps, format: .number, prompt: Text(verbatim: set.targetReps.map(String.init) ?? "—")) {
+            .focusOnTap(focus, .weight(set.persistentModelID))
+            // The target reps are information, not a hint: darker than the system's placeholder gray.
+            TextField(value: reps, format: .number, prompt: targetPrompt) {
                 Text("Reps")
             }
             .keyboardType(.numberPad)
             .focused(focus, equals: .reps(set.persistentModelID))
+            .accessibilityLabel(Text("Reps"))
             .cell()
+            .focusOnTap(focus, .reps(set.persistentModelID))
         }
         .font(.peakRow.monospacedDigit())
+        // Five fixed columns: capped, with the large content viewer beyond (F10-02).
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        // F10-03: one light tap when the set becomes done, not on every digit or when it reopens.
+        .sensoryFeedback(trigger: set.isCompleted) { wasDone, isDone in
+            !wasDone && isDone ? .impact(weight: .light) : nil
+        }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("Set \(number)"))
+        .accessibilityIdentifier("peak.capped.setRow")
+    }
+
+    private var targetPrompt: Text {
+        Text(verbatim: set.targetReps.map(String.init) ?? "—").foregroundStyle(.peakTextSecondary)
     }
 
     /// "50kg × 9", or "—" before there is any history.
@@ -303,9 +329,16 @@ struct SetRow: View {
 
 extension View {
     /// An editable number cell of the set table.
+    /// The text field inside a cell is only as tall as its text; a tap anywhere in the 44 pt cell focuses it.
+    func focusOnTap(_ focus: FocusState<SetField?>.Binding, _ field: SetField) -> some View {
+        contentShape(.rect)
+            .onTapGesture { focus.wrappedValue = field }
+    }
+
     func cell() -> some View {
         multilineTextAlignment(.center)
-            .frame(width: SetColumns.value, height: 36)
+            // 44 pt: the smallest touch target (F10-02).
+            .frame(width: SetColumns.value, height: Metrics.minTouchTarget)
             .background(.peakFillControl, in: .rect(cornerRadius: Radius.control / 2))
     }
 }

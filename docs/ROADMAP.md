@@ -12,19 +12,24 @@ Target: Q2 2027
 - ✅ Progressive overload engine
 - ✅ Routine scheduler
 - 🔶 HealthKit integration (steps, water, sleep, heart ✅; workout saving built, check on a device pending)
-- ⬜ iCloud sync (SwiftData + CloudKit)
+- 🔶 iCloud sync, opt-in (SwiftData + CloudKit; two-device check pending)
 - 🔶 Widgets (small, medium: water with a button, steps, today's workout) and the workout's Live Activity
-- ⬜ Onboarding flow
-- 🔶 Localization (EN, TR)
+- ✅ Onboarding flow
+- ✅ Localization (EN, TR)
+- ⬜ Analysis screen: progress per movement (best set, estimated 1RM), weekly volume, frequency and streak (F11)
+- ⬜ Progressive overload per workout and per movement: the threshold, reset reps and rep increase set for one
+  workout template or one movement, over the app-wide values in Settings (F11, after the Analysis screen)
 
 ### Quality
-- 🔶 Swift Testing suite (181 unit tests; UI tests later)
+- ✅ Swift Testing suite (package tests on the Mac host and the iOS simulator)
+- 🔶 UI tests: `performAccessibilityAudit` on every tab, onboarding and a running workout
 - ✅ SwiftLint + swift-format
-- ⬜ Accessibility audit (WCAG AA)
+- 🔶 Accessibility audit (WCAG AA): Dynamic Type and automated audits done, VoiceOver pass on a device pending
+- 🔶 Performance: launch and idle measured ([PERFORMANCE.md](PERFORMANCE.md)); scrolling hitches still to check on a
+  device
 
 ## Phase 2: Post-Launch
 
-- Analysis screen (volume trends, 1RM est.)
 - Apple Watch app
 - CSV export
 - Rest timer

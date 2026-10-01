@@ -46,6 +46,10 @@ struct WeekStrip: View {
         .scrollPosition(id: $visibleWeek)
         .clipShape(.capsule)
         .glassEffect(.regular, in: .capsule)
+        // Seven fixed columns cannot grow with the text: capped like a tab bar, with the large content viewer on a
+        // long press at accessibility sizes (F10-02).
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .accessibilityIdentifier("peak.capped.weekStrip")
         .onGeometryChange(for: CGFloat.self) {
             $0.size.width
         } action: {

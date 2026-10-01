@@ -50,6 +50,7 @@ write access to water; a denied read just returns no data.
 | HealthKit + background delivery | `Peak/Peak.entitlements` | ✅ |
 | App Group `group.com.tunamu.peak` | `Peak/Peak.entitlements` | ✅ |
 | Usage descriptions (`NSHealthShareUsageDescription`, `NSHealthUpdateUsageDescription`) | Build settings (`INFOPLIST_KEY_*`); Turkish in `Peak/Resources/InfoPlist.xcstrings` | ✅ |
-| iCloud (CloudKit container `iCloud.com.tunamu.peak`, key-value store), Push, background remote notifications | — | Needs the paid Apple Developer Program; added before F8 |
+| iCloud (CloudKit container `iCloud.com.tunamu.peak`, key-value store), Push | `Peak/Peak.entitlements` | ✅ F8-01 |
+| Background remote notifications (CloudKit pushes) | `Peak/Info.plist` (`UIBackgroundModes`) | ✅ F8-01 |
 
 The app does not list `healthkit` in `UIRequiredDeviceCapabilities`: it works without Health access.

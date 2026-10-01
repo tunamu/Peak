@@ -285,10 +285,13 @@ extension PeakExportV1 {
     public struct Overload: Codable, Equatable, Sendable {
         public var thresholdReps: Int?
         public var resetReps: Int?
+        /// Reps added to the target while the weight stays. Older files do not have it.
+        public var repStep: Int?
 
-        public init(thresholdReps: Int? = nil, resetReps: Int? = nil) {
+        public init(thresholdReps: Int? = nil, resetReps: Int? = nil, repStep: Int? = nil) {
             self.thresholdReps = thresholdReps
             self.resetReps = resetReps
+            self.repStep = repStep
         }
     }
 

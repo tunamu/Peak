@@ -6,7 +6,7 @@
 ## CloudKit rules (apply from day one)
 
 - Every property has a default value or is optional.
-- No `@Attribute(.unique)`. Uniqueness is enforced in code (dedupe).
+- No `@Attribute(.unique)`. Uniqueness is enforced in code (see [Duplicates from sync](#duplicates-from-sync)).
 - All relationships are optional and have an inverse.
 - Enums are stored as `String` raw values.
 - Order is always an explicit `order: Int` field, because CloudKit does not keep relationship array order.
@@ -28,6 +28,8 @@ property that would break sync fails CI.
 | `Repositories/` | Reads and writes per area; the rules below live here |
 | `Settings/SettingsStore.swift` | Settings, see below |
 | `Seed/SampleProgram.swift` | The optional sample program |
+| `Sync/Deduplicator.swift` | Merging records two devices created separately |
+| `Sync/SyncMonitor.swift`, `Sync/SyncState.swift` | Sync status for Settings (per event kind: setup, import, export); runs the deduplicator after iCloud imports |
 
 Stored enum properties end in `Raw` (`muscleGroupRaw`); use the typed accessor (`muscleGroup`) in code and the raw
 field only in `#Predicate`, which cannot see computed properties.
@@ -70,26 +72,65 @@ Exercises are matched by name ignoring case, accents and extra spaces (`String.m
 
 - The store lives in the App Group container (`group.com.tunamu.peak`, `Library/Application Support/Peak.store`), so
   the widget opens the same data.
-- iCloud sync is **off** until F8. `ModelConfiguration` would otherwise sync automatically as soon as the app has an
-  iCloud entitlement, so `PeakStore` always passes the CloudKit setting explicitly.
+- iCloud sync is opt-in and per device (Settings › General › iCloud Sync, off by default; `AppData` keeps the choice
+  in the app's own defaults). SwiftData decides about CloudKit when a container opens, so turning it on or off opens
+  the store again with the new setting and the screens rebuild on it; no relaunch.
+- With sync on, the app syncs the store with the CloudKit private database `iCloud.com.tunamu.peak` (F8). The widget opens the same
+  store without sync; SwiftData records persistent history either way, so the app uploads the widget's writes the next
+  time it runs. `ModelConfiguration` would sync automatically as soon as a target has an iCloud entitlement, so
+  `PeakStore` always passes the CloudKit setting explicitly.
+- `PeakStore.initializeCloudKitSchema()` (debug builds, Settings › Developer › Initialize CloudKit Schema) creates every
+  record type in the development environment, including models with no data yet, before the schema is deployed to
+  production. It uses a throwaway store.
 - Keep the `ModelContainer` alive for as long as its contexts are used (the app holds it in `PeakApp`). A
   `ModelContext` does not retain its container; tests keep theirs alive for the whole run.
 
 ## Settings (App Group `UserDefaults`, not SwiftData)
 
-`stepGoal` (10000) · `waterGoalMl` (4000) · `overloadThresholdReps` (12) · `overloadResetReps` (6) · `unitSystem`
-(metric) · `quickWaterAmounts` ([200, 330, 500, 1000]) · `hasCompletedOnboarding`
+`stepGoal` (10000) · `waterGoalMl` (4000) · `overloadThresholdReps` (12) · `overloadResetReps` (6) ·
+`overloadRepStep` (1, 0–5) · `unitSystem` (metric) · `quickWaterAmounts` ([200, 330, 500, 1000]) ·
+`hasCompletedOnboarding`
 
 `SettingsStore` (`@Observable`) writes every change to the App Group's `UserDefaults`, where the widget can read it,
 and clamps values to the ranges the pickers offer (steps 1,000–50,000, water 1,000–6,000 ml, reps 6–20, up to four
-quick water amounts of 50–2,000 ml). A `SettingsMirror` can copy settings to iCloud's key-value store; that mirror
-arrives with iCloud sync in F8, because the key-value store needs the paid developer membership.
+quick water amounts of 50–2,000 ml). In the app, `UbiquitousSettingsMirror` copies every change to iCloud's key-value
+store too. At start-up the mirror's values win and are written to the App Group copy; settings only this device has go
+up to the mirror; keys neither side has stay unset, so a new device does not push defaults over values still
+downloading. Changes from another device arrive through the store's notification.
+
+## Duplicates from sync
+
+Two devices can each create the same record before iCloud brings them together: the sample program loaded on both,
+or "Row" added on each while offline. `Deduplicator` merges them; `SyncMonitor` runs it at launch and after every
+finished iCloud import (`NSPersistentCloudKitContainer.eventChangedNotification`), once per burst.
+
+| Model | Same record when | The duplicate's links move to the survivor |
+| --- | --- | --- |
+| `Exercise` | Same name (`matchingKey`) | Template items, session exercises; archived only if both were |
+| `WorkoutTemplate` | Same name, kind and exercise list (exercise and set count, in order) | Routine entries, sessions; archived only if both were |
+| `Routine` | Same name, schedule type, weekdays, interval and rotation (start date ignored) | Sessions; active if either was |
+
+- The survivor is the oldest record, so a movement's own settings win over a copy just made on another device.
+  Every device must pick the same survivor on its own (if each picked a different one, each would delete the other's
+  and both would be lost), so age is `createdAt` in whole seconds: CloudKit keeps milliseconds, and the same record
+  can carry a slightly different date on each device. Within the same second the smallest `id` wins (ids sync
+  unchanged).
+- Copies with the **same** `id` (one export imported on two devices) are left alone, for the same reason: nothing
+  tells them apart identically everywhere.
+- Exercises go first, then templates, then routines, so templates that differed only in which copy of an exercise they
+  used are recognized as the same.
+- The duplicate's own children (a template's items, a routine's entries) are deleted with it.
+- Sessions and water logs are never merged: each is an event, and two identical ones on a day can be real. Importing
+  the same file on two devices before they sync can therefore double sessions (F8-03 scenario); importing after sync
+  finds them as duplicates.
 
 ## Sample program
 
 `SampleProgram.install(into:)` adds 13 exercises, the design's six templates ("Chest & Biceps" … "Shoulder &
 Triceps") and a Monday/Wednesday/Friday routine ("Main Routine") that rotates through them. Running it twice adds
 nothing. It is offered in onboarding (F10-05); until then debug builds have Settings › Developer › Load Sample Program.
+It is never installed on its own, so a second device does not seed what iCloud is about to bring; if both devices
+load it before syncing, `Deduplicator` leaves one copy.
 
 ## Computed, never stored
 

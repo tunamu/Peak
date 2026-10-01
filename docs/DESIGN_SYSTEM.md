@@ -105,7 +105,7 @@ Button tint follows `ButtonRole`: `.confirm` → `tint.positive` (green), `.dest
 - **Table rows are never glass individually;** only the table container is.
 - Cards and tables set their `containerShape`, so a `ConcentricRectangle` inside them follows their corners.
 - **Reduce Transparency:** system glass adapts itself; custom fills fall back to an opaque `bg.canvas` tone.
-- Scrolling performance is measured with Instruments before release (F10).
+- Scrolling performance is measured with Instruments before release (F10-04, [PERFORMANCE.md](PERFORMANCE.md)).
 
 ## Components
 

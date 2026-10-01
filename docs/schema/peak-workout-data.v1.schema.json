@@ -230,7 +230,8 @@
           "additionalProperties": false,
           "properties": {
             "thresholdReps": { "type": "integer", "minimum": 1, "description": "A set must pass this many reps before its weight goes up. Default 12." },
-            "resetReps": { "type": "integer", "minimum": 1, "description": "The rep target after a weight increase. Default 6." }
+            "resetReps": { "type": "integer", "minimum": 1, "description": "The rep target after a weight increase. Default 6." },
+            "repStep": { "type": "integer", "minimum": 0, "description": "Reps added to the target while the weight stays the same. Default 1." }
           }
         },
         "unitSystem": { "enum": ["metric", "imperial"] },

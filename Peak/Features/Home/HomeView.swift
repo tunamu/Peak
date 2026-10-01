@@ -14,6 +14,7 @@ struct HomeView: View {
     @Environment(WorkoutLauncher.self) private var launcher
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.scenePhase) private var scenePhase
 
     @Query(sort: \Routine.sortIndex) private var routines: [Routine]
@@ -49,7 +50,8 @@ struct HomeView: View {
                         Task { await health.requestAccess() }
                     }
                     GlassEffectContainer(spacing: Spacing.medium) {
-                        HStack(spacing: Spacing.medium) {
+                        // Side by side; one above the other at accessibility text sizes (F10-02).
+                        tileLayout {
                             EnergyTile(result: isToday ? energy : nil)
                             WaterTile(day: selectedDay, isFuture: isFuture, calendar: calendar)
                         }
@@ -91,6 +93,11 @@ struct HomeView: View {
     // MARK: Day
 
     private var isToday: Bool { calendar.isDate(selectedDay, inSameDayAs: today) }
+
+    private var tileLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: Spacing.medium)) : AnyLayout(HStackLayout(spacing: Spacing.medium))
+    }
     private var isFuture: Bool { calendar.startOfDay(for: selectedDay) > calendar.startOfDay(for: today) }
 
     private var planner: DayPlanner { DayPlanner(calendar: calendar) }

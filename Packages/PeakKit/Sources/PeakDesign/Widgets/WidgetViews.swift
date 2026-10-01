@@ -225,9 +225,9 @@ public struct TodayWidgetView: View {
     /// Where a tap goes: start today's workout, open the running one, or Home (handled by the app, F9-04).
     public static func url(for workout: WidgetContent.Workout) -> URL? {
         switch workout {
-        case .planned: URL(string: "peak://workout/start")
-        case .active: URL(string: "peak://workout/open")
-        default: URL(string: "peak://home")
+        case .planned: PeakLink.startWorkout.url
+        case .active: PeakLink.openWorkout.url
+        default: PeakLink.home.url
         }
     }
 }

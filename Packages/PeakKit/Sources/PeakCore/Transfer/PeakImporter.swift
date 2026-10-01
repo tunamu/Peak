@@ -35,8 +35,9 @@ public struct PeakImporter {
         guard plan.preview.canImport else { throw PeakImportError.invalid(plan.preview.errors) }
         var backup: URL?
         if case .replaceAll(let directory) = mode {
-            backup = try writeBackup(to: directory)
-            try deleteEverything()
+            let eraser = PeakDataEraser(context: context, calendar: calendar, now: now)
+            backup = try eraser.writeBackup(to: directory)
+            try eraser.deleteEverything()
         }
         var writer = Writer(plan: plan, context: context, calendar: calendar)
         var summary = writer.write()
@@ -48,28 +49,5 @@ public struct PeakImporter {
     private func plan(_ data: PeakExportV1, mode: ImportMode) throws -> ImportPlan {
         let store = mode == .merge ? try StoreIndex(context: context, calendar: calendar) : StoreIndex()
         return ImportPlan(data: data, store: store, calendar: calendar, now: now)
-    }
-
-    /// "peak-backup-2026-09-30-181502.json" with everything in the store, written before a replace.
-    private func writeBackup(to directory: URL) throws -> URL {
-        let data = try PeakJSON.encode(
-            PeakExporter(context: context, calendar: calendar).export(settings: nil, at: now))
-        let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now)
-        let stamp = String(
-            format: "%04d-%02d-%02d-%02d%02d%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0, parts.hour ?? 0,
-            parts.minute ?? 0, parts.second ?? 0)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let url = directory.appending(path: "peak-backup-\(stamp).json")
-        try data.write(to: url, options: .atomic)
-        return url
-    }
-
-    /// Top-level records; their children go with them (cascade).
-    private func deleteEverything() throws {
-        for session in try context.fetch(FetchDescriptor<WorkoutSession>()) { context.delete(session) }
-        for routine in try context.fetch(FetchDescriptor<Routine>()) { context.delete(routine) }
-        for template in try context.fetch(FetchDescriptor<WorkoutTemplate>()) { context.delete(template) }
-        for exercise in try context.fetch(FetchDescriptor<Exercise>()) { context.delete(exercise) }
-        for log in try context.fetch(FetchDescriptor<WaterLog>()) { context.delete(log) }
     }
 }

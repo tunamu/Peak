@@ -63,6 +63,7 @@ import Testing
         let original = try settings()
         original.stepGoal = 12_000
         original.overloadThresholdReps = 10
+        original.overloadRepStep = 2
         original.unitSystem = .imperial
         let first = try exportedJSON(filledStore(), settings: original)
 
@@ -77,6 +78,7 @@ import Testing
         #expect(summary.sessions == data.sessions.count)
         #expect(summary.exercises == data.exercises?.count)
         #expect(copySettings.stepGoal == 12_000 && copySettings.unitSystem == .imperial)
+        #expect(copySettings.overloadRepStep == 2)
     }
 
     @Test func importKeepsIdsAndLinks() throws {

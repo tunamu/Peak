@@ -69,6 +69,11 @@ private struct AccessoryContent: View {
         }
         .font(.peakRow)
         .foregroundStyle(.peakTextPrimary)
+        // The bar above the tab bar has a fixed height: capped like the tab bar, with the large content viewer
+        // (F10-02). The identifier lets the accessibility audit know the cap is meant.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .accessibilityShowsLargeContentViewer()
+        .accessibilityIdentifier("peak.capped.accessory")
     }
 
     private var start: some View {
