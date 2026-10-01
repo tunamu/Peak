@@ -1,12 +1,14 @@
 #if DEBUG
     import PeakCore
     import SwiftUI
+    import WidgetKit
 
     /// The Home Screen widgets (C-16) at their real sizes on a wallpaper, in the states they can show: the Component
     /// Gallery's "widgets" section (`-PeakShowcaseSection widgets`).
     struct WidgetShowcase: View {
         private static let small = CGSize(width: 170, height: 170)
         private static let medium = CGSize(width: 364, height: 170)
+        private static let large = CGSize(width: 364, height: 382)
 
         private var running: WidgetContent {
             var content = WidgetContent.sample
@@ -62,6 +64,24 @@
                         tile(Self.small) { StepsWidgetView(content: restWithoutHealth) }
                     }
                     tile(Self.medium) { TodayWidgetView(content: restWithoutHealth) }
+                    // F11-11 (`-PeakShowcaseSection glance` or `lockScreen`).
+                    HStack(spacing: Spacing.medium) {
+                        tile(Self.small) { EnergyWidgetView(content: .sample) }
+                        tile(Self.small) { EnergyWidgetView(content: running) }
+                    }
+                    .id("glance")
+                    tile(Self.medium) {
+                        DashboardWidgetView(content: .sample) { label in
+                            Button {
+                            } label: {
+                                label.frame(maxWidth: .infinity)
+                            }
+                        }
+                    }
+                    tile(Self.large) { WeekWidgetView(content: .sample) }
+                    #if os(iOS)
+                        lockScreen.id("lockScreen")
+                    #endif
                     // The Live Activity's Lock Screen banner, running and paused.
                     ForEach([WorkoutActivityState.sample, paused], id: \.self) { state in
                         WorkoutActivityLockScreen(workoutName: "Back & Triceps", state: state) { label in
@@ -85,6 +105,27 @@
                     in: .rect(cornerRadius: Radius.card))
             }
         }
+
+        #if os(iOS)
+            /// The Lock Screen widgets, white on the wallpaper as iOS draws them.
+            private var lockScreen: some View {
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    TodayAccessoryView(content: .sample, family: .accessoryInline)
+                        .font(.peakRow)
+                    HStack(spacing: Spacing.medium) {
+                        WaterAccessoryView(content: .sample).frame(width: 72, height: 72)
+                        StepsAccessoryView(content: .sample).frame(width: 72, height: 72)
+                        EnergyAccessoryView(content: .sample).frame(width: 72, height: 72)
+                    }
+                    TodayAccessoryView(content: .sample, family: .accessoryRectangular)
+                        .frame(width: 172, height: 76, alignment: .leading)
+                }
+                .foregroundStyle(.white)
+                .tint(.white)
+                .environment(\.colorScheme, .dark)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        #endif
 
         /// A widget as the Home Screen draws it: its size, the system's margins, the rounded background.
         private func tile(_ size: CGSize, @ViewBuilder content: () -> some View) -> some View {

@@ -25,16 +25,16 @@ struct CompletedWorkoutSheet: View {
 
                 ForEach(indexedExercises, id: \.element.persistentModelID) { index, exercise in
                     Section {
+                        if exercise.hasNotes {
+                            MovementNotesRow(exercise: exercise)
+                        }
                         if exercise.isCardio {
                             segmentRows(of: exercise)
                         } else {
                             setRows(of: exercise)
                         }
                     } header: {
-                        Text(verbatim: "\(index + 1)- \(exercise.exerciseName)")
-                            .font(.peakCardValue)
-                            .foregroundStyle(.peakTextPrimary)
-                            .textCase(nil)
+                        MovementHeader(index: index, exercise: exercise)
                     }
                 }
             }

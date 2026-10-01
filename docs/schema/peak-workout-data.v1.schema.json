@@ -66,6 +66,8 @@
           "exclusiveMinimum": 0,
           "description": "Weight added when a set passes the rep threshold. Default 2.5."
         },
+        "note": { "type": "string", "description": "How the movement is set up: seat height, grip." },
+        "overload": { "$ref": "#/$defs/overload" },
         "archived": { "type": "boolean" },
         "createdAt": { "$ref": "#/$defs/timestamp" }
       }
@@ -79,6 +81,7 @@
         "name": { "$ref": "#/$defs/name" },
         "kind": { "$ref": "#/$defs/exerciseKind" },
         "note": { "type": "string" },
+        "overload": { "$ref": "#/$defs/overload" },
         "archived": { "type": "boolean" },
         "createdAt": { "$ref": "#/$defs/timestamp" },
         "items": {
@@ -181,6 +184,7 @@
       "properties": {
         "exerciseId": { "$ref": "#/$defs/id" },
         "exerciseName": { "$ref": "#/$defs/name" },
+        "note": { "type": "string", "description": "How it went this time." },
         "completed": { "type": "boolean" },
         "sets": { "type": "array", "items": { "$ref": "#/$defs/set" } },
         "segments": { "type": "array", "items": { "$ref": "#/$defs/segment" } }
@@ -218,6 +222,16 @@
         "source": { "enum": ["app", "widget", "intent"] }
       }
     },
+    "overload": {
+      "type": "object",
+      "description": "Progressive overload. On a workout or a movement each value overrides the app-wide setting; a missing one follows it.",
+      "additionalProperties": false,
+      "properties": {
+        "thresholdReps": { "type": "integer", "minimum": 1, "description": "A set must pass this many reps before its weight goes up. Default 12." },
+        "resetReps": { "type": "integer", "minimum": 1, "description": "The rep target after a weight increase. Default 6." },
+        "repStep": { "type": "integer", "minimum": 0, "description": "Reps added to the target while the weight stays the same. Default 1." }
+      }
+    },
     "settings": {
       "type": "object",
       "description": "Values outside the app's ranges are clamped on import.",
@@ -225,15 +239,7 @@
       "properties": {
         "stepGoal": { "type": "integer", "minimum": 1 },
         "waterGoalMl": { "type": "integer", "minimum": 1 },
-        "overload": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "thresholdReps": { "type": "integer", "minimum": 1, "description": "A set must pass this many reps before its weight goes up. Default 12." },
-            "resetReps": { "type": "integer", "minimum": 1, "description": "The rep target after a weight increase. Default 6." },
-            "repStep": { "type": "integer", "minimum": 0, "description": "Reps added to the target while the weight stays the same. Default 1." }
-          }
-        },
+        "overload": { "$ref": "#/$defs/overload" },
         "unitSystem": { "enum": ["metric", "imperial"] },
         "quickWaterAmounts": { "type": "array", "items": { "type": "integer", "minimum": 1 } }
       }

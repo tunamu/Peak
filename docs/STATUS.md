@@ -1,7 +1,7 @@
 # Peak Development Status
 
 **Last Updated**: 2026-10-01  
-**Current Phase**: F10 — Polish (F10-01, F10-03, F10-05, F10-06 done; F10-02 and F10-04 wait for a device pass) · F8 two-device check waits for an iCloud account with room · Next: F11 — Analysis and v1 improvements
+**Current Phase**: F11 — Analysis and v1 improvements (F11-01…F11-12 done) · next: device checks, then F12 (App Store) · F10-02 and F10-04 wait for a device pass · F8 two-device check waits for an iCloud account with room
 
 ## F0 — Repository and infrastructure
 
@@ -122,10 +122,25 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | F10-05 | Onboarding (C-15) | ✅ First launch: welcome, Apple Health (what is read and saved; Connect / Not Now; skipped when already decided or unavailable), step and water goals, iCloud Sync (Turn On / Not Now, applied at the end so the store reopens once), and how to start: Import My Data (onboarding closes, Settings opens on the file picker), the sample program, or empty. Anyone with data already (an update, or data from iCloud) skips it. Each step and the import path seen on the simulator in Turkish |
 | F10-06 | Empty and error states | ✅ Each empty list has one sentence and one action: Settings › Recorded Workouts (Create Workout), Routines (Create Routine, or Create Workout first when there are none), Home without a routine (Set Up), without Health (Connect Apple Health); an import with nothing to add says to try another header row or layout. Seen on a clean simulator in Turkish |
 
+## F11: Analysis and v1 improvements 🔶
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F11-01 | Decisions: Analysis (ADR 0020), reminders, haptics | ✅ [ADR 0020](adr/0020-analysis-screen.md), [ADR 0021](adr/0021-local-reminders.md), DESIGN_SYSTEM › Haptics |
+| F11-02 | `PerformanceAnalysis` engine | ✅ Estimated one-rep max (Epley), best set, per-movement points with records and a trend (±2% band against the last three), per-template series, weeks with empty ones, streak, muscle balance in done sets, period totals and change. Muscle groups guessed from names when stored as Other. Checked with the author's real history: Dumbbell Chest Press rises every session (+6% at the end), every movement lands in its log section's group, volume equals `SessionStatistics` |
+| F11-03 | Analysis tab: Performance and History pages | ✅ `AnalysisView` replaces the placeholder: a segmented control and a paging horizontal scroll view kept in step; nothing inside a page scrolls sideways. One sentence and Import Workout Data when there is nothing yet |
+| F11-04 | Performance page | ✅ Period menu (4 weeks … all time); Workouts, Volume, Sets, Targets Hit with the change against the period before (targets hit only counts movements that had targets, so imports are not judged); weekly volume chart (Swift Charts) with the run of weeks; muscle balance in sets; Movements and Workouts lists with trend arrows |
+| F11-05 | Movement and workout detail, trend arrows | ✅ Movement: Est. 1RM, Weight, Reps, Volume (bodyweight: Reps, Sets; walk: Distance, Duration), records in green, best set, the trend in words, every session opening the workout. Workout: Volume, Completed, Targets Hit, Duration. Charts plot the user's unit. Seen on the simulator with the author's history in English and Turkish, dark and light |
+| F11-06 | History page with month calendar | ✅ `MonthCalendar` (locale's first weekday, dots on workout days, arrow buttons, future days disabled, capped at the largest standard size); the month's or the day's workouts as Home's finished-workout cards (date, name, time, movements done), each opening `CompletedWorkoutSheet`. Opens on the month of the latest workout |
+| F11-07 | Reminders: planner, scheduling, permission | ✅ `ReminderPlanner` (14 days, at most 60; none on a day already done or while a workout runs) and `Reminders` (replaces `peak.reminder.*` at launch, on return, after saves, on setting changes). Settings › Reminders: Workout Day Reminder (on, 09:00), time, a note and a link when notifications are off. Onboarding's Reminders step. A tap opens Home. [ADR 0021](adr/0021-local-reminders.md), [NOTIFICATIONS.md](NOTIFICATIONS.md). `ReminderTests` on the simulator: allowed through onboarding, the banner arrived with "Today: … Ready?", a tap opened Peak |
+| F11-08 | Reminder per routine | ✅ Set Routine › Reminder: Remind Me and its time; kept on the device with the morning reminder (D-29 revised: no schema change) |
+| F11-10 | Progressive overload per workout and per movement | ✅ Set Workout › Progressive Overload › Own Rule, and each movement's ⓘ settings (also from Analysis): threshold, reps after weight up, rep increase; unset values follow the workout, then Settings (`ProgressionRule.applying`, tested). Targets at start and the summary's Next Time use it. SchemaV2 ([ADR 0022](adr/0022-schema-v2.md)) |
+| F11-12 | Movement notes | ✅ A setup note on the movement (pinned above its sets every time) and a note per session (the note button by each movement while logging, with last time's note). Shown in the read-only workout and as the movement's notes over time in Analysis. Peak JSON carries them. SchemaV2 with a lightweight migration, checked on a v1 store file (`MigrationTests`) |
+| F11-11 | More widgets | ✅ Lock Screen: Water, Steps and Energy rings (`accessoryCircular`), Today's Workout (`accessoryRectangular`, `accessoryInline`). Home Screen: Energy (small), Dashboard (medium: steps, water with its button, energy), This Week (large: the week's done and planned days, today's workout and Energy Level, the week's workouts and volume in the user's unit, weeks in a row; `WeekGlance`, tested). Control Center: Log Water (runs in place) and Start Workout (opens today's workout). All in the Component Gallery at real sizes (`-PeakShowcaseSection glance\|lockScreen`); English and Turkish. To add and check on a device |
+| F11-09 | Haptics catalog | ✅ `PeakHaptic` in PeakDesign; every haptic goes through it. New: workout started, pause and resume, warning before "Start anyway?" and Delete All Data, selection on the Analysis pickers and calendar. Table in DESIGN_SYSTEM › Haptics. To feel on a device |
+
 ## Upcoming phases (⬜)
 
-- F11: Analysis and v1 improvements, before the App Store (Analysis screen, progressive overload per workout and per
-  movement; scope settled with the maintainer)
 - F12: App Store release
 
 ## Notes

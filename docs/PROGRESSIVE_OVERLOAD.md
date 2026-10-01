@@ -37,6 +37,10 @@ Each set is evaluated on its own:
   target weight and the reps field shows the target reps (10) as its placeholder.
 - **Unfinished sets** (0 reps) in the last session are ignored.
 - **lb mode:** targets are computed in kg and shown rounded to 0.5 lb. An increment entered in lb is converted to kg.
+- **Per workout and per movement (F11-10):** `T`, `R` and `S` can be set for one workout (Set Workout › Progressive
+  Overload › Own Rule) and for one movement (its ⓘ settings, or Analysis › the movement › settings). Each value comes
+  from the movement if set, else the workout, else Settings (`ProgressionRule.applying(_:)`); a value left unset
+  follows the level below. The summary's "Next Time" uses the same rule.
 
 ## Success (for statistics)
 

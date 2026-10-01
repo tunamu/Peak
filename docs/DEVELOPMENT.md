@@ -101,7 +101,7 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakShowICloud YES` | With `-PeakTab settings`, taps the iCloud row once sync reports a problem, or after 30 s |
 | `-PeakToggleSync YES` | With `-PeakTab settings`, flips iCloud Sync once after launch, without the question |
 | `-PeakOpenLink peak://workout/start` | Opens a `peak://` link at launch, as a widget tap does (`simctl openurl` asks first) |
-| `-PeakOnboarding YES` | Shows onboarding even when there is data; add `-PeakOnboardingStep 0…4` to open on a step, or `-PeakOnboardingFinish import\|sample\|empty` to pick a start |
+| `-PeakOnboarding YES` | Shows onboarding even when there is data; add `-PeakOnboardingStep 0…5` to open on a step, or `-PeakOnboardingFinish import\|sample\|empty` to pick a start |
 | `-PeakDeleteAll YES` | With `-PeakTab settings`, opens Delete All Data (nothing is deleted without typing the word) |
 | `-PeakRequestHealth YES` | With `-PeakTab settings`, taps the Apple Health row |
 | `-PeakLoadSampleHistory YES` | With `-PeakTab settings`, loads the sample program and three finished sessions before today (Settings › Developer › Load Sample History) |
@@ -110,6 +110,9 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakHomeDay yesterday\|tomorrow\|nextWeek` | Selects that day on Home (a bare `-1` would be read as another argument) |
 | `-PeakStartWorkout YES` | Starts the first workout from Home, to see the running state |
 | `-PeakEnergy notReady` | Forces the energy level the "Start anyway?" alert checks (with `-PeakStartWorkout`, shows the alert) |
+| `-PeakAnalysisPage performance\|history` | With `-PeakTab analysis`, opens that page |
+| `-PeakAnalysisMovement "Lat Pulldown"` | With `-PeakTab analysis`, opens that movement's chart (by name, case and accents ignored) |
+| `-PeakAnalysisScroll muscles\|movements\|workouts` | With `-PeakTab analysis`, scrolls the Performance page to that section |
 | `-PeakStartWalk YES` | Discards the running workout and starts a walk (creates a Walking template if missing) |
 | `-PeakPauseWorkout YES` | Pauses the running workout, to see the paused state |
 | `-PeakOpenCompleted YES` | Opens the latest finished workout read-only, as tapping its card does |

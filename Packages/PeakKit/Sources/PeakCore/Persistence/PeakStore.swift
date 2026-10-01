@@ -2,10 +2,13 @@ import CoreData
 import Foundation
 import SwiftData
 
-/// Every schema version and the steps between them. Only `SchemaV1` exists so far.
+/// Every schema version and the steps between them. V1 → V2 (F11) only adds optional or defaulted properties, so it
+/// is lightweight, as CloudKit sync requires.
 public enum PeakMigrationPlan: SchemaMigrationPlan {
-    public static var schemas: [any VersionedSchema.Type] { [SchemaV1.self] }
-    public static var stages: [MigrationStage] { [] }
+    public static var schemas: [any VersionedSchema.Type] { [SchemaV1.self, SchemaV2.self] }
+    public static var stages: [MigrationStage] {
+        [.lightweight(fromVersion: SchemaV1.self, toVersion: SchemaV2.self)]
+    }
 }
 
 /// Builds the app's `ModelContainer`.
@@ -14,7 +17,7 @@ public enum PeakStore {
     public static let appGroupID = "group.com.tunamu.peak"
     public static let cloudKitContainerID = "iCloud.com.tunamu.peak"
 
-    public static var schema: Schema { Schema(versionedSchema: SchemaV1.self) }
+    public static var schema: Schema { Schema(versionedSchema: SchemaV2.self) }
 
     public enum Location: Sendable {
         /// The App Group container: the app and the widget see the same data.
@@ -70,7 +73,7 @@ public enum PeakStore {
         /// types it has uploaded. Uses a throwaway store: the app's data is not touched. Blocks until CloudKit
         /// answers, so call it off the main actor.
         public static func initializeCloudKitSchema() throws {
-            guard let model = NSManagedObjectModel.makeManagedObjectModel(for: SchemaV1.models) else {
+            guard let model = NSManagedObjectModel.makeManagedObjectModel(for: SchemaV2.models) else {
                 throw CocoaError(.coreData)
             }
             let directory = FileManager.default.temporaryDirectory

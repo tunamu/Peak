@@ -16,9 +16,14 @@ Target: Q2 2027
 - 🔶 Widgets (small, medium: water with a button, steps, today's workout) and the workout's Live Activity
 - ✅ Onboarding flow
 - ✅ Localization (EN, TR)
-- ⬜ Analysis screen: progress per movement (best set, estimated 1RM), weekly volume, frequency and streak (F11)
-- ⬜ Progressive overload per workout and per movement: the threshold, reset reps and rep increase set for one
-  workout template or one movement, over the app-wide values in Settings (F11, after the Analysis screen)
+- ✅ Analysis screen (F11, [ANALYSIS.md](ANALYSIS.md)): Performance (period totals, weekly volume and sessions, streak,
+  muscle balance, every movement with a trend arrow and its chart) and History (month calendar and every session)
+- ✅ Reminders: a morning reminder on workout days and an optional reminder per routine (F11)
+- ✅ Haptics: one catalog of system feedback for meaningful moments (F11)
+- ✅ More widgets: Lock Screen rings and today's workout, Energy, Dashboard, This Week, Control Center buttons (F11)
+- ✅ Progressive overload per workout and per movement: the threshold, reset reps and rep increase set for one
+  workout template or one movement, over the app-wide values in Settings (F11)
+- ✅ Movement notes: setup and per-session notes (F11)
 
 ### Quality
 - ✅ Swift Testing suite (package tests on the Mac host and the iOS simulator)

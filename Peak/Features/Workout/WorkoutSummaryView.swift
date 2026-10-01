@@ -73,7 +73,7 @@ struct WorkoutSummaryView: View {
         }
         .padding(Spacing.large)
         .onAppear { isShown = true }
-        .sensoryFeedback(.success, trigger: isShown)
+        .peakHaptic(.success, trigger: isShown)
         .fittedSheet()
     }
 

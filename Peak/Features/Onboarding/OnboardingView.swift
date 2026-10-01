@@ -2,8 +2,8 @@ import PeakCore
 import PeakDesign
 import SwiftUI
 
-/// C-15: the first launch. Welcome, Apple Health, goals, iCloud Sync, and how to start: import, the sample program,
-/// or empty. Every step can be passed by; nothing here is needed to use the app.
+/// C-15: the first launch. Welcome, Apple Health, goals, iCloud Sync, reminders, and how to start: import, the sample
+/// program, or empty. Every step can be passed by; nothing here is needed to use the app.
 struct OnboardingView: View {
     enum Start {
         case importData, sampleProgram, empty
@@ -16,13 +16,14 @@ struct OnboardingView: View {
     }
 
     private enum Step: Int, CaseIterable {
-        case welcome, health, goals, iCloud, start
+        case welcome, health, goals, iCloud, reminders, start
     }
 
     let onFinish: (Outcome) -> Void
 
     @Environment(SettingsStore.self) private var settings
     @Environment(HealthConnection.self) private var health
+    @Environment(Reminders.self) private var reminders
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var step = Step.welcome
     @State private var syncsWithICloud = false
@@ -43,9 +44,12 @@ struct OnboardingView: View {
         }
         .background(.peakCanvas)
         .animation(reduceMotion ? nil : .snappy, value: step)
-        .task { await health.refresh() }
+        .task {
+            await health.refresh()
+            await reminders.refreshAuthorization()
+        }
         #if DEBUG
-            // Screenshot helper: `-PeakOnboarding YES -PeakOnboardingStep 2` opens on a step (0 welcome … 4 start).
+            // Screenshot helper: `-PeakOnboarding YES -PeakOnboardingStep 2` opens on a step (0 welcome … 5 start).
             .onAppear {
                 if let first = Step(rawValue: UserDefaults.standard.integer(forKey: "PeakOnboardingStep")) {
                     step = first
@@ -69,6 +73,9 @@ struct OnboardingView: View {
         HStack {
             Button {
                 var target = Step(rawValue: step.rawValue - 1)
+                if target == .reminders && reminders.authorization != .notDetermined {
+                    target = .iCloud
+                }
                 if target == .health && health.status != .notDetermined {
                     target = .welcome
                 }
@@ -102,6 +109,7 @@ struct OnboardingView: View {
         case .health: healthStep
         case .goals: goals
         case .iCloud: iCloud
+        case .reminders: remindersStep
         case .start: start
         }
     }
@@ -162,6 +170,14 @@ struct OnboardingView: View {
         }
     }
 
+    private var remindersStep: some View {
+        VStack(alignment: .leading, spacing: Spacing.large) {
+            title("Reminders")
+            point("bell", "A reminder in the morning on days with a planned workout.")
+            point("clock", "Change its time, or give a routine its own, in Settings.")
+        }
+    }
+
     private var start: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
             title("How do you want to start?")
@@ -171,16 +187,22 @@ struct OnboardingView: View {
                     .foregroundStyle(.peakTextSecondary)
             }
             VStack(spacing: Spacing.small) {
-                choice("Import My Data", detail: "From a Peak export, an Excel or a CSV file.") {
+                choice(
+                    "Import My Data", detail: "From a Peak export, an Excel or a CSV file.",
+                    systemImage: "square.and.arrow.down"
+                ) {
                     finish(.importData)
                 }
                 choice(
                     "Start with a Sample Program",
-                    detail: "Six workouts and a Monday, Wednesday, Friday routine. Change anything later."
+                    detail: "Six workouts and a Monday, Wednesday, Friday routine. Change anything later.",
+                    systemImage: "list.bullet.rectangle"
                 ) {
                     finish(.sampleProgram)
                 }
-                choice("Start Empty", detail: "Set up your own workouts in Settings.") {
+                choice(
+                    "Start Empty", detail: "Set up your own workouts in Settings.", systemImage: "plus.square.dashed"
+                ) {
                     finish(.empty)
                 }
             }
@@ -210,6 +232,18 @@ struct OnboardingView: View {
                         syncsWithICloud = true
                         next()
                     }
+                case .reminders:
+                    secondary("Not Now") {
+                        reminders.isMorningOn = false
+                        next()
+                    }
+                    primary("Turn On") {
+                        Task {
+                            reminders.isMorningOn = true
+                            await reminders.requestAuthorization()
+                            next()
+                        }
+                    }
                 case .start:
                     EmptyView()
                 }
@@ -219,11 +253,15 @@ struct OnboardingView: View {
 
     // MARK: Flow
 
-    /// The next step; Apple Health is skipped where it does not exist (an iPad) or is already decided.
+    /// The next step; Apple Health and reminders are skipped where they are already decided (or Health does not
+    /// exist, as on an iPad).
     private func next() {
         var target = Step(rawValue: step.rawValue + 1)
         if target == .health && health.status != .notDetermined {
             target = .goals
+        }
+        if target == .reminders && reminders.authorization != .notDetermined {
+            target = .start
         }
         go(to: target)
     }
@@ -274,21 +312,34 @@ extension OnboardingView {
         .glassCard()
     }
 
-    fileprivate func choice(_ title: LocalizedStringKey, detail: LocalizedStringKey, action: @escaping () -> Void)
-        -> some View
-    {
+    /// A roomy choice card: its symbol, the title and a line on what it does, and a chevron.
+    fileprivate func choice(
+        _ title: LocalizedStringKey, detail: LocalizedStringKey, systemImage: String, action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                Text(title)
-                    .font(.peakCardValue)
+            HStack(spacing: Spacing.medium) {
+                Image(systemName: systemImage)
+                    .font(.title2)
                     .foregroundStyle(.peakTextPrimary)
-                Text(detail)
+                    .frame(width: 32)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                    Text(title)
+                        .font(.peakCardValue)
+                        .foregroundStyle(.peakTextPrimary)
+                    Text(detail)
+                        .font(.peakDetail)
+                        .foregroundStyle(.peakTextSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: "chevron.right")
                     .font(.peakDetail)
-                    .foregroundStyle(.peakTextSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .foregroundStyle(.peakTextTertiary)
+                    .accessibilityHidden(true)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, Spacing.xxSmall)
+            .padding(.vertical, Spacing.medium)
+            .frame(minHeight: 88)
         }
         .buttonStyle(PeakGlassButtonStyle(tone: .neutral))
     }

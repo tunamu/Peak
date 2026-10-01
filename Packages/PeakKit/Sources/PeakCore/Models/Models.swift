@@ -1,16 +1,16 @@
 import Foundation
 
-// The current schema's models under short names. When `SchemaV2` arrives, these point at it.
-public typealias Exercise = SchemaV1.Exercise
-public typealias WorkoutTemplate = SchemaV1.WorkoutTemplate
-public typealias TemplateItem = SchemaV1.TemplateItem
-public typealias Routine = SchemaV1.Routine
-public typealias RoutineEntry = SchemaV1.RoutineEntry
-public typealias WorkoutSession = SchemaV1.WorkoutSession
-public typealias SessionExercise = SchemaV1.SessionExercise
-public typealias SetEntry = SchemaV1.SetEntry
-public typealias CardioSegment = SchemaV1.CardioSegment
-public typealias WaterLog = SchemaV1.WaterLog
+// The current schema's models under short names (SchemaV2 since F11).
+public typealias Exercise = SchemaV2.Exercise
+public typealias WorkoutTemplate = SchemaV2.WorkoutTemplate
+public typealias TemplateItem = SchemaV2.TemplateItem
+public typealias Routine = SchemaV2.Routine
+public typealias RoutineEntry = SchemaV2.RoutineEntry
+public typealias WorkoutSession = SchemaV2.WorkoutSession
+public typealias SessionExercise = SchemaV2.SessionExercise
+public typealias SetEntry = SchemaV2.SetEntry
+public typealias CardioSegment = SchemaV2.CardioSegment
+public typealias WaterLog = SchemaV2.WaterLog
 
 // Typed access to the enums stored as raw strings, and relationship arrays in their `order`.
 
@@ -29,6 +29,19 @@ extension Exercise {
         get { Equipment(rawValue: equipmentRaw) ?? .other }
         set { equipmentRaw = newValue.rawValue }
     }
+
+    /// The movement's own progressive overload (F11-10).
+    public var overloadOverride: OverloadOverride {
+        get {
+            OverloadOverride(
+                thresholdReps: overloadThresholdReps, resetReps: overloadResetReps, repStep: overloadRepStep)
+        }
+        set {
+            overloadThresholdReps = newValue.thresholdReps
+            overloadResetReps = newValue.resetReps
+            overloadRepStep = newValue.repStep
+        }
+    }
 }
 
 extension WorkoutTemplate {
@@ -39,6 +52,19 @@ extension WorkoutTemplate {
 
     public var orderedItems: [TemplateItem] {
         (items ?? []).sorted { $0.order < $1.order }
+    }
+
+    /// The workout's own progressive overload (F11-10).
+    public var overloadOverride: OverloadOverride {
+        get {
+            OverloadOverride(
+                thresholdReps: overloadThresholdReps, resetReps: overloadResetReps, repStep: overloadRepStep)
+        }
+        set {
+            overloadThresholdReps = newValue.thresholdReps
+            overloadResetReps = newValue.resetReps
+            overloadRepStep = newValue.repStep
+        }
     }
 }
 

@@ -88,4 +88,33 @@ import Testing
         #expect(WidgetSnapshot.read(from: url) == snapshot)
         #expect(WidgetSnapshot.read(from: url.appending(path: "missing")) == nil)
     }
+
+    /// F11-11: the large widget's week, Monday to Sunday here, with a workout done on Monday and the routine's
+    /// Wednesday and Friday still planned.
+    @Test func weekGlance() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let context = try makeContext()
+        try SampleProgram.install(into: context)
+        let now = try monday()
+        let template = try #require(try TemplateRepository(context: context).all().first)
+        let routine = try RoutineRepository(context: context).all().first
+        let session = SessionRepository(context: context).start(from: template, routine: routine, at: now)
+        for set in session.orderedExercises.flatMap(\.orderedSets) {
+            set.weightKg = 10
+            set.reps = 10
+        }
+        session.status = .completed
+        session.endedAt = now.addingTimeInterval(3_600)
+        try context.save()
+
+        let later = now.addingTimeInterval(4 * 3_600)
+        let week = try WidgetContent.make(
+            context: context, settings: settings(), snapshot: nil, now: later, calendar: calendar
+        ).week
+        #expect(week.days.count == 7)
+        #expect(week.days.map(\.status) == [.done, .none, .planned, .none, .planned, .none, .none])
+        #expect(week.workouts == 1 && week.streakWeeks == 1)
+        #expect(week.volumeKg == Double(session.setCount) * 100)
+    }
 }

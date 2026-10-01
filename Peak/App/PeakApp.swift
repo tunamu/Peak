@@ -19,6 +19,8 @@ struct PeakApp: App {
     @State private var settings: SettingsStore
     @State private var health = HealthConnection(service: PeakApp.makeHealthService())
     @State private var launcher = WorkoutLauncher()
+    /// Created at launch so a tap on a reminder that launches the app is delivered (F11-07).
+    @State private var reminders = Reminders()
     /// Kept outside the view tree, so the open tab survives reopening the store when sync is turned on or off.
     @State private var tab = RootTabView.TabID.home
     @State private var router = LinkRouter.shared
@@ -70,6 +72,7 @@ struct PeakApp: App {
         WindowGroup {
             RootTabView(selection: $tab)
                 .modifier(WidgetSync())
+                .modifier(ReminderSync())
                 // A new container (sync turned on or off) rebuilds the screens, so none keeps a record of the old one.
                 .id(data.generation)
                 .modelContainer(data.container)
@@ -100,6 +103,7 @@ struct PeakApp: App {
         .environment(settings)
         .environment(health)
         .environment(launcher)
+        .environment(reminders)
     }
 
     private var needsOnboarding: Binding<Bool> {

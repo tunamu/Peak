@@ -19,6 +19,8 @@ struct WorkoutSessionSheet: View {
     @Environment(HealthConnection.self) private var health
     @State private var isDiscardConfirmationShown = false
     @State private var isFinishConfirmationShown = false
+    /// The movement whose notes are open (F11-12).
+    @State private var notesFor: SessionExercise?
     /// Set once the workout is finished: the sheet then shows the summary (S-11).
     @State private var summary: WorkoutSummary?
     @FocusState private var focus: SetField?
@@ -49,6 +51,11 @@ struct WorkoutSessionSheet: View {
 
                     ForEach(indexedExercises, id: \.element.persistentModelID) { index, exercise in
                         Section {
+                            if exercise.hasNotes {
+                                MovementNotesRow(exercise: exercise)
+                                    .moveDisabled(true)
+                                    .deleteDisabled(true)
+                            }
                             if exercise.isCompleted {
                                 CompletedMovementRow(exercise: exercise, unit: settings.unitSystem) {
                                     try? controller.reopenMovement(exercise)
@@ -62,10 +69,10 @@ struct WorkoutSessionSheet: View {
                                 completeButton(for: exercise, proxy: proxy)
                             }
                         } header: {
-                            Text(verbatim: "\(index + 1)- \(exercise.exerciseName)")
-                                .font(.peakCardValue)
-                                .foregroundStyle(.peakTextPrimary)
-                                .textCase(nil)
+                            MovementHeader(index: index, exercise: exercise) {
+                                focus = nil
+                                notesFor = exercise
+                            }
                         }
                         .id(exercise.persistentModelID)
                     }
@@ -99,6 +106,7 @@ struct WorkoutSessionSheet: View {
         }
         .presentationDetents([.large])
         .interactiveDismissDisabled()
+        .sheet(item: $notesFor) { MovementNoteSheet(exercise: $0) }
         .alert(finishQuestion, isPresented: $isFinishConfirmationShown) {
             Button("Finish Workout") { finish() }
             Button("Cancel", role: .cancel) {}

@@ -288,8 +288,8 @@ struct SetRow: View {
         // Five fixed columns: capped, with the large content viewer beyond (F10-02).
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         // F10-03: one light tap when the set becomes done, not on every digit or when it reopens.
-        .sensoryFeedback(trigger: set.isCompleted) { wasDone, isDone in
-            !wasDone && isDone ? .impact(weight: .light) : nil
+        .peakHaptic(trigger: set.isCompleted) { wasDone, isDone in
+            !wasDone && isDone ? .setDone : nil
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("Set \(number)"))

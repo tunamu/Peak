@@ -138,6 +138,24 @@ Health, the workout launcher).
 
 Known limit: the system wheel picker does not scale its rows with Dynamic Type; the labels around it do.
 
+## Haptics
+
+D-23: the system's own feedback, only for moments that matter, through one catalog (`PeakHaptic` in
+`PeakDesign/Haptics.swift`, used as `.peakHaptic(.selection, trigger: day)`). Controls that already give feedback
+(toggles, steppers, pickers, list reordering, the keyboard) get nothing more, and iOS drops all of it when System
+Haptics is off.
+
+| Moment | `PeakHaptic` | System feedback | Where |
+| --- | --- | --- | --- |
+| A day, page, period or measure picked | `.selection` | `.selection` | Week strip, month calendar, Analysis pages, period and measure pickers |
+| A set done | `.setDone` | light impact | Set row, when its reps make it done (not on every digit, not on reopening) |
+| Water added | `.waterAdded` | `.increase` | Water tile |
+| A workout begins | `.workoutStarted` | medium impact | Wherever it starts (Home, the bar above the tab bar, a shortcut, a link) |
+| Pause or resume | `.pauseToggled` | light impact | Workout sheet, the bar above the tab bar, the Live Activity's button once the app is open |
+| Workout finished, import done | `.success` | `.success` | Summary, result sheet |
+| Asks before going on | `.warning` | `.warning` | "Start anyway?", Delete All Data |
+| Something failed | `.error` | `.error` | Result sheet (import failed) |
+
 ## Showcase
 
 `DesignShowcase` (debug builds only) shows every token, primitive and component with sample content from the design,

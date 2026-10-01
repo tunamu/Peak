@@ -60,7 +60,7 @@ struct WaterTile: View {
 }
 
 /// S-01: pick an amount on the four-stop slider, then Add or Remove. The day's total goes to Apple Health as one
-/// sample.
+/// sample. Adding closes the sheet once the new total has shown; removing keeps it open for another correction.
 struct WaterSheet: View {
     let day: Date
     let logs: [WaterLog]
@@ -69,6 +69,7 @@ struct WaterSheet: View {
     @Environment(HealthConnection.self) private var health
     @Environment(\.modelContext) private var modelContext
     @Environment(\.calendar) private var calendar
+    @Environment(\.dismiss) private var dismiss
     @State private var stop = 0.0
     @State private var changes = 0
 
@@ -121,6 +122,11 @@ struct WaterSheet: View {
 
                     Button {
                         change(by: amount)
+                        // The new total and the haptic first, then the sheet goes.
+                        Task {
+                            try? await Task.sleep(for: .milliseconds(600))
+                            dismiss()
+                        }
                     } label: {
                         Label("Add", systemImage: "plus")
                             .labelStyle(.titleAndTrailingIcon)
@@ -133,7 +139,7 @@ struct WaterSheet: View {
         }
         .multilineTextAlignment(.center)
         .padding(Spacing.large)
-        .sensoryFeedback(.increase, trigger: changes)
+        .peakHaptic(.waterAdded, trigger: changes)
         .fittedSheet()
     }
 

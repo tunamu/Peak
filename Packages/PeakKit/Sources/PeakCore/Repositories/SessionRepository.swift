@@ -35,6 +35,8 @@ public final class SessionRepository {
             if item.exercise?.kind == .cardio {
                 exercise.segments = [CardioSegment(order: 0)]
             } else {
+                // The movement's own rule, else the workout's, else the app-wide one (F11-10).
+                let rule = rule.applying(template.overloadOverride, item.exercise?.overloadOverride)
                 let targets = targets(for: item.exercise, setCount: item.targetSets, rule: rule)
                 exercise.sets = (0..<item.targetSets).map { order in
                     let set = SetEntry(order: order)
@@ -120,6 +122,25 @@ public final class SessionRepository {
                 return $0.exerciseName.matchingKey == key
             }
         }
+    }
+
+    /// The movement's latest note from an earlier session ("Seat 4 felt low"), for "Last time" while logging it
+    /// (F11-12); `nil` when none has one.
+    public func previousNote(before item: SessionExercise) throws -> String? {
+        guard let session = item.session else { return nil }
+        let key = item.exerciseName.matchingKey
+        return try completed()
+            .filter { $0.persistentModelID != session.persistentModelID && $0.startedAt < session.startedAt }
+            .lazy
+            .compactMap { candidate in
+                candidate.orderedExercises.first {
+                    if let linked = $0.exercise, let exercise = item.exercise {
+                        return linked.persistentModelID == exercise.persistentModelID
+                    }
+                    return $0.exerciseName.matchingKey == key
+                }?.note
+            }
+            .first { !$0.isEmpty }
     }
 
     /// The sets the movement was last done with before this session: what the set table shows as "Previous". Only

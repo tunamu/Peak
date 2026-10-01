@@ -139,9 +139,43 @@ final class AccessibilityAuditTests: XCTestCase {
     @MainActor
     func testOnboarding() throws {
         for language in ["en", "tr"] {
-            for step in 0...4 {
+            for step in 0...5 {
                 let app = launch(["-PeakOnboarding", "YES", "-PeakOnboardingStep", "\(step)"], language: language)
                 try audit(app, "onboarding step \(step) (\(language))")
+                app.terminate()
+            }
+        }
+    }
+
+    /// The Analysis pages and a movement's chart, with the author's real history imported first (F11).
+    @MainActor
+    func testAnalysis() throws {
+        let history = URL(filePath: #filePath).deletingLastPathComponent()
+            .appending(path: "../Packages/PeakKit/Tests/PeakCoreTests/Fixtures/Import/antrenman-gecmisi.xlsx")
+            .standardizedFileURL.path()
+        let setup = launch(
+            [
+                "-PeakSkipOnboarding", "YES", "-PeakTab", "settings", "-PeakImportFile", history,
+                "-PeakImportConfirm", "YES",
+            ],
+            language: "en")
+        XCTAssertTrue(setup.buttons["Done"].waitForExistence(timeout: 10), "The history was not imported")
+        setup.terminate()
+        for language in ["en", "tr"] {
+            for screen in [
+                ["-PeakAnalysisPage", "performance"], ["-PeakAnalysisPage", "history"],
+                ["-PeakAnalysisMovement", "Dumbell Chest Press"],
+            ] {
+                let app = launch(["-PeakSkipOnboarding", "YES", "-PeakTab", "analysis"] + screen, language: language)
+                // The screen it is meant to be: the movement's name, or the page's own content.
+                let expected =
+                    switch screen[1] {
+                    case "history": app.buttons[language == "tr" ? "Önceki Ay" : "Previous Month"]
+                    case "performance": app.staticTexts[language == "tr" ? "Kas Dengesi" : "Muscle Balance"]
+                    default: app.staticTexts["Dumbell Chest Press"]
+                    }
+                XCTAssertTrue(expected.firstMatch.waitForExistence(timeout: 5), "\(screen[1]) did not open")
+                try audit(app, "analysis \(screen[1]) (\(language))")
                 app.terminate()
             }
         }
