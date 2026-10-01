@@ -21,6 +21,15 @@
         static let settings = SettingsStore(defaults: UserDefaults(suiteName: "peak.previews") ?? .standard)
         static let health = HealthConnection(service: MockHealthService())
         static let launcher = WorkoutLauncher()
+        static let data: AppData = {
+            do {
+                // Sync off: previews never reach iCloud.
+                let preferences = UserDefaults(suiteName: "peak.previews") ?? .standard
+                return try AppData(preferences: preferences) { _ in container }
+            } catch {
+                fatalError("Could not build the preview app data: \(error)")
+            }
+        }()
     }
 
     extension View {
@@ -30,7 +39,10 @@
                 .environment(PreviewData.settings)
                 .environment(PreviewData.health)
                 .environment(PreviewData.launcher)
-                .task { await PreviewData.health.refresh() }
+                .environment(PreviewData.data)
+                .task {
+                    await PreviewData.health.refresh()
+                }
         }
     }
 #endif

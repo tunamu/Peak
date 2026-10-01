@@ -1,7 +1,8 @@
 # Testing
 
-> Status: 181 package tests (F2–F7), green on the Mac host and the iOS simulator. No UI test target yet: taps and
-> drags are checked by hand, screenshots come from debug launch arguments (see DEVELOPMENT.md).
+> Status: 213 package tests, green on the Mac host and the iOS simulator. The `PeakUITests` target runs
+> `performAccessibilityAudit` on every tab, onboarding and a running workout, in English and Turkish (F10-02). Other
+> taps and drags are checked by hand; screenshots come from debug launch arguments (see DEVELOPMENT.md).
 
 ## Layers
 
@@ -34,4 +35,14 @@ cd Packages/PeakKit && xcodebuild test -scheme PeakKit-Package \
   -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest'
 ```
 
-CI runs lint, the app build and the package tests on every pull request (`.github/workflows/ci.yml`).
+```bash
+# UI tests (accessibility audits; about four minutes)
+xcodebuild test -project Peak.xcodeproj -scheme PeakUITests \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest'
+```
+
+If a UI test run stops at "Timed out while preparing execution worker", shut the simulator down
+(`xcrun simctl shutdown <UDID>`) and run again.
+
+CI runs lint, the app build and the package tests on every pull request (`.github/workflows/ci.yml`). The UI tests
+run locally only, for now.

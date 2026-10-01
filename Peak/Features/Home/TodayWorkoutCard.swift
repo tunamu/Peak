@@ -27,8 +27,15 @@ struct TodayWorkoutCard: View {
     /// Tapping the rest of the card: opens the running workout.
     var open: (() -> Void)?
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
-        HStack(spacing: Spacing.medium) {
+        // At accessibility text sizes the button goes under the text, so words are not broken (F10-02).
+        let layout =
+            dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.medium))
+            : AnyLayout(HStackLayout(spacing: Spacing.medium))
+        layout {
             if let open {
                 Button(action: open) { text.contentShape(.rect) }
                     .buttonStyle(.plain)

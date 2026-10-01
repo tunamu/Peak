@@ -8,6 +8,8 @@ import WidgetKit
 struct AddWaterIntent: AppIntent {
     static let title: LocalizedStringResource = "Log Water"
     static let description = IntentDescription("Adds your quick water amount to today.")
+    /// Only the widget's button: Shortcuts offers the app's Log Water, which takes an amount.
+    static let isDiscoverable = false
 
     @MainActor
     func perform() async throws -> some IntentResult {

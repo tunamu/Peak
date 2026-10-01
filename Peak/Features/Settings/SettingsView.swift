@@ -6,7 +6,7 @@ import SwiftUI
 /// Settings tab (design: `Settings`): goals, workout data, recorded workouts, routines and general settings.
 struct SettingsView: View {
     enum Sheet: Identifiable {
-        case stepGoal, waterGoal, overload
+        case stepGoal, waterGoal, overload, repStep
         case workout(WorkoutTemplate?)
         case routine(Routine?)
 
@@ -15,6 +15,7 @@ struct SettingsView: View {
             case .stepGoal: "stepGoal"
             case .waterGoal: "waterGoal"
             case .overload: "overload"
+            case .repStep: "repStep"
             case .workout(let template): "workout-\(template?.id.uuidString ?? "new")"
             case .routine(let routine): "routine-\(routine?.id.uuidString ?? "new")"
             }
@@ -89,6 +90,9 @@ struct SettingsView: View {
             SettingsRow("Progressive Overload", accessory: .value(">\(settings.overloadThresholdReps)")) {
                 sheet = .overload
             }
+            SettingsRow("Rep Increase", accessory: .value("+\(settings.overloadRepStep)")) {
+                sheet = .repStep
+            }
         }
     }
 
@@ -99,6 +103,7 @@ struct SettingsView: View {
             ImportDataRow()
             TemplateRow()
             ExportDataRow()
+            DeleteAllDataRow()
         }
     }
 
@@ -106,7 +111,9 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader("Recorded Workouts", action: .init("New") { sheet = .workout(nil) })
             if templates.isEmpty {
-                emptyText("No workouts yet.")
+                emptyState("No workouts yet. A workout is the movements you do together.", action: "Create Workout") {
+                    sheet = .workout(nil)
+                }
             }
             ForEach(templates) { template in
                 SettingsRow(verbatim: template.name, accessory: .action("Edit")) {
@@ -119,8 +126,18 @@ struct SettingsView: View {
     private var routinesSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionHeader("Routines", action: .init("New") { sheet = .routine(nil) })
-            if routines.isEmpty {
-                emptyText("No routines yet.")
+            if routines.isEmpty && templates.isEmpty {
+                emptyState(
+                    "A routine rotates through your workouts. Create a workout first.", action: "Create Workout"
+                ) {
+                    sheet = .workout(nil)
+                }
+            } else if routines.isEmpty {
+                emptyState(
+                    "No routines yet. A routine plans which workout comes on which day.", action: "Create Routine"
+                ) {
+                    sheet = .routine(nil)
+                }
             }
             ForEach(routines) { routine in
                 SettingsRow(verbatim: routine.name, accessory: .value(summary(of: routine))) {
@@ -154,6 +171,8 @@ struct SettingsView: View {
             }
             .disabled(health.status == .unavailable)
 
+            ICloudSyncRows()
+
             SettingsRow("Version", accessory: .value(Self.version)) {}
                 .disabled(true)
             SettingsRow("Source Code", accessory: .icon("arrow.up.right")) {
@@ -172,47 +191,17 @@ struct SettingsView: View {
         }
     }
 
-    private func emptyText(_ text: LocalizedStringKey) -> some View {
-        Text(text)
-            .font(.peakRow)
-            .foregroundStyle(.peakTextTertiary)
-            .padding(.horizontal, Spacing.xSmall)
-            .frame(minHeight: Metrics.minTouchTarget)
-    }
-
-    // MARK: Sheets
-
-    @ViewBuilder
-    private func view(for sheet: Sheet) -> some View {
-        @Bindable var settings = settings
-        switch sheet {
-        case .stepGoal:
-            StepGoalSheet()
-        case .waterGoal:
-            ValuePickerSheet(
-                titles: .init("Daily Water Intake Goal", pickerLabel: "New Goal", reset: "Reset", update: "Update"),
-                current: settings.waterGoalMl,
-                defaultValue: SettingsStore.Defaults.waterGoalMl,
-                options: Array(stride(from: 1_000, through: 6_000, by: 250)),
-                format: { Formatting.liters($0) },
-                onSave: { settings.waterGoalMl = $0 }
-            )
-        case .overload:
-            ValuePickerSheet(
-                titles: .init(
-                    "Progressive Overload", pickerLabel: "Update Rep Goal", reset: "Reset", update: "Update",
-                    footnote: "The weight goes up automatically when a set passes this rep count."
-                ),
-                current: settings.overloadThresholdReps,
-                defaultValue: SettingsStore.Defaults.overloadThresholdReps,
-                options: Array(SettingsStore.Limits.overloadReps),
-                format: { ">\($0)" },
-                onSave: { settings.overloadThresholdReps = $0 }
-            )
-        case .workout(let template):
-            WorkoutTemplateSheet(template: template)
-        case .routine(let routine):
-            RoutineSheet(routine: routine)
+    /// An empty list (F10-06): one sentence and one action.
+    private func emptyState(
+        _ text: LocalizedStringKey, action title: LocalizedStringKey, perform: @escaping () -> Void
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(text)
+                .font(.peakDetail)
+                .foregroundStyle(.peakTextTertiary)
+                .padding(.horizontal, Spacing.xSmall)
+                .padding(.top, Spacing.xxSmall)
+            SettingsRow(title, accessory: .icon("plus"), perform: perform)
         }
     }
 
@@ -263,6 +252,7 @@ struct SettingsView: View {
             case "stepGoal": sheet = .stepGoal
             case "waterGoal": sheet = .waterGoal
             case "overload": sheet = .overload
+            case "repStep": sheet = .repStep
             case "newWorkout": sheet = .workout(nil)
             case "editWorkout": sheet = .workout(templates.first)
             case "newRoutine": sheet = .routine(nil)
@@ -271,6 +261,57 @@ struct SettingsView: View {
             }
         }
     #endif
+}
+
+// MARK: Sheets
+
+extension SettingsView {
+    /// The sheet for a row.
+    @ViewBuilder
+    fileprivate func view(for sheet: Sheet) -> some View {
+        @Bindable var settings = settings
+        switch sheet {
+        case .stepGoal:
+            StepGoalSheet()
+        case .waterGoal:
+            ValuePickerSheet(
+                titles: .init("Daily Water Intake Goal", pickerLabel: "New Goal", reset: "Reset", update: "Update"),
+                current: settings.waterGoalMl,
+                defaultValue: SettingsStore.Defaults.waterGoalMl,
+                options: Array(stride(from: 1_000, through: 6_000, by: 250)),
+                format: { Formatting.liters($0) },
+                onSave: { settings.waterGoalMl = $0 }
+            )
+        case .overload:
+            ValuePickerSheet(
+                titles: .init(
+                    "Progressive Overload", pickerLabel: "Update Rep Goal", reset: "Reset", update: "Update",
+                    footnote: "The weight goes up automatically when a set passes this rep count."
+                ),
+                current: settings.overloadThresholdReps,
+                defaultValue: SettingsStore.Defaults.overloadThresholdReps,
+                options: Array(SettingsStore.Limits.overloadReps),
+                format: { ">\($0)" },
+                onSave: { settings.overloadThresholdReps = $0 }
+            )
+        case .repStep:
+            ValuePickerSheet(
+                titles: .init(
+                    "Rep Increase", pickerLabel: "Update Rep Increase", reset: "Reset", update: "Update",
+                    footnote: "While the weight stays the same, next time's target is this many reps more."
+                ),
+                current: settings.overloadRepStep,
+                defaultValue: SettingsStore.Defaults.overloadRepStep,
+                options: Array(SettingsStore.Limits.overloadRepStep),
+                format: { "+\($0)" },
+                onSave: { settings.overloadRepStep = $0 }
+            )
+        case .workout(let template):
+            WorkoutTemplateSheet(template: template)
+        case .routine(let routine):
+            RoutineSheet(routine: routine)
+        }
+    }
 }
 
 #if DEBUG

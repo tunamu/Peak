@@ -1,6 +1,6 @@
 # Release
 
-> Status: skeleton. Completed during F11.
+> Status: skeleton. Completed during F12.
 
 ## Prerequisites
 

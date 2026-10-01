@@ -5,6 +5,7 @@ included:
   - Peak
   - PeakWidgets
   - PeakShared
+  - PeakUITests
   - Packages/PeakKit/Sources
   - Packages/PeakKit/Tests
 

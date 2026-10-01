@@ -227,39 +227,6 @@ struct WorkoutSessionSheet: View {
         return fields[index + 1]
     }
 
-    /// C-11: the timer pill (Pause/Resume) and Finish Workout.
-    private var bottomBar: some View {
-        GlassEffectContainer(spacing: Spacing.medium) {
-            HStack(spacing: Spacing.small) {
-                Button {
-                    if session.status == .paused {
-                        try? controller.resume()
-                    } else {
-                        try? controller.pause()
-                    }
-                } label: {
-                    HStack(spacing: Spacing.xSmall) {
-                        SessionClockText(session: session)
-                        Image(systemName: session.status == .paused ? "play.fill" : "pause.fill")
-                            .accessibilityLabel(session.status == .paused ? "Resume" : "Pause")
-                    }
-                }
-                .buttonStyle(.peakGlassPill)
-                // Always asked: a stray tap must not end the workout.
-                Button {
-                    focus = nil
-                    isFinishConfirmationShown = true
-                } label: {
-                    Label("Finish Workout", systemImage: "checkmark")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.peakGlass(.positive))
-            }
-        }
-        .padding(.horizontal, Spacing.screenMargin)
-        .padding(.bottom, Spacing.xSmall)
-    }
-
     /// The finish pipeline: save the session, show the summary, then write the workout to Health in the background.
     /// Live Activity and widgets join with F9.
     /// "Finish workout?", or with empty sets "3 sets are empty. Finish anyway?".
@@ -281,5 +248,51 @@ struct WorkoutSessionSheet: View {
         guard let id = try? await health.service.saveWorkout(workout) else { return }
         session.healthKitWorkoutID = id
         try? modelContext.save()
+    }
+}
+
+// MARK: Bottom bar
+
+extension WorkoutSessionSheet {
+    /// C-11: the timer pill (Pause/Resume) and Finish Workout.
+    fileprivate var bottomBar: some View {
+        GlassEffectContainer(spacing: Spacing.medium) {
+            HStack(spacing: Spacing.small) {
+                Button {
+                    if session.status == .paused {
+                        try? controller.resume()
+                    } else {
+                        try? controller.pause()
+                    }
+                } label: {
+                    HStack(spacing: Spacing.xSmall) {
+                        SessionClockText(session: session)
+                        Image(systemName: session.status == .paused ? "play.fill" : "pause.fill")
+                            .accessibilityLabel(session.status == .paused ? "Resume" : "Pause")
+                    }
+                }
+                .buttonStyle(.peakGlassPill)
+                // Always asked: a stray tap must not end the workout.
+                Button {
+                    focus = nil
+                    isFinishConfirmationShown = true
+                } label: {
+                    // The short title when the long one would break (large text).
+                    ViewThatFits(in: .horizontal) {
+                        Label("Finish Workout", systemImage: "checkmark").fixedSize()
+                        Label("Finish", systemImage: "checkmark").fixedSize()
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.peakGlass(.positive))
+            }
+        }
+        // A bar of two controls: capped like a tab bar; a long press shows the large content viewer (F10-02).
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .accessibilityShowsLargeContentViewer()
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("peak.capped.bottomBar")
+        .padding(.horizontal, Spacing.screenMargin)
+        .padding(.bottom, Spacing.xSmall)
     }
 }

@@ -5,7 +5,8 @@ extension SettingsStore {
     public var transferSettings: PeakExportV1.Settings {
         PeakExportV1.Settings(
             stepGoal: stepGoal, waterGoalMl: waterGoalMl,
-            overload: .init(thresholdReps: overloadThresholdReps, resetReps: overloadResetReps),
+            overload: .init(
+                thresholdReps: overloadThresholdReps, resetReps: overloadResetReps, repStep: overloadRepStep),
             unitSystem: unitSystem, quickWaterAmounts: quickWaterAmounts
         )
     }
@@ -16,6 +17,7 @@ extension SettingsStore {
         if let value = settings.waterGoalMl { waterGoalMl = value }
         if let value = settings.overload?.thresholdReps { overloadThresholdReps = value }
         if let value = settings.overload?.resetReps { overloadResetReps = value }
+        if let value = settings.overload?.repStep { overloadRepStep = value }
         if let value = settings.unitSystem { unitSystem = value }
         if let value = settings.quickWaterAmounts { quickWaterAmounts = value }
     }

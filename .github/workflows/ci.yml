@@ -43,7 +43,8 @@ jobs:
       - name: swift-format
         run: |
           xcrun swift-format lint --strict --recursive \
-            Peak PeakWidgets PeakShared Packages/PeakKit/Package.swift Packages/PeakKit/Sources Packages/PeakKit/Tests
+            Peak PeakWidgets PeakShared PeakUITests Packages/PeakKit/Package.swift Packages/PeakKit/Sources \
+            Packages/PeakKit/Tests
 
   build-and-test:
     name: Build & Test

@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# The import templates are byte-for-byte generator output (CSV uses CRLF, RFC 4180); ImportTemplateTests compares them.
+docs/import-templates/*.csv -text

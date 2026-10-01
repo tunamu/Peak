@@ -17,7 +17,7 @@ struct WorkoutLiveActivity: Widget {
             }
             .activityBackgroundTint(.peakCanvas)
             .activitySystemActionForegroundColor(.peakTextPrimary)
-            .widgetURL(URL(string: "peak://workout/open"))
+            .widgetURL(PeakLink.openWorkout.url)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
@@ -59,7 +59,7 @@ struct WorkoutLiveActivity: Widget {
                 Image(systemName: context.state.isPaused ? "pause.fill" : "figure.strengthtraining.traditional")
                     .foregroundStyle(.peakTintPositive)
             }
-            .widgetURL(URL(string: "peak://workout/open"))
+            .widgetURL(PeakLink.openWorkout.url)
         }
     }
 }

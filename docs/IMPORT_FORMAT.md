@@ -39,7 +39,7 @@ A minimal file is a list of workouts:
 | `routines` | – | `id`, `name`\*, `note`, `active`, `schedule`, `templateIds` (the rotation), `createdAt` |
 | `sessions` | ✔ | See below |
 | `waterLogs` | – | `loggedAt`\*, `amountMl`\* (negative = removal), `source` |
-| `settings` | – | `stepGoal`, `waterGoalMl`, `overload` (`thresholdReps`, `resetReps`), `unitSystem`, `quickWaterAmounts` |
+| `settings` | – | `stepGoal`, `waterGoalMl`, `overload` (`thresholdReps`, `resetReps`, `repStep`), `unitSystem`, `quickWaterAmounts` |
 
 \* required inside its object. Array order is the list order for templates and routines.
 

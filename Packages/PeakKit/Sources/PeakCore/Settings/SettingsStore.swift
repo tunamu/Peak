@@ -22,7 +22,8 @@ public protocol SettingsMirror: AnyObject {
 @Observable
 public final class SettingsStore {
     public enum Key: String, CaseIterable {
-        case stepGoal, waterGoalMl, overloadThresholdReps, overloadResetReps, unitSystem, quickWaterAmounts
+        case stepGoal, waterGoalMl, overloadThresholdReps, overloadResetReps, overloadRepStep, unitSystem
+        case quickWaterAmounts
         case hasCompletedOnboarding
     }
 
@@ -31,6 +32,7 @@ public final class SettingsStore {
         public static let waterGoalMl = 4_000
         public static let overloadThresholdReps = 12
         public static let overloadResetReps = 6
+        public static let overloadRepStep = 1
         public static let quickWaterAmounts = [200, 330, 500, 1_000]
     }
 
@@ -38,6 +40,8 @@ public final class SettingsStore {
         public static let stepGoal = 1_000...50_000
         public static let waterGoalMl = 1_000...6_000
         public static let overloadReps = 6...20
+        /// 0 keeps the target at the reps just done, as the `/coach` skill did.
+        public static let overloadRepStep = 0...5
         public static let quickWaterAmount = 50...2_000
     }
 
@@ -65,6 +69,14 @@ public final class SettingsStore {
             )
         }
     }
+    /// Reps added to the target while the weight stays the same (50×9 → 50×10 with 1).
+    public var overloadRepStep: Int {
+        didSet {
+            store(
+                \.overloadRepStep, clamped: overloadRepStep.clamped(to: Limits.overloadRepStep), key: .overloadRepStep
+            )
+        }
+    }
     public var unitSystem: UnitSystem {
         didSet { write(unitSystem.rawValue, for: .unitSystem) }
     }
@@ -81,7 +93,7 @@ public final class SettingsStore {
     }
 
     @ObservationIgnored private let defaults: UserDefaults
-    @ObservationIgnored private let mirror: SettingsMirror?
+    @ObservationIgnored private var mirror: SettingsMirror?
 
     /// - Parameters:
     ///   - defaults: The App Group's defaults in the app; a throwaway suite in tests.
@@ -94,11 +106,15 @@ public final class SettingsStore {
         waterGoalMl = snapshot.waterGoalMl
         overloadThresholdReps = snapshot.overloadThresholdReps
         overloadResetReps = snapshot.overloadResetReps
+        overloadRepStep = snapshot.overloadRepStep
         unitSystem = snapshot.unitSystem
         quickWaterAmounts = snapshot.quickWaterAmounts
         hasCompletedOnboarding = snapshot.hasCompletedOnboarding
-        mirror?.onExternalChange = { [weak self] keys in
-            self?.reload(keys)
+        if let mirror {
+            reconcile(with: mirror)
+            mirror.onExternalChange = { [weak self] keys in
+                self?.reload(keys)
+            }
         }
     }
 
@@ -108,12 +124,27 @@ public final class SettingsStore {
         UserDefaults(suiteName: PeakStore.appGroupID) ?? .standard
     }
 
+    /// Connects or disconnects the sync mirror as iCloud sync is turned on or off. A new mirror is treated like one
+    /// given at start-up: its values win, and settings only this device has go up to it.
+    public func setMirror(_ newMirror: SettingsMirror?) {
+        guard newMirror !== mirror else { return }
+        mirror?.onExternalChange = nil
+        mirror = newMirror
+        guard let newMirror else { return }
+        reload(Key.allCases.map(\.rawValue))
+        reconcile(with: newMirror)
+        newMirror.onExternalChange = { [weak self] keys in
+            self?.reload(keys)
+        }
+    }
+
     /// Restores every setting to its default (onboarding state is kept).
     public func resetToDefaults() {
         stepGoal = Defaults.stepGoal
         waterGoalMl = Defaults.waterGoalMl
         overloadThresholdReps = Defaults.overloadThresholdReps
         overloadResetReps = Defaults.overloadResetReps
+        overloadRepStep = Defaults.overloadRepStep
         unitSystem = .metric
         quickWaterAmounts = Defaults.quickWaterAmounts
     }
@@ -138,6 +169,32 @@ public final class SettingsStore {
         mirror?.set(value, forKey: key.rawValue)
     }
 
+    /// At start-up: the mirror's values go to the App Group copy (the widget reads that one), and settings only this
+    /// device has go to the mirror, so another device gets them. Keys neither side has stay unset, so a new device
+    /// does not push defaults over values that have not downloaded yet.
+    private func reconcile(with mirror: SettingsMirror) {
+        for key in Key.allCases {
+            if mirror.value(forKey: key.rawValue) != nil {
+                defaults.set(currentValue(for: key), forKey: key.rawValue)
+            } else if let local = defaults.object(forKey: key.rawValue) {
+                mirror.set(local, forKey: key.rawValue)
+            }
+        }
+    }
+
+    private func currentValue(for key: Key) -> Any {
+        switch key {
+        case .stepGoal: stepGoal
+        case .waterGoalMl: waterGoalMl
+        case .overloadThresholdReps: overloadThresholdReps
+        case .overloadResetReps: overloadResetReps
+        case .overloadRepStep: overloadRepStep
+        case .unitSystem: unitSystem.rawValue
+        case .quickWaterAmounts: quickWaterAmounts
+        case .hasCompletedOnboarding: hasCompletedOnboarding
+        }
+    }
+
     /// Re-reads everything from the mirror when a setting changed on another device.
     private func reload(_ keys: [String]) {
         guard let mirror, keys.contains(where: { Key(rawValue: $0) != nil }) else { return }
@@ -147,6 +204,7 @@ public final class SettingsStore {
         if waterGoalMl != fresh.waterGoalMl { waterGoalMl = fresh.waterGoalMl }
         if overloadThresholdReps != fresh.overloadThresholdReps { overloadThresholdReps = fresh.overloadThresholdReps }
         if overloadResetReps != fresh.overloadResetReps { overloadResetReps = fresh.overloadResetReps }
+        if overloadRepStep != fresh.overloadRepStep { overloadRepStep = fresh.overloadRepStep }
         if unitSystem != fresh.unitSystem { unitSystem = fresh.unitSystem }
         if quickWaterAmounts != fresh.quickWaterAmounts { quickWaterAmounts = fresh.quickWaterAmounts }
         if hasCompletedOnboarding != fresh.hasCompletedOnboarding {
@@ -160,6 +218,7 @@ public final class SettingsStore {
         let waterGoalMl: Int
         let overloadThresholdReps: Int
         let overloadResetReps: Int
+        let overloadRepStep: Int
         let unitSystem: UnitSystem
         let quickWaterAmounts: [Int]
         let hasCompletedOnboarding: Bool
@@ -171,6 +230,8 @@ public final class SettingsStore {
                 .clamped(to: Limits.overloadReps)
             overloadResetReps = ((read(.overloadResetReps) as? Int) ?? Defaults.overloadResetReps)
                 .clamped(to: Limits.overloadReps)
+            overloadRepStep = ((read(.overloadRepStep) as? Int) ?? Defaults.overloadRepStep)
+                .clamped(to: Limits.overloadRepStep)
             unitSystem = (read(.unitSystem) as? String).flatMap(UnitSystem.init(rawValue:)) ?? .metric
             quickWaterAmounts = SettingsStore.validQuickAmounts(
                 (read(.quickWaterAmounts) as? [Int]) ?? Defaults.quickWaterAmounts
@@ -194,6 +255,6 @@ extension Comparable {
 extension SettingsStore {
     /// The overload rule the user set (S-04), for new targets.
     public var progressionRule: ProgressionRule {
-        ProgressionRule(thresholdReps: overloadThresholdReps, resetReps: overloadResetReps)
+        ProgressionRule(thresholdReps: overloadThresholdReps, resetReps: overloadResetReps, repStep: overloadRepStep)
     }
 }

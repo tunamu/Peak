@@ -1,12 +1,242 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "A routine rotates through your workouts. Create a workout first." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutin, antrenmanların arasında sırayla döner. Önce bir antrenman oluştur."
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devam"
+          }
+        }
+      }
+    },
+    "Create Routine" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutin Oluştur"
+          }
+        }
+      }
+    },
+    "Create Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Oluştur"
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitir"
+          }
+        }
+      }
+    },
+    "From a Peak export, an Excel or a CSV file." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir Peak dışa aktarımından, Excel ya da CSV dosyasından."
+          }
+        }
+      }
+    },
+    "How do you want to start?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nasıl başlamak istersin?"
+          }
+        }
+      }
+    },
+    "Import My Data" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verilerimi İçe Aktar"
+          }
+        }
+      }
+    },
     "“%@” is out of range" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%@” geçerli aralığın dışında"
+          }
+        }
+      }
+    },
+    "Log your workouts, follow your next targets, and keep an eye on steps, water and energy." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarını kaydet, sıradaki hedeflerini takip et; adım, su ve enerjine göz kulak ol."
+          }
+        }
+      }
+    },
+    "No routines yet. A routine plans which workout comes on which day." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz rutin yok. Rutin, hangi gün hangi antrenmanın geleceğini planlar."
+          }
+        }
+      }
+    },
+    "Nothing to import with these settings. Try another header row or layout above." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ayarlarla içe aktarılacak bir şey yok. Yukarıdan başka bir başlık satırı ya da düzen dene."
+          }
+        }
+      }
+    },
+    "Not Now" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Değil"
+          }
+        }
+      }
+    },
+    "No workouts yet. A workout is the movements you do together." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz antrenman yok. Antrenman, birlikte yaptığın hareketlerin listesidir."
+          }
+        }
+      }
+    },
+    "Off, everything stays on this iPhone. You can change this in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalıyken her şey bu iPhone'da kalır. Bunu Ayarlar'dan değiştirebilirsin."
+          }
+        }
+      }
+    },
+    "Reads steps, sleep, heart rate variability, resting heart rate and water for your Energy Level." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enerji Seviyen için adım, uyku, kalp atış hızı değişkenliği, dinlenme nabzı ve su verilerini okur."
+          }
+        }
+      }
+    },
+    "Saves your water and finished workouts." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suyunu ve biten antrenmanlarını kaydeder."
+          }
+        }
+      }
+    },
+    "Set up your own workouts in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kendi antrenmanlarını Ayarlar'dan kur."
+          }
+        }
+      }
+    },
+    "Six workouts and a Monday, Wednesday, Friday routine. Change anything later." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altı antrenman ve Pazartesi, Çarşamba, Cuma rutini. Sonra istediğini değiştir."
+          }
+        }
+      }
+    },
+    "Start Empty" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boş Başla"
+          }
+        }
+      }
+    },
+    "Start with a Sample Program" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnek Programla Başla"
+          }
+        }
+      }
+    },
+    "Sync your workouts between your devices through your own iCloud account." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarını kendi iCloud hesabın üzerinden cihazların arasında eşzamanla."
+          }
+        }
+      }
+    },
+    "Turn On" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aç"
+          }
+        }
+      }
+    },
+    "Used Peak on another device? Its data arrives on its own, so start empty." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'i başka bir cihazda kullandın mı? Veriler kendiliğinden gelir; boş başla."
           }
         }
       }
@@ -82,6 +312,54 @@
     "%lld Movements · %lld Sets" : {
       "extractionState" : "stale",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@movements@ · %#@sets@"
+          },
+          "substitutions" : {
+            "movements" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Movement"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Movements"
+                    }
+                  }
+                }
+              }
+            },
+            "sets" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Set"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Sets"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93,6 +371,34 @@
     "%lld of %lld sets" : {
       "extractionState" : "stale",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld of %2$#@sets@"
+          },
+          "substitutions" : {
+            "sets" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg set"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg sets"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -159,6 +465,34 @@
     },
     "%lld sets are empty. Finish anyway?" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@sets@ empty. Finish anyway?"
+          },
+          "substitutions" : {
+            "sets" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg set is"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg sets are"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -202,6 +536,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld ml"
+          }
+        }
+      }
+    },
+    "A backup is saved first in Files › Peak › Backups. Import it to bring everything back." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önce Dosyalar › Peak › Backups içine yedek kaydedilir. Her şeyi geri getirmek için onu içe aktar."
           }
         }
       }
@@ -272,6 +616,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir antrenman başlamadan bitiyor"
+          }
+        }
+      }
+    },
+    "A workout is running. Finish or discard it first." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Süren bir antrenman var. Önce bitir ya da vazgeç."
           }
         }
       }
@@ -356,6 +710,16 @@
         }
       }
     },
+    "Adds water to today. Without an amount, your quick amount." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugüne su ekler. Miktar verilmezse hızlı miktarını ekler."
+          }
+        }
+      }
+    },
     "Adds what is new. Workouts already in Peak are skipped, so importing a file twice adds nothing." : {
       "localizations" : {
         "tr" : {
@@ -383,6 +747,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaten Peak'te"
+          }
+        }
+      }
+    },
+    "Amount (ml)" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miktar (ml)"
           }
         }
       }
@@ -553,6 +927,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sütunları kontrol et: Peak bu dosyanın düzeninden emin değil."
+          }
+        }
+      }
+    },
+    "Checking…" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denetleniyor…"
           }
         }
       }
@@ -807,6 +1191,37 @@
         }
       }
     },
+    "Delete" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sil"
+          }
+        }
+      }
+    },
+    "DELETE" : {
+      "comment" : "Typed to confirm Delete All Data",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SİL"
+          }
+        }
+      }
+    },
+    "Delete All Data" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm Verileri Sil"
+          }
+        }
+      }
+    },
     "Delete Routine" : {
       "localizations" : {
         "tr" : {
@@ -1040,6 +1455,16 @@
         }
       }
     },
+    "Everything Was Deleted" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her Şey Silindi"
+          }
+        }
+      }
+    },
     "Excel (.xlsx)" : {
       "localizations" : {
         "tr" : {
@@ -1197,6 +1622,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nasıl Okunacak"
+          }
+        }
+      }
+    },
+    "iCloud" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud"
+          }
+        }
+      }
+    },
+    "iCloud can't be reached right now; Peak syncs when it can." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud'a şu an ulaşılamıyor; Peak fırsat bulunca eşzamanlar."
+          }
+        }
+      }
+    },
+    "iCloud didn't accept some changes, most often because iCloud storage is full." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud bazı değişiklikleri kabul etmedi; bunun en sık sebebi iCloud depolama alanının dolu olması."
+          }
+        }
+      }
+    },
+    "iCloud is restricted on this iPhone, so your workouts stay on it." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud bu iPhone'da kısıtlı, bu yüzden antrenmanların bu iPhone'da kalıyor."
+          }
+        }
+      }
+    },
+    "iCloud Sync" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Eşzamanlama"
+          }
+        }
+      }
+    },
+    "iCloud Sync is on, so this also deletes the data from iCloud and your other devices." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Eşzamanlama açık; bu işlem verileri iCloud'dan ve diğer cihazlarından da siler."
           }
         }
       }
@@ -1360,12 +1845,21 @@
       }
     },
     "Log Water" : {
-      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Su Ekle"
+          }
+        }
+      }
+    },
+    "Logged %@. Today: %@." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ eklendi. Bugün: %2$@."
           }
         }
       }
@@ -1611,16 +2105,6 @@
         }
       }
     },
-    "No routines yet." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz rutin yok."
-          }
-        }
-      }
-    },
     "No sets logged" : {
       "localizations" : {
         "tr" : {
@@ -1637,16 +2121,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman yok"
-          }
-        }
-      }
-    },
-    "No workouts yet." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz antrenman yok."
           }
         }
       }
@@ -1701,6 +2175,36 @@
         }
       }
     },
+    "Not signed in" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giriş yapılmadı"
+          }
+        }
+      }
+    },
+    "Not synced" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eşzamanlanmadı"
+          }
+        }
+      }
+    },
+    "Not uploaded" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yüklenemedi"
+          }
+        }
+      }
+    },
     "Note" : {
       "localizations" : {
         "tr" : {
@@ -1732,12 +2236,12 @@
         }
       }
     },
-    "Nothing to import with these settings." : {
+    "Nothing Was Deleted" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu ayarlarla içe aktarılacak bir şey yok."
+            "value" : "Hiçbir Şey Silinmedi"
           }
         }
       }
@@ -1762,6 +2266,16 @@
         }
       }
     },
+    "Offline" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çevrimdışı"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "tr" : {
@@ -1778,6 +2292,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eski Excel dosyaları (.xls) okunamıyor. Excel ya da Numbers'ta .xlsx olarak kaydet."
+          }
+        }
+      }
+    },
+    "On" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Açık"
           }
         }
       }
@@ -1830,6 +2354,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güncellemek için Peak'i aç"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarlar'ı Aç"
+          }
+        }
+      }
+    },
+    "Opens Peak and starts today's next workout, or the running one." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'i açar ve bugünün sıradaki antrenmanını ya da süren antrenmanı başlatır."
           }
         }
       }
@@ -1935,6 +2479,16 @@
         }
       }
     },
+    "Peak is checking your iCloud account." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak iCloud hesabını denetliyor."
+          }
+        }
+      }
+    },
     "Peak JSON" : {
       "localizations" : {
         "tr" : {
@@ -2025,6 +2579,16 @@
         }
       }
     },
+    "Rep Increase" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekrar Artışı"
+          }
+        }
+      }
+    },
     "Replace All" : {
       "localizations" : {
         "tr" : {
@@ -2081,6 +2645,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dinlenik nabız ortalamanın %lld bpm üstünde"
+          }
+        }
+      }
+    },
+    "Restricted" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kısıtlı"
           }
         }
       }
@@ -2326,6 +2900,16 @@
         }
       }
     },
+    "Sign in to iCloud in the Settings app to sync your workouts between devices." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarını cihazların arasında eşzamanlamak için Ayarlar uygulamasında iCloud'a giriş yap."
+          }
+        }
+      }
+    },
     "Sleep" : {
       "localizations" : {
         "tr" : {
@@ -2447,6 +3031,16 @@
         }
       }
     },
+    "Storage full" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alan dolu"
+          }
+        }
+      }
+    },
     "Strength" : {
       "localizations" : {
         "tr" : {
@@ -2467,6 +3061,16 @@
         }
       }
     },
+    "Synced" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eşzamanlandı"
+          }
+        }
+      }
+    },
     "Table" : {
       "localizations" : {
         "tr" : {
@@ -2483,6 +3087,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hedef Başarısı"
+          }
+        }
+      }
+    },
+    "The backup is in Files › Peak › Backups: %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yedek Dosyalar › Peak › Backups içinde: %@"
           }
         }
       }
@@ -2517,6 +3131,16 @@
         }
       }
     },
+    "The last sync didn't go through; Peak tries again on its own." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son eşzamanlama tamamlanamadı; Peak kendiliğinden yeniden dener."
+          }
+        }
+      }
+    },
     "The Peak file is damaged: %@" : {
       "localizations" : {
         "tr" : {
@@ -2547,12 +3171,42 @@
         }
       }
     },
+    "There is nothing to delete." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silinecek bir şey yok."
+          }
+        }
+      }
+    },
+    "There's no connection; Peak syncs when you're back online." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı yok; Peak yeniden çevrimiçi olunca eşzamanlar."
+          }
+        }
+      }
+    },
     "Third-Party Notices" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Üçüncü Taraf Bildirimleri"
+          }
+        }
+      }
+    },
+    "This iPhone stops syncing. Your data stays on it, and what is already in iCloud stays there." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu iPhone eşzamanlamayı bırakır. Verilerin burada kalır; iCloud'dakiler de orada kalır."
           }
         }
       }
@@ -2680,12 +3334,42 @@
         }
       }
     },
+    "Turn Off" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapat"
+          }
+        }
+      }
+    },
+    "Turn off iCloud Sync?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud Eşzamanlama kapatılsın mı?"
+          }
+        }
+      }
+    },
     "Type" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tür"
+          }
+        }
+      }
+    },
+    "Type %@ to Confirm" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onaylamak İçin %@ Yaz"
           }
         }
       }
@@ -2716,6 +3400,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tekrar Hedefini Güncelle"
+          }
+        }
+      }
+    },
+    "Update Rep Increase" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekrar Artışını Güncelle"
           }
         }
       }
@@ -2757,6 +3451,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Su"
+          }
+        }
+      }
+    },
+    "Water Entries" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su Kayıtları"
           }
         }
       }
@@ -2821,12 +3525,52 @@
         }
       }
     },
+    "Welcome to Peak" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'e Hoş Geldin"
+          }
+        }
+      }
+    },
+    "What Peak reads from Health stays on your iPhone. It is never stored in Peak or iCloud." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'in Sağlık'tan okudukları iPhone'unda kalır; Peak'e ya da iCloud'a hiç kaydedilmez."
+          }
+        }
+      }
+    },
+    "While the weight stays the same, next time's target is this many reps more." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağırlık aynı kaldığında bir sonraki antrenmanın hedefi bu kadar tekrar fazla olur."
+          }
+        }
+      }
+    },
     "Why" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neden"
+          }
+        }
+      }
+    },
+    "Will Be Deleted" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silinecekler"
           }
         }
       }
@@ -2912,6 +3656,16 @@
         }
       }
     },
+    "You can change them any time in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İstediğin zaman Ayarlar'dan değiştirebilirsin."
+          }
+        }
+      }
+    },
     "You can workout a bit" : {
       "localizations" : {
         "tr" : {
@@ -2952,12 +3706,72 @@
         }
       }
     },
+    "Your data stays on this iPhone. Turn on to sync it through your iCloud account." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verilerin bu iPhone'da kalır. iCloud hesabın üzerinden eşzamanlamak için aç."
+          }
+        }
+      }
+    },
     "Your energy is Not Ready. You should rest at least 1 day to workout again." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enerjin Hazır Değil. Tekrar antrenman yapmak için en az 1 gün dinlenmelisin."
+          }
+        }
+      }
+    },
+    "Your Goals" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hedeflerin"
+          }
+        }
+      }
+    },
+    "Your iCloud storage is full, so new workouts stay on this iPhone until there's room." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud depolama alanın dolu; yer açılana kadar yeni antrenmanlar bu iPhone'da kalır."
+          }
+        }
+      }
+    },
+    "Your settings and what Peak saved to Apple Health stay." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayarların ve Peak'in Apple Sağlık'a kaydettikleri kalır."
+          }
+        }
+      }
+    },
+    "Your workouts sync with iCloud." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanların iCloud ile eşzamanlanıyor."
+          }
+        }
+      }
+    },
+    "Your workouts sync with iCloud. Last synced at %@." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanların iCloud ile eşzamanlanıyor. Son eşzamanlama: %@."
           }
         }
       }

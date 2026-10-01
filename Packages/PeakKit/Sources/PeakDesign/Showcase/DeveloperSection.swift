@@ -12,6 +12,7 @@
         @State private var isGalleryShown = false
         @State private var sampleResult: ResultKind?
         @State private var sampleError: String?
+        @State private var successMessage = "Sample program loaded"
         @Environment(\.modelContext) private var modelContext
 
         public init() {}
@@ -29,6 +30,10 @@
                 // Three finished sessions before today, so Home has history to show.
                 SettingsRow("Load Sample History", accessory: .icon("clock.arrow.circlepath")) {
                     loadSampleHistory()
+                }
+                // Before deploying the CloudKit schema to production: creates every record type in development.
+                SettingsRow("Initialize CloudKit Schema", accessory: .icon("icloud.and.arrow.up")) {
+                    Task { await initializeCloudKitSchema() }
                 }
             }
             .navigationDestination(isPresented: $isGalleryShown) {
@@ -59,7 +64,7 @@
                 ResultSheet(
                     sampleResult ?? .failure,
                     title: sampleResult == .success ? "Success" : "Error",
-                    message: Text(verbatim: sampleError ?? "Sample program loaded")
+                    message: Text(verbatim: sampleError ?? successMessage)
                 ) {
                     Button(role: .confirm) {
                         sampleResult = nil
@@ -78,7 +83,21 @@
             }
         }
 
+        private func initializeCloudKitSchema() async {
+            do {
+                // Blocks until CloudKit answers, so it runs off the main actor.
+                try await Task.detached { try PeakStore.initializeCloudKitSchema() }.value
+                successMessage = "CloudKit schema initialized in the development environment"
+                sampleError = nil
+                sampleResult = .success
+            } catch {
+                sampleError = error.localizedDescription
+                sampleResult = .failure
+            }
+        }
+
         private func loadSampleHistory() {
+            successMessage = "Sample program loaded"
             do {
                 try SampleProgram.install(into: modelContext)
                 try SampleProgram.installHistory(into: modelContext)
@@ -91,6 +110,7 @@
         }
 
         private func loadSampleProgram() {
+            successMessage = "Sample program loaded"
             do {
                 try SampleProgram.install(into: modelContext)
                 sampleError = nil

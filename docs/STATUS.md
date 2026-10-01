@@ -1,7 +1,7 @@
 # Peak Development Status
 
-**Last Updated**: 2026-09-30  
-**Current Phase**: F9 — Widgets and Live Activity (F9-01, F9-03 done; F9-02 on device) · F8 waits for the membership to activate
+**Last Updated**: 2026-10-01  
+**Current Phase**: F10 — Polish (F10-01, F10-03, F10-05, F10-06 done; F10-02 and F10-04 wait for a device pass) · F8 two-device check waits for an iCloud account with room · Next: F11 — Analysis and v1 improvements
 
 ## F0 — Repository and infrastructure
 
@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | F0-01 | Public GitHub repo (MIT LICENSE, Xcode .gitignore, README skeleton) | ✅ |
 | F0-02 | Xcode 27 project: `Peak` app target (iOS 26.0, iPhone only), synchronized folders, `Packages/PeakKit` | ✅ Launches on iOS 26.3 and 27.0 simulators |
-| F0-03 | Capabilities and entitlements, App Group, CloudKit container | ✅ Signed build runs on iPhone; HealthKit and App Group enabled. iCloud and Push wait for the paid membership (see Notes) |
+| F0-03 | Capabilities and entitlements, App Group, CloudKit container | ✅ Signed build runs on iPhone; HealthKit and App Group enabled. iCloud (CloudKit, key-value store), Push and remote-notification background mode added in F8-01 |
 | F0-04 | SwiftLint + swift-format + EditorConfig | ✅ `swiftlint` and `swift-format lint` clean |
 | F0-05 | GitHub Actions (`xcodebuild build test`), PR and issue templates | ✅ Green on PR #2 and on `main` |
 | F0-06 | Docs skeleton, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, THIRD_PARTY_NOTICES | ✅ |
@@ -91,6 +91,17 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | F7-07 | Template files (xlsx/csv) + sharing in the app | ✅ English and Turkish templates (docs/import-templates), written by `ImportTemplate`; each reads back as a confident long layout and imports without problems; the .xlsx files open in openpyxl and Quick Look. Settings › Import Template saves one in the phone's language |
 | F7-08 | Fixtures: the real `/coach` history as Excel (block), synthetic long/wide, broken files | ✅ The real history reads as its 22 sessions and 165 sets; 12 weeks of sets preview in well under a second; every broken file (cut or damaged workbook, bad XML, hidden sheets only, damaged or foreign JSON, a photo, an old .xls, an empty file, a ZIP bomb) ends in its own readable message |
 
+## F8: iCloud sync 🔶
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F8-01 | Turn on CloudKit; deploy the schema to production in CloudKit Dashboard | 🔶 The app syncs its store with the private database (`iCloud.com.tunamu.peak`); the widget opens the same store without sync, and its writes reach iCloud through persistent history when the app runs. Settings mirror to iCloud's key-value store (`UbiquitousSettingsMirror`). Signed with the paid team: the profile carries CloudKit, key-value store and Push. Without an iCloud account the app works locally (checked on the simulator). Still to do: data flowing between two devices, Settings › Developer › Initialize CloudKit Schema, then deploy to production |
+| F8-02 | Dedupe routine + seed only by the user's choice | 🔶 `Deduplicator` merges exercises, templates and routines that two devices created separately (the sample program loaded on both becomes one; links move to the survivor, the oldest by whole seconds and then the smallest id, so every device agrees); `SyncMonitor` runs it at launch and after each iCloud import. Sessions and water are never merged ([DATA_MODEL.md](DATA_MODEL.md#duplicates-from-sync)). The sample program is only installed when chosen. Still to see on two devices (iPhone + simulator) |
+| F8-03 | Two-device tests: offline edits and merging | ⬜ |
+| F8-04 | iCloud status row + no account / signed out | ✅ Settings › General › iCloud: Synced (with the time), On, Checking, Not signed in, Restricted, Not available, Storage full, Not uploaded, Offline, Not synced. A tap explains in one sentence and, for an account or storage problem, offers Open Settings. `SyncState` keeps the last outcome of setup, import and export apart, so a download that works cannot hide uploads that fail. With a full iCloud account the app only gets "partial failure" without the per-record reasons (Core Data rebuilds the event's error from its domain and code), so that reads as Not uploaded, "most often because iCloud storage is full"; an explicit quota error reads as Storage full. Seen on the simulator with a full account, in English and Turkish. The app works on the device in every state |
+| F8-05 | iCloud Sync opt-in + Delete All Data (D-18, D-19) | ✅ iCloud Sync is off until the user turns it on (Settings › General); the choice is per device and turning it on or off reopens the store with or without CloudKit, no relaunch (checked on the simulator both ways: the status row appears and syncing starts; turned off, CloudKit goes quiet). The settings mirror follows the switch. Settings › Delete All Data shows what will go, needs the word DELETE (SİL in Turkish) typed, writes a backup first (nothing is deleted if it cannot) and is unavailable while a workout runs; with sync on it warns that iCloud and other devices lose the data too. Replace-all imports use the same eraser |
+| F8-06 | Settings: Rep Increase, Delete button | ✅ Settings › Goal Settings › Rep Increase (+0…+5, default +1) under Progressive Overload sets how many reps the target grows while the weight stays; it feeds every new target, syncs with the other settings and travels in Peak JSON (`overload.repStep`, optional, schema updated). Delete All Data's button reads Delete |
+
 ## F9: Widgets and Live Activity 🔶
 
 | ID | Task | Status |
@@ -98,16 +109,27 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | F9-01 | Widget extension + App Group data + snapshot provider | ✅ `PeakWidgetsExtension` reads the shared store and settings; the app leaves today's steps and Energy Level in an App Group file (Health data stays out of the store) and reloads the widgets on every save; `WidgetContent` builds what they show (tests) |
 | F9-02 | W-01 (interactive water), W-02, W-03; rendering modes | 🔶 Water with a +quick-amount button (`AddWaterIntent`), steps ring, today's workout with Energy Level; English and Turkish; shown in the Component Gallery at real sizes. Tinted and clear Home Screen styles still to be checked on a device |
 | F9-03 | Live Activity + Dynamic Island + Pause/Resume intent | ✅ One activity per running workout, kept in line with the store after every save, at launch and on return (so a relaunch after the app was killed shows the right clock, anchored to the start); Lock Screen with movement, set progress, clock and Pause/Resume (`TogglePauseIntent`, runs in the app); Dynamic Island compact, minimal and expanded. On the simulator the system rendered it on start and removed it on finish; the Lock Screen and island still to be seen on a device |
-| F9-04 | Deep links (`peak://`) + App Intents | ⬜ The widgets already link to `peak://workout/start`, `peak://workout/open` and `peak://home` |
+| F9-04 | Deep links (`peak://`) + App Intents | ✅ `peak://home`, `peak://settings`, `peak://workout/start` (today's next workout, or the running one) and `peak://workout/open` (`PeakLink`, tests); the widgets and the Live Activity use them. Shortcuts: Log Water (runs without opening Peak; optional amount, else the quick amount; says the day's total) and Start Today's Workout (opens Peak and starts like the Start button), with Siri phrases in English and Turkish. The widget's own water button stays out of the Shortcuts list. On the simulator a link started today's planned workout from another tab and reopened the running one. A start from a link at a cold launch does not ask "Start anyway?": the Energy Level is not known yet |
+
+## F10: Polish, accessibility, localization 🔶
+
+| ID | Task | Status |
+| --- | --- | --- |
+| F10-01 | Every Turkish string + plural forms | ✅ No app, widget, Info.plist or Siri phrase string lacks Turkish (checked against what the compiler extracts, including the package's widget views). English plurals fixed where a count could be 1: "1 Movement · 1 Set", "1 of 1 set", "1 set is empty" (checked by formatting the compiled catalog); Turkish keeps the noun singular after a number |
+| F10-02 | Accessibility: VoiceOver, Dynamic Type, Reduce Motion, Reduce Transparency, Increase Contrast, 44 pt | 🔶 Dynamic Type checked at the largest accessibility size on the simulator: Today's Workout card, the Energy and Water tiles and the workout header now stack instead of breaking words; the week strip, the set table and the workout's bottom bar (fixed columns) are capped at the largest standard size with the large content viewer, and Finish Workout shortens to Finish when it would not fit. Onboarding and Settings wrap by word. Onboarding respects Reduce Motion. `PeakUITests` runs `performAccessibilityAudit` on the three tabs, onboarding and a running workout in English and Turkish: green; issues the audit cannot attach to an element (iOS's own toolbar buttons on the workout sheet, rows blurred under the tab bar in Settings) are kept as expected failures. Still to do: a VoiceOver pass and Reduce Transparency / Increase Contrast on a device |
+| F10-03 | Haptics: set completed, water added, workout finished | ✅ A light tap when a set becomes done (entering its reps; not on every digit or on reopening); water and the finish summary already had theirs. To feel on a device |
+| F10-04 | Performance (Instruments) | 🔶 Measured on an iPhone 13 Pro Max with real data ([PERFORMANCE.md](PERFORMANCE.md)): cold launch 930 ms to the first frame, of which Peak's own code about 90 ms (opening the store 22 ms); with a workout running the main thread is busy 3 ms in 9.5 s. Home's 11 glass surfaces sit in `GlassEffectContainer`s. Scrolling hitches still to check on a device with the Animation Hitches template |
+| F10-05 | Onboarding (C-15) | ✅ First launch: welcome, Apple Health (what is read and saved; Connect / Not Now; skipped when already decided or unavailable), step and water goals, iCloud Sync (Turn On / Not Now, applied at the end so the store reopens once), and how to start: Import My Data (onboarding closes, Settings opens on the file picker), the sample program, or empty. Anyone with data already (an update, or data from iCloud) skips it. Each step and the import path seen on the simulator in Turkish |
+| F10-06 | Empty and error states | ✅ Each empty list has one sentence and one action: Settings › Recorded Workouts (Create Workout), Routines (Create Routine, or Create Workout first when there are none), Home without a routine (Set Up), without Health (Connect Apple Health); an import with nothing to add says to try another header row or layout. Seen on a clean simulator in Turkish |
 
 ## Upcoming phases (⬜)
 
-- F8: iCloud sync
-- F10: Polish, accessibility, localization
-- F11: App Store release
+- F11: Analysis and v1 improvements, before the App Store (Analysis screen, progressive overload per workout and per
+  movement; scope settled with the maintainer)
+- F12: App Store release
 
 ## Notes
 
-- The project is signed with a free Personal Team for now. Personal Teams cannot use iCloud (CloudKit, key-value store)
-  or Push Notifications, so those capabilities are added once the paid Apple Developer Program membership is active,
-  before F8 (iCloud sync). Until then, settings live in App Group `UserDefaults` only.
+- The project is signed with the maintainer's paid Apple Developer Program team (since 2026-10-01); development
+  profiles last a year. Builds run from Xcode use the CloudKit **development** environment; TestFlight and App Store
+  builds use production, which only has the schema once it is deployed (F8-01).

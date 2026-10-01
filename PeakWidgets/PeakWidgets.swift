@@ -28,7 +28,7 @@ struct StepsWidget: Widget {
         StaticConfiguration(kind: "Steps", provider: PeakTimeline()) { entry in
             StepsWidgetView(content: entry.content)
                 .containerBackground(for: .widget) { Color.peakCanvas }
-                .widgetURL(URL(string: "peak://home"))
+                .widgetURL(PeakLink.home.url)
         }
         .configurationDisplayName("Steps")
         .description("Today's steps against your goal.")

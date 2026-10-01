@@ -23,6 +23,7 @@ struct ImportDataRow: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(SettingsStore.self) private var settings
     @State private var isPicking = false
+    @State private var router = LinkRouter.shared
     @State private var model: ImportModel?
     @State private var result: Result?
     /// Shown once the import sheet has closed: SwiftUI presents one sheet at a time.
@@ -32,6 +33,11 @@ struct ImportDataRow: View {
         SettingsRow("Import Workout Data", accessory: .icon("square.and.arrow.down")) { isPicking = true }
             .fileImporter(isPresented: $isPicking, allowedContentTypes: Self.fileTypes) { picked in
                 if case .success(let url) = picked { open(url) }
+            }
+            .onChange(of: router.opensImportPicker, initial: true) {
+                guard router.opensImportPicker else { return }
+                router.opensImportPicker = false
+                isPicking = true
             }
             .sheet(item: $model, onDismiss: showPendingResult) { model in
                 ImportSheet(model: model) { outcome in

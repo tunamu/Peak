@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 import SwiftData
 
@@ -26,8 +27,8 @@ public enum PeakStore {
 
     /// - Parameters:
     ///   - location: Where the store lives.
-    ///   - syncsWithCloudKit: Off until iCloud sync (F8). SwiftData's default would sync as soon as the app has an
-    ///     iCloud entitlement, so this is always passed explicitly.
+    ///   - syncsWithCloudKit: On only in the app (F8). The widget opens the same store without sync, and SwiftData's
+    ///     default would sync as soon as a target has an iCloud entitlement, so this is always passed explicitly.
     public static func makeContainer(
         _ location: Location = .appGroup,
         syncsWithCloudKit: Bool = false
@@ -62,4 +63,35 @@ public enum PeakStore {
             configurations: configuration
         )
     }
+
+    #if DEBUG
+        /// Creates every record type in the CloudKit development environment, including models that have no data
+        /// yet, so the whole schema can be deployed to production (CloudKit Console). Sync alone only creates the
+        /// types it has uploaded. Uses a throwaway store: the app's data is not touched. Blocks until CloudKit
+        /// answers, so call it off the main actor.
+        public static func initializeCloudKitSchema() throws {
+            guard let model = NSManagedObjectModel.makeManagedObjectModel(for: SchemaV1.models) else {
+                throw CocoaError(.coreData)
+            }
+            let directory = FileManager.default.temporaryDirectory
+                .appending(path: "PeakSchema-\(UUID().uuidString)", directoryHint: .isDirectory)
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            defer { try? FileManager.default.removeItem(at: directory) }
+
+            let description = NSPersistentStoreDescription(url: directory.appending(path: "Schema.store"))
+            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
+                containerIdentifier: cloudKitContainerID
+            )
+            description.shouldAddStoreAsynchronously = false
+            let container = NSPersistentCloudKitContainer(name: "PeakSchema", managedObjectModel: model)
+            container.persistentStoreDescriptions = [description]
+            var loadError: (any Error)?
+            container.loadPersistentStores { _, error in loadError = error }
+            if let loadError { throw loadError }
+            try container.initializeCloudKitSchema()
+            for store in container.persistentStoreCoordinator.persistentStores {
+                try container.persistentStoreCoordinator.remove(store)
+            }
+        }
+    #endif
 }

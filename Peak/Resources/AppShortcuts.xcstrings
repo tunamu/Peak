@@ -1,0 +1,68 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add water in ${applicationName}" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName} ile su kaydet"
+          }
+        }
+      }
+    },
+    "Log water in ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "Log water in ${applicationName}",
+              "Add water in ${applicationName}"
+            ]
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "${applicationName} ile su ekle"
+          }
+        }
+      }
+    },
+    "Start my workout in ${applicationName}" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${applicationName} ile antrenmanımı başlat"
+          }
+        }
+      }
+    },
+    "Start today's workout in ${applicationName}" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "Start today's workout in ${applicationName}",
+              "Start my workout in ${applicationName}"
+            ]
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "${applicationName} ile bugünün antrenmanını başlat"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

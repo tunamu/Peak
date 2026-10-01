@@ -77,7 +77,7 @@
     { "loggedAt": "2026-09-30T08:11:00Z", "amountMl": -200, "source": "widget" }
   ],
   "settings": {
-    "stepGoal": 10000, "waterGoalMl": 4000, "overload": { "thresholdReps": 12, "resetReps": 6 },
+    "stepGoal": 10000, "waterGoalMl": 4000, "overload": { "thresholdReps": 12, "resetReps": 6, "repStep": 1 },
     "unitSystem": "metric", "quickWaterAmounts": [200, 330, 500, 1000]
   }
 }

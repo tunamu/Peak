@@ -10,7 +10,7 @@ struct RootTabView: View {
         case settings
     }
 
-    @State private var selection: TabID = .home
+    @Binding var selection: TabID
     @Environment(WorkoutLauncher.self) private var launcher
 
     var body: some View {
@@ -60,7 +60,8 @@ struct RootTabView: View {
 
 #if DEBUG
     #Preview {
-        RootTabView()
+        @Previewable @State var selection = RootTabView.TabID.home
+        RootTabView(selection: $selection)
             .previewEnvironment()
     }
 #endif
