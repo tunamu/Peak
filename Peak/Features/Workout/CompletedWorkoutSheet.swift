@@ -134,7 +134,7 @@ private struct LoggedSetRow: View {
         HStack(spacing: Spacing.xSmall) {
             Color.clear.frame(width: SetColumns.handle)
             Text(number, format: .number)
-                .foregroundStyle(set.isCompleted ? .peakTintPositive : .peakTextSecondary)
+                .foregroundStyle(set.isCompleted ? .peakTextPositive : .peakTextSecondary)
                 .frame(width: SetColumns.number, alignment: .leading)
             Text(verbatim: reference)
                 .foregroundStyle(.peakTextTertiary)

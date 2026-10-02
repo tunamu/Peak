@@ -87,7 +87,7 @@ struct CompletedMovementRow: View {
         Button(action: reopen) {
             HStack(spacing: Spacing.xSmall) {
                 Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.peakTintPositive)
+                    .foregroundStyle(.peakEnergyReady)
                     .accessibilityHidden(true)
                 Text(verbatim: summary)
                     .foregroundStyle(.peakTextSecondary)
@@ -259,7 +259,7 @@ struct SetRow: View {
                 .frame(width: SetColumns.handle)
                 .accessibilityHidden(true)
             Text(number, format: .number)
-                .foregroundStyle(set.isCompleted ? .peakTintPositive : .peakTextSecondary)
+                .foregroundStyle(set.isCompleted ? .peakTextPositive : .peakTextSecondary)
                 .frame(width: SetColumns.number, alignment: .leading)
             Text(verbatim: reference)
                 .foregroundStyle(.peakTextTertiary)

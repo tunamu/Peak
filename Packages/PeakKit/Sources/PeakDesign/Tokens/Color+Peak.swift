@@ -48,6 +48,7 @@ extension ShapeStyle where Self == Color {
     public static var peakTextPrimary: Color { Color(PeakPalette.textPrimary) }
     public static var peakTextSecondary: Color { Color(PeakPalette.textSecondary) }
     public static var peakTextTertiary: Color { Color(PeakPalette.textTertiary) }
+    public static var peakTextPositive: Color { Color(PeakPalette.textPositive) }
 
     public static var peakSteps: Color { Color(PeakPalette.accentSteps) }
     public static var peakWater: Color { Color(PeakPalette.accentWater) }

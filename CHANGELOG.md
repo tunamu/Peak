@@ -154,6 +154,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- A done set's number is readable: it was drawn in the faint green meant to tint glass, now in a green made for
+  text (`text.positive`). The ✓ of a folded movement uses the Ready green.
 - English counts read right when one: "1 Movement · 1 Set", "1 of 1 set", "1 set is empty".
 - A finished workout's time no longer keeps counting when shown again.
 
