@@ -27,7 +27,9 @@ public struct PeakExporter {
             exercises: try fetch(Exercise.self).sorted(by: Self.creationOrder).map(exercise),
             workoutTemplates: try fetch(WorkoutTemplate.self).sorted(by: Self.listOrder).map(template),
             routines: try fetch(Routine.self).sorted(by: Self.listOrder).map(routine),
-            sessions: try fetch(WorkoutSession.self).sorted(by: Self.sessionOrder).map(session),
+            // A workout still being entered is not part of the data yet (F11-13).
+            sessions: try fetch(WorkoutSession.self).filter { $0.status != .logging }.sorted(by: Self.sessionOrder)
+                .map(session),
             waterLogs: try fetch(WaterLog.self).sorted(by: Self.waterOrder).map(waterLog),
             settings: settings
         )
@@ -38,15 +40,25 @@ public struct PeakExporter {
     private func exercise(_ exercise: Exercise) -> PeakExportV1.Exercise {
         PeakExportV1.Exercise(
             id: exercise.id.uuidString, name: exercise.name, muscleGroup: exercise.muscleGroup, kind: exercise.kind,
-            equipment: exercise.equipment, incrementKg: exercise.incrementKg, archived: exercise.isArchived,
-            createdAt: exercise.createdAt
+            equipment: exercise.equipment, incrementKg: exercise.incrementKg,
+            note: exercise.note.isEmpty ? nil : exercise.note, overload: Self.overload(exercise.overloadOverride),
+            archived: exercise.isArchived, createdAt: exercise.createdAt
         )
+    }
+
+    /// A workout's or movement's own overload, left out when it has none.
+    private static func overload(_ override: OverloadOverride) -> PeakExportV1.Overload? {
+        override.isEmpty
+            ? nil
+            : PeakExportV1.Overload(
+                thresholdReps: override.thresholdReps, resetReps: override.resetReps, repStep: override.repStep)
     }
 
     private func template(_ template: WorkoutTemplate) -> PeakExportV1.WorkoutTemplate {
         PeakExportV1.WorkoutTemplate(
             id: template.id.uuidString, name: template.name, kind: template.kind, note: template.note,
-            archived: template.isArchived, createdAt: template.createdAt,
+            overload: Self.overload(template.overloadOverride), archived: template.isArchived,
+            createdAt: template.createdAt,
             items: template.orderedItems.compactMap { item in
                 item.exercise.map { .init(exerciseId: $0.id.uuidString, targetSets: item.targetSets) }
             }
@@ -96,7 +108,8 @@ public struct PeakExporter {
         }
         return PeakExportV1.SessionExercise(
             exerciseId: exercise.exercise?.id.uuidString, exerciseName: exercise.exerciseName,
-            completed: exercise.isCompleted, sets: sets.isEmpty ? nil : sets,
+            note: exercise.note.isEmpty ? nil : exercise.note, completed: exercise.isCompleted,
+            sets: sets.isEmpty ? nil : sets,
             segments: segments.isEmpty ? nil : segments
         )
     }

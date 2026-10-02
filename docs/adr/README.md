@@ -24,6 +24,10 @@ edited away. If it changes, a new ADR supersedes it and the old one is marked **
 | [0017](0017-color-tokens-and-contrast.md) | Color tokens in code, design grays with an Increase Contrast fallback |
 | [0018](0018-spreadsheet-readers.md) | Spreadsheet readers: ZIPFoundation for .xlsx, our own CSV reader |
 | [0019](0019-one-more-rep.md) | One more rep while the weight stays, and Previous in the set table |
+| [0020](0020-analysis-screen.md) | The Analysis screen: Performance and History pages |
+| [0021](0021-local-reminders.md) | Local reminders on workout days |
+| [0022](0022-schema-v2.md) | SchemaV2: movement notes and per-movement progressive overload |
+| [0023](0023-workouts-entered-later.md) | Workouts entered after the fact |
 
 ## Open assumptions
 

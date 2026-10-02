@@ -87,7 +87,7 @@ struct CompletedMovementRow: View {
         Button(action: reopen) {
             HStack(spacing: Spacing.xSmall) {
                 Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.peakTintPositive)
+                    .foregroundStyle(.peakEnergyReady)
                     .accessibilityHidden(true)
                 Text(verbatim: summary)
                     .foregroundStyle(.peakTextSecondary)
@@ -259,7 +259,7 @@ struct SetRow: View {
                 .frame(width: SetColumns.handle)
                 .accessibilityHidden(true)
             Text(number, format: .number)
-                .foregroundStyle(set.isCompleted ? .peakTintPositive : .peakTextSecondary)
+                .foregroundStyle(set.isCompleted ? .peakTextPositive : .peakTextSecondary)
                 .frame(width: SetColumns.number, alignment: .leading)
             Text(verbatim: reference)
                 .foregroundStyle(.peakTextTertiary)
@@ -288,8 +288,8 @@ struct SetRow: View {
         // Five fixed columns: capped, with the large content viewer beyond (F10-02).
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         // F10-03: one light tap when the set becomes done, not on every digit or when it reopens.
-        .sensoryFeedback(trigger: set.isCompleted) { wasDone, isDone in
-            !wasDone && isDone ? .impact(weight: .light) : nil
+        .peakHaptic(trigger: set.isCompleted) { wasDone, isDone in
+            !wasDone && isDone ? .setDone : nil
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text("Set \(number)"))

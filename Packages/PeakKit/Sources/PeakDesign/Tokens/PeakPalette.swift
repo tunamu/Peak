@@ -36,6 +36,13 @@ public enum PeakPalette {
         darkHighContrast: RGBA(hex: 0xA8A8AD), lightHighContrast: RGBA(hex: 0x48484A)
     )
 
+    /// Text marking something done: a completed set's number. The Ready green in dark mode; darker in light mode,
+    /// where the Ready green (a graphic) is too light for text.
+    public static let textPositive = ColorToken(
+        "text.positive", role: .text,
+        dark: RGBA(hex: 0x0DFF00), light: RGBA(hex: 0x17752A)
+    )
+
     // MARK: Accents
 
     /// The design's pure reds are 2.85:1 on a dark glass card; Increase Contrast lifts them (Apple's dark systemRed).
@@ -87,7 +94,7 @@ public enum PeakPalette {
 
     public static let all: [ColorToken] = [
         canvas, fillControl,
-        textPrimary, textSecondary, textTertiary,
+        textPrimary, textSecondary, textTertiary, textPositive,
         accentSteps, accentWater, energyReady, energyLow, energyNotReady,
         tintPositive, tintDestructive,
         brandFlag,

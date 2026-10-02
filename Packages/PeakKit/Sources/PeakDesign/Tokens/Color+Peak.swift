@@ -48,12 +48,18 @@ extension ShapeStyle where Self == Color {
     public static var peakTextPrimary: Color { Color(PeakPalette.textPrimary) }
     public static var peakTextSecondary: Color { Color(PeakPalette.textSecondary) }
     public static var peakTextTertiary: Color { Color(PeakPalette.textTertiary) }
+    public static var peakTextPositive: Color { Color(PeakPalette.textPositive) }
 
     public static var peakSteps: Color { Color(PeakPalette.accentSteps) }
     public static var peakWater: Color { Color(PeakPalette.accentWater) }
     public static var peakEnergyReady: Color { Color(PeakPalette.energyReady) }
     public static var peakEnergyLow: Color { Color(PeakPalette.energyLow) }
     public static var peakEnergyNotReady: Color { Color(PeakPalette.energyNotReady) }
+
+    /// A movement getting stronger (Analysis): the Ready green, which passes the contrast checks as a graphic.
+    public static var peakTrendRising: Color { Color(PeakPalette.energyReady) }
+    /// A movement getting weaker (Analysis): the Not Ready red.
+    public static var peakTrendFalling: Color { Color(PeakPalette.energyNotReady) }
 
     public static var peakTintPositive: Color { Color(PeakPalette.tintPositive) }
     public static var peakTintDestructive: Color { Color(PeakPalette.tintDestructive) }

@@ -89,6 +89,8 @@ struct TodayWorkoutCard: View {
         case .active(_, let timerStart, let pausedElapsed):
             return SessionTimerText.text(timerStart: timerStart, pausedElapsed: pausedElapsed)
         case .completed(_, let duration, let done, let movements):
+            // Imported sessions have no duration: just the movements.
+            guard duration >= 60 else { return Text(verbatim: "\(done)/\(movements)") }
             let time = Duration.seconds(duration).formatted(.units(allowed: [.hours, .minutes], width: .abbreviated))
             return Text(verbatim: "\(time) · \(done)/\(movements)")
         case .restDay(let next?):

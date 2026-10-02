@@ -99,6 +99,35 @@
         }
       }
     },
+    "%lld weeks in a row" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld week in a row"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld weeks in a row"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üst üste %lld hafta"
+          }
+        }
+      }
+    },
     "+%lld ml" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -120,6 +149,27 @@
         }
       }
     },
+    "Dashboard" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gösterge Paneli"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitti"
+          }
+        }
+      }
+    },
     "Done Today" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -132,7 +182,6 @@
       }
     },
     "Energy" : {
-      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
@@ -240,6 +289,16 @@
         }
       }
     },
+    "Opens Peak on today's workout." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'i bugünün antrenmanında açar."
+          }
+        }
+      }
+    },
     "Pause" : {
       "localizations" : {
         "tr" : {
@@ -267,6 +326,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duraklatıldı"
+          }
+        }
+      }
+    },
+    "Planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlı"
           }
         }
       }
@@ -325,12 +395,42 @@
         }
       }
     },
+    "Start Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Başlat"
+          }
+        }
+      }
+    },
     "Steps" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adımlar"
+          }
+        }
+      }
+    },
+    "Steps, water and energy at a glance." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adım, su ve enerji bir bakışta."
+          }
+        }
+      }
+    },
+    "This Week" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Hafta"
           }
         }
       }
@@ -375,6 +475,17 @@
         }
       }
     },
+    "Volume" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacim"
+          }
+        }
+      }
+    },
     "Water" : {
       "localizations" : {
         "tr" : {
@@ -392,6 +503,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman Sürüyor"
+          }
+        }
+      }
+    },
+    "Workouts" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlar"
+          }
+        }
+      }
+    },
+    "You can workout a bit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biraz antrenman yapabilirsin"
+          }
+        }
+      }
+    },
+    "You can workout now" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi antrenman yapabilirsin"
+          }
+        }
+      }
+    },
+    "You can't workout now" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi antrenman yapmamalısın"
+          }
+        }
+      }
+    },
+    "Your Energy Level and what it means for today." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enerji seviyen ve bugün için anlamı."
+          }
+        }
+      }
+    },
+    "Your workout days, today's workout and the week so far." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman günlerin, bugünün antrenmanı ve haftanın özeti."
           }
         }
       }

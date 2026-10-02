@@ -9,6 +9,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Workouts done without starting them in Peak can be entered afterwards: Log Workout on a past day (Home, or a day
+  picked in History), and Add Workout › Log Finished or a planned card's Log as Finished on today. The same tables as
+  a live workout, with the start time and length instead of the timer (the last time's by default); the routine's
+  workout moves the rotation on, and it is saved to Apple Health. A finished workout can be deleted, also from Health.
+- Notes on movements: how a movement is set up (seat, grip), pinned above its sets every time, and a note for each
+  session from the note button beside the movement, with last time's note at hand. Analysis lists a movement's notes
+  over time.
+- Progressive overload for one workout or one movement: its own threshold, reps after a weight increase and rep
+  increase, over Settings (Set Workout › Progressive Overload, and the ⓘ beside each movement).
+- More widgets. On the Lock Screen: water, steps and Energy Level rings, and today's workout in a line or a few. On
+  the Home Screen: Energy Level (small), a Dashboard with steps, water (and its button) and energy (medium), and This
+  Week (large): which days were done and which are planned, today's workout, and the week's workouts, volume and weeks
+  in a row. In Control Center: Log Water and Start Workout.
+- Reminders: on days with a planned workout, a morning notification naming the workout ("Today: Chest & Biceps.
+  Ready?"), at 09:00 or the time set in Settings › Reminders; a routine can add its own "time to train" reminder at
+  its own time. None once the day's workout is done. Onboarding asks for notifications in a new Reminders step.
+- Haptics for a workout starting, pausing and resuming, and a warning before "Start anyway?" and Delete All Data.
+- The Analysis tab, in two pages that swipe or switch with the control on top. **Performance**: for the last 4 weeks,
+  3 or 6 months, a year or all time, the workouts, volume, sets and targets hit against the period before; weekly
+  volume and the weeks in a row; sets per muscle group; every movement with an arrow beside its name (green up, red
+  down, grey when steady) and a chart of its estimated one-rep max, weight, reps or volume with its records; every
+  workout with its volume, completion, targets hit and duration. **History**: a month calendar with a dot on every
+  workout day, and the month's workouts (or the day's) as the same cards Home shows, opening read-only. Muscle groups left as Other, as imports
+  leave them, are told from the movement's name.
 - iCloud Sync, off until you turn it on in Settings › General: workouts, templates, routines and water sync through
   your private iCloud database, and settings through iCloud's key-value store. Turning it on or off takes effect at
   once. Without an iCloud account Peak keeps working on the device. Water logged from the widget is uploaded the next
@@ -119,6 +143,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Adding water closes the water sheet once the new total has shown; removing keeps it open.
+- A finished workout without a recorded time (imported) shows only its movements done, not "0 min".
+- Onboarding's start choices are taller cards with a symbol and a chevron.
 - Targets aim one rep higher while the weight stays: after 50 kg × 9 the next target is 50 kg × 10 (ADR 0019). The
   set table shows **Previous** (the same set last time) instead of Reference; the target weight fills the weight field
   and the target reps show in the reps field.
@@ -127,6 +154,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- A done set's number is readable: it was drawn in the faint green meant to tint glass, now in a green made for
+  text (`text.positive`). The ✓ of a folded movement uses the Ready green.
 - English counts read right when one: "1 Movement · 1 Set", "1 of 1 set", "1 set is empty".
 - A finished workout's time no longer keeps counting when shown again.
 

@@ -50,6 +50,11 @@ struct Writer {
         return summary
     }
 
+    private static func override(_ overload: PeakExportV1.Overload?) -> OverloadOverride {
+        OverloadOverride(
+            thresholdReps: overload?.thresholdReps, resetReps: overload?.resetReps, repStep: overload?.repStep)
+    }
+
     private mutating func insert(_ dto: PeakExportV1.Exercise) -> Exercise {
         let exercise = Exercise(name: dto.name.trimmingCharacters(in: .whitespacesAndNewlines))
         exercise.id = ImportPlan.uuid(dto.id) ?? UUID()
@@ -57,6 +62,8 @@ struct Writer {
         exercise.kind = dto.kind ?? .strength
         exercise.equipment = dto.equipment ?? .other
         exercise.incrementKg = dto.incrementKg ?? 2.5
+        exercise.note = dto.note ?? ""
+        exercise.overloadOverride = Self.override(dto.overload)
         exercise.isArchived = dto.archived ?? false
         exercise.createdAt = dto.createdAt ?? .now
         context.insert(exercise)
@@ -69,6 +76,7 @@ struct Writer {
         template.id = ImportPlan.uuid(dto.id) ?? UUID()
         template.kind = dto.kind ?? .strength
         template.note = dto.note ?? ""
+        template.overloadOverride = Self.override(dto.overload)
         template.sortIndex = index
         template.isArchived = dto.archived ?? false
         template.createdAt = dto.createdAt ?? .now
@@ -134,6 +142,7 @@ struct Writer {
             item.exerciseName = name
         }
         item.isCompleted = dto.completed ?? false
+        item.note = dto.note ?? ""
         for (index, set) in (dto.sets ?? []).enumerated() {
             let entry = SetEntry(order: index, weightKg: plan.kilograms(set.weight), reps: set.reps)
             entry.targetWeightKg = set.targetWeight.map(plan.kilograms)

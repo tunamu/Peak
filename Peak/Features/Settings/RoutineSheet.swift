@@ -12,6 +12,7 @@ struct RoutineSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(\.calendar) private var calendar
+    @Environment(Reminders.self) private var reminders
     @Query(filter: #Predicate<WorkoutTemplate> { !$0.isArchived }, sort: \WorkoutTemplate.sortIndex)
     private var templates: [WorkoutTemplate]
 
@@ -23,6 +24,9 @@ struct RoutineSheet: View {
     @State private var intervalDays: Int
     @State private var startDate: Date
     @State private var isActive: Bool
+    /// The routine's own reminder (F11-08); kept by `Reminders` on this device.
+    @State private var hasReminder = false
+    @State private var reminderTime = Date.now
     @State private var isDeleteConfirmationShown = false
 
     init(routine: Routine?) {
@@ -83,6 +87,17 @@ struct RoutineSheet: View {
                 }
 
                 Section {
+                    Toggle("Remind Me", isOn: $hasReminder)
+                    if hasReminder {
+                        DatePicker("Reminder Time", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                    }
+                } header: {
+                    Text("Reminder")
+                } footer: {
+                    Text("A notification at this time on the routine's workout days, besides the morning one.")
+                }
+
+                Section {
                     Toggle("Active", isOn: $isActive)
                     TextField("Add Note", text: $note, axis: .vertical)
                         .lineLimit(1...4)
@@ -125,6 +140,24 @@ struct RoutineSheet: View {
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+        .onAppear(perform: loadReminder)
+        .onChange(of: hasReminder) { _, isOn in
+            guard isOn, reminders.authorization == .notDetermined else { return }
+            Task { await reminders.requestAuthorization() }
+        }
+    }
+
+    /// The routine's reminder, or 18:00 ready for when it is turned on.
+    private func loadReminder() {
+        let minutes = routine.flatMap { reminders.routineReminder(for: $0.id) }
+        hasReminder = minutes != nil
+        let start = calendar.startOfDay(for: .now)
+        reminderTime = calendar.date(byAdding: .minute, value: minutes ?? 18 * 60, to: start) ?? start
+    }
+
+    private var reminderMinutes: Int {
+        let parts = calendar.dateComponents([.hour, .minute], from: reminderTime)
+        return (parts.hour ?? 0) * 60 + (parts.minute ?? 0)
     }
 
     private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -189,6 +222,7 @@ struct RoutineSheet: View {
             target.weekdays = Array(weekdays)
             target.intervalDays = intervalDays
             target.startDate = startDate
+            reminders.setRoutineReminder(hasReminder ? reminderMinutes : nil, for: target.id)
             try modelContext.save()
             dismiss()
         } catch {
@@ -198,6 +232,7 @@ struct RoutineSheet: View {
 
     private func delete() {
         guard let routine else { return }
+        reminders.setRoutineReminder(nil, for: routine.id)
         RoutineRepository(context: modelContext).delete(routine)
         try? modelContext.save()
         dismiss()

@@ -8,7 +8,7 @@ import Testing
     static let entities = PeakStore.schema.entities
 
     @Test func schemaHasEveryModel() {
-        #expect(Self.entities.count == SchemaV1.models.count)
+        #expect(Self.entities.count == SchemaV2.models.count)
     }
 
     @Test func noUniqueConstraints() {

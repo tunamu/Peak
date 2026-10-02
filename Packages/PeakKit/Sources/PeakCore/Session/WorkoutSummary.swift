@@ -63,7 +63,7 @@ public struct WorkoutSummary: Hashable, Sendable {
                 after: done,
                 setCount: exercise.orderedSets.count,
                 incrementKg: exercise.exercise?.incrementKg ?? 2.5,
-                rule: rule
+                rule: rule.applying(session.template?.overloadOverride, exercise.exercise?.overloadOverride)
             )
             guard let lifted = done.map(\.weightKg).max(), let target = next.map(\.weightKg).max(),
                 target > lifted + 0.000_1

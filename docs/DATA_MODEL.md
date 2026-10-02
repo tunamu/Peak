@@ -21,8 +21,9 @@ property that would break sync fails CI.
 
 | Path | What |
 | --- | --- |
-| `Models/SchemaV1.swift` | The `@Model` classes, nested in `SchemaV1: VersionedSchema` |
-| `Models/Models.swift` | Short names (`Exercise` = `SchemaV1.Exercise`), typed enum accessors, ordered relationship arrays |
+| `Models/SchemaV2.swift` | The current `@Model` classes, nested in `SchemaV2: VersionedSchema` (F11) |
+| `Models/SchemaV1.swift` | The first schema, kept for the migration from devices that have it |
+| `Models/Models.swift` | Short names (`Exercise` = `SchemaV2.Exercise`), typed enum accessors, ordered relationship arrays |
 | `Models/ModelEnums.swift` | Enums stored as raw strings; `Weekday` and its bit mask |
 | `Persistence/PeakStore.swift` | `PeakStore.makeContainer(_:syncsWithCloudKit:)` and `PeakMigrationPlan` |
 | `Repositories/` | Reads and writes per area; the rules below live here |
@@ -38,13 +39,13 @@ field only in `#Predicate`, which cannot see computed properties.
 
 | Entity | Purpose | Key fields |
 | --- | --- | --- |
-| `Exercise` | Movement library | `name`, `muscleGroup`, `kind` (strength/cardio), `equipment`, `incrementKg` (default 2.5), `isArchived` |
-| `WorkoutTemplate` | A named workout, e.g. "Chest & Biceps" | `name`, `kind`, `note`, `sortIndex`, `isArchived`, `items` |
+| `Exercise` | Movement library | `name`, `muscleGroup`, `kind` (strength/cardio), `equipment`, `incrementKg` (default 2.5), `note` (setup), `overloadThresholdReps` / `overloadResetReps` / `overloadRepStep` (own rule, `nil` = follow), `isArchived` |
+| `WorkoutTemplate` | A named workout, e.g. "Chest & Biceps" | `name`, `kind`, `note`, the same three `overload…` values, `sortIndex`, `isArchived`, `items` |
 | `TemplateItem` | Exercise inside a template | `order`, `targetSets` (default 2), `exercise`, `template` |
 | `Routine` | A schedule of templates | `isActive`, `scheduleType` (weekdays/interval), `weekdaysMask`, `intervalDays`, `startDate`, `entries` |
 | `RoutineEntry` | Template position in a routine's rotation | `order`, `template`, `routine` |
-| `WorkoutSession` | A performed workout | `status`, `startedAt`, `endedAt`, `pausedTotal`, `pausedAt`, `title` (snapshot), `source`, `isDateEstimated`, `healthKitWorkoutID`, `exercises` |
-| `SessionExercise` | Exercise inside a session | `order`, `exerciseName` (snapshot), `isCompleted`, `sets`, `segments` |
+| `WorkoutSession` | A performed workout | `status` (active/paused/completed/discarded, and `logging` while entered after the fact, ADR 0023), `startedAt`, `endedAt`, `pausedTotal`, `pausedAt`, `title` (snapshot), `source`, `isDateEstimated`, `healthKitWorkoutID`, `exercises` |
+| `SessionExercise` | Exercise inside a session | `order`, `exerciseName` (snapshot), `note` (this session), `isCompleted`, `sets`, `segments` |
 | `SetEntry` | One strength set | `order`, `weightKg`, `reps`, `targetWeightKg`, `targetReps`, `isCompleted`, `completedAt` |
 | `CardioSegment` | One cardio segment | `order`, `speedKmh`, `inclinePercent`, `durationSec` |
 | `WaterLog` | Water intake change | `date`, `amountMl` (negative = removal), `source` (app/widget/intent) |
@@ -139,7 +140,14 @@ Step count (live from HealthKit) · energy score ([ENERGY_LEVEL.md](ENERGY_LEVEL
 
 ## Migrations
 
-`SchemaV1` and `PeakMigrationPlan` exist from the first release. The v1 schema is frozen before release; after that
-a change means a new `SchemaV2` (a copy of the models with the change), a `MigrationStage` from v1 to v2, and moving
-the short type names in `Models.swift` to the new schema. Only lightweight migrations are allowed once iCloud sync is
-on.
+A change to the stored models means a new schema version (a copy of the models with the change), a `MigrationStage`
+to it, and moving the short type names in `Models.swift` to it. Only lightweight migrations: iCloud sync needs them.
+
+| Version | Since | Change | Stage |
+| --- | --- | --- | --- |
+| `SchemaV1` | F2 | The first schema | — |
+| `SchemaV2` | F11 | `Exercise.note`, `SessionExercise.note` (F11-12); `overloadThresholdReps`, `overloadResetReps`, `overloadRepStep` on `Exercise` and `WorkoutTemplate` (F11-10). All optional or defaulted | Lightweight ([ADR 0022](adr/0022-schema-v2.md)) |
+
+`MigrationTests` writes a v1 store file with data and opens it with the app's plan: every record is in place and the
+new properties are empty. With iCloud Sync on, the CloudKit development schema needs the new fields
+(`PeakStore.initializeCloudKitSchema()`, debug builds) before production is deployed (F12).

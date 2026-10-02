@@ -24,6 +24,8 @@ public enum ScheduleType: String, CaseIterable, Codable, Sendable {
 
 public enum SessionStatus: String, CaseIterable, Codable, Sendable {
     case active, paused, completed, discarded
+    /// Being entered after the fact (F11-13): not running, not yet in the history. Never exported.
+    case logging
 }
 
 public enum SessionSource: String, CaseIterable, Codable, Sendable {

@@ -34,8 +34,8 @@ A minimal file is a list of workouts:
 | `schema`, `schemaVersion` | – | `"peak.workout-data"`, `1`. Written on export; checked when present |
 | `exportedAt` | – | Timestamp |
 | `units` | – | `{ "weight": "kg" \| "lb" }`, default kg |
-| `exercises` | – | `id`, `name`\*, `muscleGroup`, `kind`, `equipment`, `incrementKg`, `archived`, `createdAt` |
-| `workoutTemplates` | – | `id`, `name`\*, `kind`, `note`, `archived`, `createdAt`, `items` (`exerciseId` / `exerciseName`, `targetSets`) |
+| `exercises` | – | `id`, `name`\*, `muscleGroup`, `kind`, `equipment`, `incrementKg`, `note` (setup), `overload` (own rule), `archived`, `createdAt` |
+| `workoutTemplates` | – | `id`, `name`\*, `kind`, `note`, `overload` (own rule), `archived`, `createdAt`, `items` (`exerciseId` / `exerciseName`, `targetSets`) |
 | `routines` | – | `id`, `name`\*, `note`, `active`, `schedule`, `templateIds` (the rotation), `createdAt` |
 | `sessions` | ✔ | See below |
 | `waterLogs` | – | `loggedAt`\*, `amountMl`\* (negative = removal), `source` |
@@ -46,7 +46,7 @@ A minimal file is a list of workouts:
 **Session:** `exercises`\* plus optional `id`, `date`, `startedAt`, `endedAt`, `pausedTotalSec`, `pausedAt`, `status`
 (`active` / `paused` / `completed` / `discarded`, default completed), `title`, `templateId`, `routineId`, `note`,
 `source`, `dateEstimated`, `healthKitWorkoutId`.
-Each exercise needs `exerciseId` or `exerciseName`, and has `completed`, `sets` or `segments`:
+Each exercise needs `exerciseId` or `exerciseName`, and has `note`, `completed`, `sets` or `segments`:
 
 - **Set:** `weight`\*, `reps`\* (integer), `targetWeight`, `targetReps`, `completed` (default true), `completedAt`
 - **Segment:** `speedKmh`, `inclinePercent`, `durationMin` (missing = the rest of the session)

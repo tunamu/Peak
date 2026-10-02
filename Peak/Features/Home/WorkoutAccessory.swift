@@ -18,6 +18,11 @@ struct WorkoutAccessory: ViewModifier {
     @Query(sort: \WorkoutSession.startedAt) private var sessions: [WorkoutSession]
 
     func body(content: Content) -> some View {
+        accessory(content)
+    }
+
+    @ViewBuilder
+    private func accessory(_ content: Content) -> some View {
         if #available(iOS 26.1, *) {
             let pending = pendingWorkout
             content.tabViewBottomAccessory(isEnabled: pending != nil) {
@@ -121,5 +126,29 @@ private struct AccessoryContent: View {
             .accessibilityLabel(isPaused ? "Resume" : "Pause")
             .padding(.trailing, Spacing.xxSmall)
         }
+    }
+}
+
+/// D-23: a firm tap when a workout begins and a light one on pause and resume, wherever they come from (Home, the bar
+/// above the tab bar, the workout sheet, a shortcut, a link). An invisible view beside the tab view: as a modifier on
+/// the tab view itself, its feedback kept the tab selection from being set at launch.
+struct WorkoutHaptics: View {
+    @Query(sort: \WorkoutSession.startedAt) private var sessions: [WorkoutSession]
+
+    var body: some View {
+        Color.clear
+            .frame(width: 0, height: 0)
+            .accessibilityHidden(true)
+            .peakHaptic(trigger: runningStatus) { old, new in
+                switch (old, new) {
+                case (nil, .active?): .workoutStarted
+                case (.active?, .paused?), (.paused?, .active?): .pauseToggled
+                default: nil
+                }
+            }
+    }
+
+    private var runningStatus: SessionStatus? {
+        sessions.last { $0.status == .active || $0.status == .paused }?.status
     }
 }

@@ -31,6 +31,11 @@ import Testing
         try controller.setReps(9, of: set, at: now.addingTimeInterval(3_700))
         try controller.pause(at: now.addingTimeInterval(3_800))
         running.note = "Left for a call"
+        // F11: a movement's setup note and own overload, a workout's own overload, a session movement's note.
+        exercises[1].note = "Seat 4, narrow grip"
+        exercises[1].overloadOverride = OverloadOverride(thresholdReps: 10, resetReps: 8)
+        templates[1].overloadOverride = OverloadOverride(repStep: 2)
+        running.orderedExercises.first?.note = "Felt heavy"
 
         let walking = try TemplateRepository(context: context).create(name: "Walking", kind: .cardio)
         let walk = try ExerciseRepository(context: context).findOrCreate(name: "Incline Walk", kind: .cardio)

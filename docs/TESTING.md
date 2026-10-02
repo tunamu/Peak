@@ -1,8 +1,9 @@
 # Testing
 
-> Status: 213 package tests, green on the Mac host and the iOS simulator. The `PeakUITests` target runs
-> `performAccessibilityAudit` on every tab, onboarding and a running workout, in English and Turkish (F10-02). Other
-> taps and drags are checked by hand; screenshots come from debug launch arguments (see DEVELOPMENT.md).
+> Status: 236 package tests, green on the Mac host and the iOS simulator. The `PeakUITests` target runs
+> `performAccessibilityAudit` on every tab, onboarding, a running workout and the Analysis pages with the author's
+> real history, in English and Turkish (F10-02, F11), and sends a reminder end to end (`ReminderTests`). Other taps
+> and drags are checked by hand; screenshots come from debug launch arguments (see DEVELOPMENT.md).
 
 ## Layers
 
@@ -36,7 +37,7 @@ cd Packages/PeakKit && xcodebuild test -scheme PeakKit-Package \
 ```
 
 ```bash
-# UI tests (accessibility audits; about four minutes)
+# UI tests (accessibility audits and a reminder; about seven minutes)
 xcodebuild test -project Peak.xcodeproj -scheme PeakUITests \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest'
 ```

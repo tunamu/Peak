@@ -18,6 +18,11 @@ Peak is built so that your data stays yours.
 - **Delete All Data** in Settings deletes everything Peak stores, after saving a backup file on your device (Files ›
   Peak › Backups) that you can import again or delete. With iCloud Sync on, it also deletes the data from iCloud.
 
+## Reminders
+
+Workout reminders are local notifications scheduled on your device from your routines. Nothing about them is sent
+anywhere. You can turn them off in Settings › Reminders, in a routine, or in the Settings app.
+
 ## Apple Health
 
 With your permission, Peak reads steps, sleep, heart rate variability, resting heart rate and water intake to show

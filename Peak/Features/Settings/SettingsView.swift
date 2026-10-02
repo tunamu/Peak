@@ -46,6 +46,7 @@ struct SettingsView: View {
                     workoutDataSection
                     recordedWorkoutsSection
                     routinesSection
+                    RemindersSection()
                     generalSection
 
                     #if DEBUG

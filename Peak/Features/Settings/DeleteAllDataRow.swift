@@ -12,6 +12,8 @@ struct DeleteAllDataRow: View {
         SettingsRow("Delete All Data", accessory: .icon("trash")) {
             isSheetShown = true
         }
+        // D-23: deleting everything asks first.
+        .peakHaptic(trigger: isSheetShown) { _, isShown in isShown ? .warning : nil }
         .sheet(isPresented: $isSheetShown) {
             DeleteAllDataSheet()
         }

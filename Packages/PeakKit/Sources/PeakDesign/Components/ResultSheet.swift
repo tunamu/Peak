@@ -62,7 +62,7 @@ public struct ResultSheet<Actions: View>: View {
         .multilineTextAlignment(.center)
         .padding(Spacing.large)
         .onAppear { isShown = true }
-        .sensoryFeedback(kind == .success ? .success : .error, trigger: isShown)
+        .peakHaptic(kind == .success ? .success : .error, trigger: isShown)
         .fittedSheet()
     }
 }

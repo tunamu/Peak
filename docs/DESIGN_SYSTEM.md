@@ -19,6 +19,7 @@ Settings › Accessibility › Increase Contrast is on; an empty cell keeps the 
 | `text.primary` | `.peakTextPrimary` | #FFFFFF | | #000000 | | Main text |
 | `text.secondary` | `.peakTextSecondary` | #808080 | #B0B0B5 | #5E5E63 | #3A3A3C | Card labels ("Energy Level"), tappable supporting text ("Edit") |
 | `text.tertiary` | `.peakTextTertiary` | #67676A | #A8A8AD | #6C6C70 | #48484A | Non-essential text ("Weekly Average"); never tappable |
+| `text.positive` | `.peakTextPositive` | #0DFF00 | | #17752A | | Text marking something done (a completed set's number); tints are for glass only |
 | `accent.steps` | `.peakSteps` | #FF0004 | #FF453A | #D70015 | | Step ring |
 | `accent.water` | `.peakWater` | #00BBFF | | #0077CC | | Water drop, water slider |
 | `energy.ready` | `.peakEnergyReady` | #0DFF00 | | #1E9E32 | | |
@@ -46,6 +47,7 @@ Worst ratio of each token over the canvas and a glass card (refresh with `swift 
 | `text.primary` | 11.37 | 11.37 | 18.82 | 18.82 |
 | `text.secondary` | 2.88 | 5.27 | 5.78 | 10.17 |
 | `text.tertiary` | 2.02 | 4.80 | 4.69 | 8.18 |
+| `text.positive` | 8.30 | 8.30 | 5.21 | 5.21 |
 | `accent.steps` | 2.85 | 3.34 | 4.83 | 4.83 |
 | `accent.water` | 5.17 | 5.17 | 4.17 | 4.17 |
 | `energy.ready` | 8.30 | 8.30 | 3.14 | 3.14 |
@@ -137,6 +139,24 @@ Health, the workout launcher).
 | `WorkoutAccessory` | C-13 | `tabViewBottomAccessory(isEnabled:)`, iOS 26.1+ |
 
 Known limit: the system wheel picker does not scale its rows with Dynamic Type; the labels around it do.
+
+## Haptics
+
+D-23: the system's own feedback, only for moments that matter, through one catalog (`PeakHaptic` in
+`PeakDesign/Haptics.swift`, used as `.peakHaptic(.selection, trigger: day)`). Controls that already give feedback
+(toggles, steppers, pickers, list reordering, the keyboard) get nothing more, and iOS drops all of it when System
+Haptics is off.
+
+| Moment | `PeakHaptic` | System feedback | Where |
+| --- | --- | --- | --- |
+| A day, page, period or measure picked | `.selection` | `.selection` | Week strip, month calendar, Analysis pages, period and measure pickers |
+| A set done | `.setDone` | light impact | Set row, when its reps make it done (not on every digit, not on reopening) |
+| Water added | `.waterAdded` | `.increase` | Water tile |
+| A workout begins | `.workoutStarted` | medium impact | Wherever it starts (Home, the bar above the tab bar, a shortcut, a link) |
+| Pause or resume | `.pauseToggled` | light impact | Workout sheet, the bar above the tab bar, the Live Activity's button once the app is open |
+| Workout finished, import done | `.success` | `.success` | Summary, result sheet |
+| Asks before going on | `.warning` | `.warning` | "Start anyway?", Delete All Data |
+| Something failed | `.error` | `.error` | Result sheet (import failed) |
 
 ## Showcase
 

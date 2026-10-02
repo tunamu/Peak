@@ -7,10 +7,12 @@ import SwiftData
 /// active ──pause──► paused ──resume──► active
 ///   active / paused ──finish──► completed
 ///   active / paused ──discard──► (deleted)
+/// logging ──save──► completed          (entered after the fact, F11-13)
+/// logging ──discard──► (deleted)
 /// ```
 ///
 /// Every transition is saved at once, so a workout survives the app being killed: on the next launch
-/// `SessionRepository.current()` finds it again, still running or still paused.
+/// `SessionRepository.current()` finds it again, still running or still paused, and `openLog()` a half-entered one.
 @MainActor
 public final class WorkoutSessionController {
     public enum TransitionError: Error, Equatable {
@@ -28,8 +30,8 @@ public final class WorkoutSessionController {
 
     public var status: SessionStatus { session.status }
 
-    /// Whether the workout can still change: running or paused.
-    public var isOpen: Bool { status == .active || status == .paused }
+    /// Whether the workout can still change: running, paused, or being entered.
+    public var isOpen: Bool { status == .active || status == .paused || status == .logging }
 
     /// Time spent working out so far; paused time is left out.
     public func elapsed(at date: Date = .now) -> TimeInterval {
@@ -58,10 +60,43 @@ public final class WorkoutSessionController {
         session.orderedExercises.flatMap(\.orderedSets).count { $0.reps == 0 }
     }
 
+    /// Whether anything was entered: a set's reps, a walk's values, a note or a movement marked done. Cancelling a
+    /// workout entered after the fact asks first only then.
+    public var hasEntries: Bool {
+        session.orderedExercises.contains { exercise in
+            exercise.isCompleted || !exercise.note.isEmpty || exercise.orderedSets.contains { $0.reps > 0 }
+                || exercise.orderedSegments.contains {
+                    $0.speedKmh != nil || $0.inclinePercent != nil || $0.durationSec != nil
+                }
+        }
+    }
+
     /// Ends the workout. A paused workout ends at the moment it was paused, so the pause is not counted.
     public func finish(at date: Date = .now) throws {
-        guard isOpen else { throw TransitionError.notAllowed(from: status) }
+        guard status == .active || status == .paused else { throw TransitionError.notAllowed(from: status) }
         SessionRepository(context: context).complete(session, at: date)
+        try context.save()
+    }
+
+    // MARK: Entered after the fact (F11-13)
+
+    /// Moves a workout being entered to `start`, lasting `duration`; the day is the caller's to keep.
+    public func setLogTime(start: Date, duration: TimeInterval) throws {
+        guard status == .logging else { throw TransitionError.notAllowed(from: status) }
+        session.startedAt = start
+        session.endedAt = start.addingTimeInterval(max(0, duration))
+        try context.save()
+    }
+
+    /// Saves a workout being entered into the history. Its sets count as done at the workout's end, not now.
+    public func saveLog() throws {
+        guard status == .logging else { throw TransitionError.notAllowed(from: status) }
+        let end = session.endedAt ?? session.startedAt
+        for set in session.orderedExercises.flatMap(\.orderedSets) where set.isCompleted {
+            set.completedAt = end
+        }
+        session.endedAt = end
+        session.status = .completed
         try context.save()
     }
 

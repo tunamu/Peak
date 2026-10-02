@@ -21,6 +21,7 @@
         static let settings = SettingsStore(defaults: UserDefaults(suiteName: "peak.previews") ?? .standard)
         static let health = HealthConnection(service: MockHealthService())
         static let launcher = WorkoutLauncher()
+        static let reminders = Reminders(defaults: UserDefaults(suiteName: "preview.reminders") ?? .standard)
         static let data: AppData = {
             do {
                 // Sync off: previews never reach iCloud.
@@ -39,6 +40,7 @@
                 .environment(PreviewData.settings)
                 .environment(PreviewData.health)
                 .environment(PreviewData.launcher)
+                .environment(PreviewData.reminders)
                 .environment(PreviewData.data)
                 .task {
                     await PreviewData.health.refresh()

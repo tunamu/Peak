@@ -34,6 +34,34 @@ public struct ProgressionRule: Hashable, Sendable {
 
     /// The `/coach` skill's rule, for replaying the log it produced.
     public static let coach = ProgressionRule(repStep: 0)
+
+    /// This rule with each override's values on top, later ones winning: the app-wide rule, then the workout's,
+    /// then the movement's (F11-10). Values are clamped to the ranges Settings offers.
+    public func applying(_ overrides: OverloadOverride?...) -> ProgressionRule {
+        var rule = self
+        for override in overrides.compactMap(\.self) {
+            if let value = override.thresholdReps { rule.thresholdReps = min(max(value, 6), 20) }
+            if let value = override.resetReps { rule.resetReps = min(max(value, 6), 20) }
+            if let value = override.repStep { rule.repStep = min(max(value, 0), 5) }
+        }
+        return rule
+    }
+}
+
+/// A workout's or a movement's own progressive overload values; `nil` leaves the value to the level below (F11-10).
+public struct OverloadOverride: Hashable, Sendable {
+    public var thresholdReps: Int?
+    public var resetReps: Int?
+    public var repStep: Int?
+
+    public init(thresholdReps: Int? = nil, resetReps: Int? = nil, repStep: Int? = nil) {
+        self.thresholdReps = thresholdReps
+        self.resetReps = resetReps
+        self.repStep = repStep
+    }
+
+    /// Nothing set: the level below decides.
+    public var isEmpty: Bool { thresholdReps == nil && resetReps == nil && repStep == nil }
 }
 
 /// Next targets from the last performance, set by set (docs/PROGRESSIVE_OVERLOAD.md): above the threshold the weight

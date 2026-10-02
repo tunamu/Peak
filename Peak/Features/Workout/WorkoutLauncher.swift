@@ -1,9 +1,11 @@
+import Foundation
 import Observation
 import PeakCore
 import SwiftData
 
-/// Starts and reopens workouts from anywhere (the Home card, the bottom accessory). The root view presents
-/// `presented` as the workout sheet, and the "Start anyway?" alert while `pendingStart` waits.
+/// Starts and reopens workouts from anywhere (the Home card, the bottom accessory, History). The root view presents
+/// `presented` as the workout sheet, and the "Start anyway?" alert while `pendingStart` waits. A workout entered after
+/// the fact (F11-13) opens in the same sheet, which shows it without the timer.
 @MainActor
 @Observable
 final class WorkoutLauncher {
@@ -45,6 +47,27 @@ final class WorkoutLauncher {
     }
 
     func resume(_ session: WorkoutSession) {
+        presented = session
+    }
+
+    /// Opens `template` to be entered for `day` (F11-13), at the time and length it usually takes. Nothing runs, so
+    /// neither the running workout nor energy is asked about. With `routine` the rotation moves on once saved.
+    func log(
+        _ template: WorkoutTemplate, routine: Routine?, on day: Date, rule: ProgressionRule, in context: ModelContext
+    ) {
+        let sessions = SessionRepository(context: context)
+        let plan =
+            (try? sessions.logPlan(for: template, on: day))
+            ?? ManualLogPlan(start: day, duration: ManualLogPlan.fallbackDuration)
+        let session = sessions.startLog(
+            from: template, routine: routine, rule: rule, start: plan.start, duration: plan.duration)
+        try? context.save()
+        presented = session
+    }
+
+    /// A workout left half entered when the app was closed opens again, as a running one stays running.
+    func reopenLog(in context: ModelContext) {
+        guard presented == nil, let session = try? SessionRepository(context: context).openLog() else { return }
         presented = session
     }
 

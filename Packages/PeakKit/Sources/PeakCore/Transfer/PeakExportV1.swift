@@ -63,12 +63,17 @@ extension PeakExportV1 {
         public var kind: ExerciseKind?
         public var equipment: Equipment?
         public var incrementKg: Double?
+        /// How the movement is set up (F11-12).
+        public var note: String?
+        /// The movement's own progressive overload (F11-10).
+        public var overload: Overload?
         public var archived: Bool?
         public var createdAt: Date?
 
         public init(
             id: String? = nil, name: String, muscleGroup: MuscleGroup? = nil, kind: ExerciseKind? = nil,
-            equipment: Equipment? = nil, incrementKg: Double? = nil, archived: Bool? = nil, createdAt: Date? = nil
+            equipment: Equipment? = nil, incrementKg: Double? = nil, note: String? = nil, overload: Overload? = nil,
+            archived: Bool? = nil, createdAt: Date? = nil
         ) {
             self.id = id
             self.name = name
@@ -76,6 +81,8 @@ extension PeakExportV1 {
             self.kind = kind
             self.equipment = equipment
             self.incrementKg = incrementKg
+            self.note = note
+            self.overload = overload
             self.archived = archived
             self.createdAt = createdAt
         }
@@ -100,18 +107,21 @@ extension PeakExportV1 {
         public var name: String
         public var kind: ExerciseKind?
         public var note: String?
+        /// The workout's own progressive overload (F11-10).
+        public var overload: Overload?
         public var archived: Bool?
         public var createdAt: Date?
         public var items: [TemplateItem]?
 
         public init(
-            id: String? = nil, name: String, kind: ExerciseKind? = nil, note: String? = nil, archived: Bool? = nil,
-            createdAt: Date? = nil, items: [TemplateItem]? = nil
+            id: String? = nil, name: String, kind: ExerciseKind? = nil, note: String? = nil, overload: Overload? = nil,
+            archived: Bool? = nil, createdAt: Date? = nil, items: [TemplateItem]? = nil
         ) {
             self.id = id
             self.name = name
             self.kind = kind
             self.note = note
+            self.overload = overload
             self.archived = archived
             self.createdAt = createdAt
             self.items = items
@@ -218,16 +228,19 @@ extension PeakExportV1 {
     public struct SessionExercise: Codable, Equatable, Sendable {
         public var exerciseId: String?
         public var exerciseName: String?
+        /// How it went this time (F11-12).
+        public var note: String?
         public var completed: Bool?
         public var sets: [SetEntry]?
         public var segments: [Segment]?
 
         public init(
-            exerciseId: String? = nil, exerciseName: String? = nil, completed: Bool? = nil, sets: [SetEntry]? = nil,
-            segments: [Segment]? = nil
+            exerciseId: String? = nil, exerciseName: String? = nil, note: String? = nil, completed: Bool? = nil,
+            sets: [SetEntry]? = nil, segments: [Segment]? = nil
         ) {
             self.exerciseId = exerciseId
             self.exerciseName = exerciseName
+            self.note = note
             self.completed = completed
             self.sets = sets
             self.segments = segments

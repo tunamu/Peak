@@ -1,82 +1,160 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "A routine rotates through your workouts. Create a workout first." : {
+    "%lld sets are empty. Save anyway?" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@sets@ empty. Save anyway?"
+          },
+          "substitutions" : {
+            "sets" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg set is"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg sets are"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rutin, antrenmanların arasında sırayla döner. Önce bir antrenman oluştur."
+            "value" : "%lld set boş. Yine de kaydedilsin mi?"
           }
         }
       }
     },
-    "Continue" : {
+    "Add Workout" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Devam"
+            "value" : "Antrenman Ekle"
           }
         }
       }
     },
-    "Create Routine" : {
+    "It is added to your history on %@." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rutin Oluştur"
+            "value" : "Geçmişine %@ günü olarak eklenir."
           }
         }
       }
     },
-    "Create Workout" : {
+    "It is removed from your history and from Apple Health." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Antrenman Oluştur"
+            "value" : "Geçmişinden ve Apple Sağlık'tan kaldırılır."
           }
         }
       }
     },
-    "Finish" : {
+    "Log as Finished" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitir"
+            "value" : "Yapıldı Olarak Gir"
           }
         }
       }
     },
-    "From a Peak export, an Excel or a CSV file." : {
+    "Log Finished" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bir Peak dışa aktarımından, Excel ya da CSV dosyasından."
+            "value" : "Sonradan Gir"
           }
         }
       }
     },
-    "How do you want to start?" : {
+    "Log Workout" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nasıl başlamak istersin?"
+            "value" : "Antrenman Gir"
           }
         }
       }
     },
-    "Import My Data" : {
+    "Save" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verilerimi İçe Aktar"
+            "value" : "Kaydet"
+          }
+        }
+      }
+    },
+    "Save Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Kaydet"
+          }
+        }
+      }
+    },
+    "Save workout?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman kaydedilsin mi?"
+          }
+        }
+      }
+    },
+    "Start Now" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Başlat"
+          }
+        }
+      }
+    },
+    "The workout has to be over by now." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman şu ana kadar bitmiş olmalı."
+          }
+        }
+      }
+    },
+    "Workout Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Saati"
           }
         }
       }
@@ -87,156 +165,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "“%@” geçerli aralığın dışında"
-          }
-        }
-      }
-    },
-    "Log your workouts, follow your next targets, and keep an eye on steps, water and energy." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanlarını kaydet, sıradaki hedeflerini takip et; adım, su ve enerjine göz kulak ol."
-          }
-        }
-      }
-    },
-    "No routines yet. A routine plans which workout comes on which day." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz rutin yok. Rutin, hangi gün hangi antrenmanın geleceğini planlar."
-          }
-        }
-      }
-    },
-    "Nothing to import with these settings. Try another header row or layout above." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu ayarlarla içe aktarılacak bir şey yok. Yukarıdan başka bir başlık satırı ya da düzen dene."
-          }
-        }
-      }
-    },
-    "Not Now" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Şimdi Değil"
-          }
-        }
-      }
-    },
-    "No workouts yet. A workout is the movements you do together." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz antrenman yok. Antrenman, birlikte yaptığın hareketlerin listesidir."
-          }
-        }
-      }
-    },
-    "Off, everything stays on this iPhone. You can change this in Settings." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kapalıyken her şey bu iPhone'da kalır. Bunu Ayarlar'dan değiştirebilirsin."
-          }
-        }
-      }
-    },
-    "Reads steps, sleep, heart rate variability, resting heart rate and water for your Energy Level." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enerji Seviyen için adım, uyku, kalp atış hızı değişkenliği, dinlenme nabzı ve su verilerini okur."
-          }
-        }
-      }
-    },
-    "Saves your water and finished workouts." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suyunu ve biten antrenmanlarını kaydeder."
-          }
-        }
-      }
-    },
-    "Set up your own workouts in Settings." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kendi antrenmanlarını Ayarlar'dan kur."
-          }
-        }
-      }
-    },
-    "Six workouts and a Monday, Wednesday, Friday routine. Change anything later." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Altı antrenman ve Pazartesi, Çarşamba, Cuma rutini. Sonra istediğini değiştir."
-          }
-        }
-      }
-    },
-    "Start Empty" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boş Başla"
-          }
-        }
-      }
-    },
-    "Start with a Sample Program" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Örnek Programla Başla"
-          }
-        }
-      }
-    },
-    "Sync your workouts between your devices through your own iCloud account." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antrenmanlarını kendi iCloud hesabın üzerinden cihazların arasında eşzamanla."
-          }
-        }
-      }
-    },
-    "Turn On" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aç"
-          }
-        }
-      }
-    },
-    "Used Peak on another device? Its data arrives on its own, so start empty." : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Peak'i başka bir cihazda kullandın mı? Veriler kendiliğinden gelir; boş başla."
           }
         }
       }
@@ -267,6 +195,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ Tamamlandı"
+          }
+        }
+      }
+    },
+    "%@ is waiting for you." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ seni bekliyor."
+          }
+        }
+      }
+    },
+    "%@, record" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, rekor"
           }
         }
       }
@@ -407,6 +356,34 @@
         }
       }
     },
+    "%lld Sessions, from %@ to %@" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld session, from %@ to %@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sessions, from %@ to %@"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld seans, %2$@ değerinden %3$@ değerine"
+          }
+        }
+      }
+    },
     "%lld sets" : {
       "localizations" : {
         "en" : {
@@ -529,6 +506,90 @@
         }
       }
     },
+    "%lld weeks in a row" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld week in a row"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld weeks in a row"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üst üste %lld hafta"
+          }
+        }
+      }
+    },
+    "%lld weeks, most %@" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld week, most %@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld weeks, most %@"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld hafta, en fazla %2$@"
+          }
+        }
+      }
+    },
+    "%lld Workouts" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Workout"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Workouts"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Antrenman"
+          }
+        }
+      }
+    },
     "+%lld ml" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -590,12 +651,42 @@
         }
       }
     },
+    "A notification at this time on the routine's workout days, besides the morning one." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutinin antrenman günlerinde bu saatte, sabahkine ek bir bildirim."
+          }
+        }
+      }
+    },
+    "A reminder in the morning on days with a planned workout." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman planlı günlerde sabah bir hatırlatma."
+          }
+        }
+      }
+    },
     "A routine has no days" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir rutinin günü yok"
+          }
+        }
+      }
+    },
+    "A routine rotates through your workouts. Create a workout first." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutin, antrenmanların arasında sırayla döner. Önce bir antrenman oluştur."
           }
         }
       }
@@ -626,6 +717,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Süren bir antrenman var. Önce bitir ya da vazgeç."
+          }
+        }
+      }
+    },
+    "About the same as the sessions before" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki seanslarla hemen hemen aynı"
           }
         }
       }
@@ -741,6 +842,36 @@
         }
       }
     },
+    "All Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm Zamanlar"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İzin Ver"
+          }
+        }
+      }
+    },
+    "Allow Notifications" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildirimlere İzin Ver"
+          }
+        }
+      }
+    },
     "Already in Peak" : {
       "localizations" : {
         "tr" : {
@@ -841,6 +972,16 @@
         }
       }
     },
+    "Best: %@ · %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En iyi: %1$@ · %2$@"
+          }
+        }
+      }
+    },
     "Biceps" : {
       "localizations" : {
         "tr" : {
@@ -901,6 +1042,16 @@
         }
       }
     },
+    "Change its time, or give a routine its own, in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saatini değiştirmek ya da bir rutine kendi hatırlatmasını vermek için Ayarlar'a git."
+          }
+        }
+      }
+    },
     "Changes the daily step goal" : {
       "localizations" : {
         "tr" : {
@@ -912,6 +1063,7 @@
       }
     },
     "Charts and trends for your workouts will appear here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
@@ -982,6 +1134,7 @@
       }
     },
     "Coming soon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
@@ -1051,6 +1204,16 @@
         }
       }
     },
+    "Continue" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devam"
+          }
+        }
+      }
+    },
     "Core" : {
       "localizations" : {
         "tr" : {
@@ -1077,6 +1240,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oluştur"
+          }
+        }
+      }
+    },
+    "Create Routine" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutin Oluştur"
+          }
+        }
+      }
+    },
+    "Create Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Oluştur"
           }
         }
       }
@@ -1157,6 +1340,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tarih"
+          }
+        }
+      }
+    },
+    "Date estimated" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarih tahmini"
           }
         }
       }
@@ -1334,6 +1527,16 @@
         }
       }
     },
+    "Down %@ on the sessions before" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki seanslara göre %@ düşüşte"
+          }
+        }
+      }
+    },
     "Dumbbell" : {
       "localizations" : {
         "tr" : {
@@ -1391,6 +1594,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ekipman"
+          }
+        }
+      }
+    },
+    "Est. 1RM" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tah. 1RM"
+          }
+        }
+      }
+    },
+    "Estimated from each session's best set (weight × (1 + reps ÷ 30))." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her seansın en iyi setinden tahmin edilir (ağırlık × (1 + tekrar ÷ 30))."
           }
         }
       }
@@ -1505,12 +1728,42 @@
         }
       }
     },
+    "Falling" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düşüyor"
+          }
+        }
+      }
+    },
     "File" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosya"
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitir"
+          }
+        }
+      }
+    },
+    "Finish a workout or import your history to see your progress here." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişimini burada görmek için bir antrenman bitir ya da geçmişini içe aktar."
           }
         }
       }
@@ -1551,6 +1804,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İlk Antrenmanlar"
+          }
+        }
+      }
+    },
+    "From a Peak export, an Excel or a CSV file." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir Peak dışa aktarımından, Excel ya da CSV dosyasından."
           }
         }
       }
@@ -1606,12 +1869,42 @@
         }
       }
     },
+    "History" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmiş"
+          }
+        }
+      }
+    },
     "Home" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ana Sayfa"
+          }
+        }
+      }
+    },
+    "How did it go?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nasıl geçti?"
+          }
+        }
+      }
+    },
+    "How do you want to start?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nasıl başlamak istersin?"
           }
         }
       }
@@ -1736,6 +2029,16 @@
         }
       }
     },
+    "Import My Data" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verilerimi İçe Aktar"
+          }
+        }
+      }
+    },
     "Import Template" : {
       "localizations" : {
         "tr" : {
@@ -1776,6 +2079,56 @@
         }
       }
     },
+    "Kept on the movement and shown above its sets every time." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harekette saklanır ve her seferinde setlerinin üstünde görünür."
+          }
+        }
+      }
+    },
+    "Last 3 Months" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son 3 Ay"
+          }
+        }
+      }
+    },
+    "Last 4 Weeks" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son 4 Hafta"
+          }
+        }
+      }
+    },
+    "Last 6 Months" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son 6 Ay"
+          }
+        }
+      }
+    },
+    "Last Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçen Sefer"
+          }
+        }
+      }
+    },
     "Last workout %lld hours ago" : {
       "localizations" : {
         "en" : {
@@ -1800,6 +2153,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son antrenman %lld saat önce"
+          }
+        }
+      }
+    },
+    "Last Year" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son 1 Yıl"
           }
         }
       }
@@ -1854,6 +2217,16 @@
         }
       }
     },
+    "Log your workouts, follow your next targets, and keep an eye on steps, water and energy." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarını kaydet, sıradaki hedeflerini takip et; adım, su ve enerjine göz kulak ol."
+          }
+        }
+      }
+    },
     "Logged %@. Today: %@." : {
       "localizations" : {
         "tr" : {
@@ -1890,6 +2263,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daha yeni bir Peak ile yapılmış (sürüm %lld)"
+          }
+        }
+      }
+    },
+    "Measure" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ölçü"
           }
         }
       }
@@ -1934,12 +2317,32 @@
         }
       }
     },
+    "Movement Settings" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hareket Ayarları"
+          }
+        }
+      }
+    },
     "Movements" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hareketler"
+          }
+        }
+      }
+    },
+    "Muscle Balance" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kas Dengesi"
           }
         }
       }
@@ -2004,6 +2407,16 @@
         }
       }
     },
+    "New Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni Saat"
+          }
+        }
+      }
+    },
     "New Workout" : {
       "localizations" : {
         "tr" : {
@@ -2030,6 +2443,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sonraki"
+          }
+        }
+      }
+    },
+    "Next Month" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonraki Ay"
           }
         }
       }
@@ -2105,6 +2528,16 @@
         }
       }
     },
+    "No routines yet. A routine plans which workout comes on which day." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz rutin yok. Rutin, hangi gün hangi antrenmanın geleceğini planlar."
+          }
+        }
+      }
+    },
     "No sets logged" : {
       "localizations" : {
         "tr" : {
@@ -2121,6 +2554,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman yok"
+          }
+        }
+      }
+    },
+    "No workout on this day." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu gün antrenman yok."
+          }
+        }
+      }
+    },
+    "No workouts this month." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ay antrenman yok."
+          }
+        }
+      }
+    },
+    "No workouts yet. A workout is the movements you do together." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz antrenman yok. Antrenman, birlikte yaptığın hareketlerin listesidir."
           }
         }
       }
@@ -2161,6 +2624,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tıbbi tavsiye değildir."
+          }
+        }
+      }
+    },
+    "Not Now" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Değil"
           }
         }
       }
@@ -2215,6 +2688,16 @@
         }
       }
     },
+    "Notes" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notlar"
+          }
+        }
+      }
+    },
     "Nothing is holding you back today." : {
       "localizations" : {
         "tr" : {
@@ -2236,12 +2719,32 @@
         }
       }
     },
+    "Nothing to import with these settings. Try another header row or layout above." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ayarlarla içe aktarılacak bir şey yok. Yukarıdan başka bir başlık satırı ya da düzen dene."
+          }
+        }
+      }
+    },
     "Nothing Was Deleted" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hiçbir Şey Silinmedi"
+          }
+        }
+      }
+    },
+    "Notifications are off for Peak. Turn them on in the Settings app to get reminders." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak için bildirimler kapalı. Hatırlatma almak için Ayarlar uygulamasından aç."
           }
         }
       }
@@ -2262,6 +2765,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sağlık uygulamasında kapalı"
+          }
+        }
+      }
+    },
+    "Off, everything stays on this iPhone. You can change this in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalıyken her şey bu iPhone'da kalır. Bunu Ayarlar'dan değiştirebilirsin."
+          }
+        }
+      }
+    },
+    "Off: the movement follows its workout's rule, or Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalı: hareket, antrenmanının kuralını ya da Ayarlar'ı izler."
+          }
+        }
+      }
+    },
+    "Off: the movement follows this workout's rule, or Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalı: hareket, bu antrenmanın kuralını ya da Ayarlar'ı izler."
+          }
+        }
+      }
+    },
+    "Off: the workout follows Settings. A movement's own rule (ⓘ) comes first." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalı: antrenman Ayarlar'ı izler. Bir hareketin kendi kuralı (ⓘ) önce gelir."
           }
         }
       }
@@ -2302,6 +2845,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Açık"
+          }
+        }
+      }
+    },
+    "On days with a planned workout. A routine can add its own reminder." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman planlı günlerde. Bir rutin kendi hatırlatmasını ekleyebilir."
           }
         }
       }
@@ -2418,6 +2971,27 @@
         }
       }
     },
+    "Own Rule" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kendi Kuralı"
+          }
+        }
+      }
+    },
+    "Page" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sayfa"
+          }
+        }
+      }
+    },
     "Past sessions keep it in their history." : {
       "localizations" : {
         "tr" : {
@@ -2499,6 +3073,26 @@
         }
       }
     },
+    "Performance" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performans"
+          }
+        }
+      }
+    },
+    "Period" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönem"
+          }
+        }
+      }
+    },
     "Plan your week with a routine." : {
       "localizations" : {
         "tr" : {
@@ -2509,12 +3103,33 @@
         }
       }
     },
+    "Planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlı"
+          }
+        }
+      }
+    },
     "Previous" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Önceki"
+          }
+        }
+      }
+    },
+    "Previous Month" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki Ay"
           }
         }
       }
@@ -2549,6 +3164,16 @@
         }
       }
     },
+    "Reads steps, sleep, heart rate variability, resting heart rate and water for your Energy Level." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enerji Seviyen için adım, uyku, kalp atış hızı değişkenliği, dinlenme nabzı ve su verilerini okur."
+          }
+        }
+      }
+    },
     "Ready" : {
       "localizations" : {
         "tr" : {
@@ -2559,12 +3184,62 @@
         }
       }
     },
+    "Record" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekor"
+          }
+        }
+      }
+    },
     "Recorded Workouts" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kayıtlı Antrenmanlar"
+          }
+        }
+      }
+    },
+    "Remind Me" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hatırlat"
+          }
+        }
+      }
+    },
+    "Reminder" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hatırlatma"
+          }
+        }
+      }
+    },
+    "Reminder Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hatırlatma Saati"
+          }
+        }
+      }
+    },
+    "Reminders" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hatırlatmalar"
           }
         }
       }
@@ -2619,6 +3294,16 @@
         }
       }
     },
+    "Reps After Weight Up" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağırlık Artınca Tekrar"
+          }
+        }
+      }
+    },
     "Reset" : {
       "localizations" : {
         "tr" : {
@@ -2669,6 +3354,16 @@
         }
       }
     },
+    "Rising" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yükseliyor"
+          }
+        }
+      }
+    },
     "Routine Name" : {
       "localizations" : {
         "tr" : {
@@ -2709,6 +3404,26 @@
         }
       }
     },
+    "Saves your water and finished workouts." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suyunu ve biten antrenmanlarını kaydeder."
+          }
+        }
+      }
+    },
+    "Seat height, grip, cable position…" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koltuk yüksekliği, tutuş, kablo konumu…"
+          }
+        }
+      }
+    },
     "See your steps from Apple Health." : {
       "localizations" : {
         "tr" : {
@@ -2745,6 +3460,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ayraç"
+          }
+        }
+      }
+    },
+    "Sessions" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seanslar"
           }
         }
       }
@@ -2830,6 +3555,16 @@
         }
       }
     },
+    "Set up your own workouts in Settings." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kendi antrenmanlarını Ayarlar'dan kur."
+          }
+        }
+      }
+    },
     "Set Workout" : {
       "localizations" : {
         "tr" : {
@@ -2860,12 +3595,32 @@
         }
       }
     },
+    "Sets done per muscle group" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kas grubuna göre yapılan set"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ayarlar"
+          }
+        }
+      }
+    },
+    "Setup" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurulum"
           }
         }
       }
@@ -2890,6 +3645,16 @@
         }
       }
     },
+    "Show Month" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayı Göster"
+          }
+        }
+      }
+    },
     "Show today" : {
       "localizations" : {
         "tr" : {
@@ -2900,12 +3665,32 @@
         }
       }
     },
+    "Shown above the movement's sets while you log it." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hareketi kaydederken setlerinin üstünde görünür."
+          }
+        }
+      }
+    },
     "Sign in to iCloud in the Settings app to sync your workouts between devices." : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenmanlarını cihazların arasında eşzamanlamak için Ayarlar uygulamasında iCloud'a giriş yap."
+          }
+        }
+      }
+    },
+    "Six workouts and a Monday, Wednesday, Friday routine. Change anything later." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altı antrenman ve Pazartesi, Çarşamba, Cuma rutini. Sonra istediğini değiştir."
           }
         }
       }
@@ -3000,12 +3785,42 @@
         }
       }
     },
+    "Start Empty" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boş Başla"
+          }
+        }
+      }
+    },
     "Start Today's Workout" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bugünün Antrenmanını Başlat"
+          }
+        }
+      }
+    },
+    "Start with a Sample Program" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnek Programla Başla"
+          }
+        }
+      }
+    },
+    "Steady" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sabit"
           }
         }
       }
@@ -3057,6 +3872,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özet"
+          }
+        }
+      }
+    },
+    "Sync your workouts between your devices through your own iCloud account." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanlarını kendi iCloud hesabın üzerinden cihazların arasında eşzamanla."
           }
         }
       }
@@ -3231,6 +4056,27 @@
         }
       }
     },
+    "This Session" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Seans"
+          }
+        }
+      }
+    },
+    "This Week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu Hafta"
+          }
+        }
+      }
+    },
     "Tick the movements to include." : {
       "localizations" : {
         "tr" : {
@@ -3261,12 +4107,32 @@
         }
       }
     },
+    "Time to Train" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spor Zamanı"
+          }
+        }
+      }
+    },
     "Today" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bugün"
+          }
+        }
+      }
+    },
+    "Today: %@. Ready?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün: %@. Hazır mısın?"
           }
         }
       }
@@ -3354,6 +4220,16 @@
         }
       }
     },
+    "Turn On" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aç"
+          }
+        }
+      }
+    },
     "Type" : {
       "localizations" : {
         "tr" : {
@@ -3384,6 +4260,16 @@
         }
       }
     },
+    "Up %@ on the sessions before" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki seanslara göre %@ yükselişte"
+          }
+        }
+      }
+    },
     "Update" : {
       "localizations" : {
         "tr" : {
@@ -3410,6 +4296,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tekrar Artışını Güncelle"
+          }
+        }
+      }
+    },
+    "Used Peak on another device? Its data arrives on its own, so start empty." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peak'i başka bir cihazda kullandın mı? Veriler kendiliğinden gelir; boş başla."
+          }
+        }
+      }
+    },
+    "Value" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Değer"
           }
         }
       }
@@ -3475,12 +4381,32 @@
         }
       }
     },
+    "Week" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hafta"
+          }
+        }
+      }
+    },
     "Weekly Average" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Haftalık Ortalama"
+          }
+        }
+      }
+    },
+    "Weekly Volume" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haftalık Hacim"
           }
         }
       }
@@ -3511,6 +4437,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ağırlık Birimi"
+          }
+        }
+      }
+    },
+    "Weight Up Above" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağırlık Artışı Eşiği"
           }
         }
       }
@@ -3601,6 +4537,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antrenman günü"
+          }
+        }
+      }
+    },
+    "Workout Day" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Günü"
+          }
+        }
+      }
+    },
+    "Workout Day Reminder" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Günü Hatırlatması"
           }
         }
       }

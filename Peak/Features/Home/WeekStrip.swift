@@ -73,7 +73,7 @@ struct WeekStrip: View {
                 selection = day
             }
         }
-        .sensoryFeedback(.selection, trigger: selection)
+        .peakHaptic(.selection, trigger: selection)
     }
 
     // MARK: Weeks

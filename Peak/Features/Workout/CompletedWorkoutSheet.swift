@@ -4,19 +4,32 @@ import SwiftData
 import SwiftUI
 
 /// A finished workout, read-only: opened by tapping a completed card on Home, today or any past day. The same
-/// header and tables as the running workout, without the timer, the bottom bar or editing.
+/// header and tables as the running workout, without the timer, the bottom bar or editing. It can be deleted, also
+/// from Apple Health (F11-13), for a workout entered by mistake.
 struct CompletedWorkoutSheet: View {
     let session: WorkoutSession
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(SettingsStore.self) private var settings
+    @Environment(HealthConnection.self) private var health
+    @State private var isDeleteConfirmationShown = false
+    /// Set before deleting, so the sheet stops reading the session while it closes.
+    @State private var isDeleted = false
 
     private var indexedExercises: [(offset: Int, element: SessionExercise)] {
         Array(session.orderedExercises.enumerated())
     }
 
     var body: some View {
+        if isDeleted {
+            Color.clear
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         NavigationStack {
             List {
                 SessionHeader(session: session)
@@ -25,16 +38,16 @@ struct CompletedWorkoutSheet: View {
 
                 ForEach(indexedExercises, id: \.element.persistentModelID) { index, exercise in
                     Section {
+                        if exercise.hasNotes {
+                            MovementNotesRow(exercise: exercise)
+                        }
                         if exercise.isCardio {
                             segmentRows(of: exercise)
                         } else {
                             setRows(of: exercise)
                         }
                     } header: {
-                        Text(verbatim: "\(index + 1)- \(exercise.exerciseName)")
-                            .font(.peakCardValue)
-                            .foregroundStyle(.peakTextPrimary)
-                            .textCase(nil)
+                        MovementHeader(index: index, exercise: exercise)
                     }
                 }
             }
@@ -46,9 +59,36 @@ struct CompletedWorkoutSheet: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { dismiss() }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu("More", systemImage: "ellipsis") {
+                        Button("Delete Workout", systemImage: "trash", role: .destructive) {
+                            isDeleteConfirmationShown = true
+                        }
+                    }
+                }
+            }
+            .confirmationDialog(
+                "Delete this workout?", isPresented: $isDeleteConfirmationShown, titleVisibility: .visible
+            ) {
+                Button("Delete Workout", role: .destructive) { delete() }
+            } message: {
+                Text("It is removed from your history and from Apple Health.")
             }
         }
         .presentationDetents([.large])
+    }
+
+    /// Deletes the session, then its Health workout in the background; Health failing does not keep it in Peak.
+    private func delete() {
+        let healthID = session.healthKitWorkoutID
+        isDeleted = true
+        SessionRepository(context: modelContext).discard(session)
+        try? modelContext.save()
+        dismiss()
+        if let healthID {
+            let service = health.service
+            Task { try? await service.deleteWorkout(id: healthID) }
+        }
     }
 
     @ViewBuilder
@@ -94,7 +134,7 @@ private struct LoggedSetRow: View {
         HStack(spacing: Spacing.xSmall) {
             Color.clear.frame(width: SetColumns.handle)
             Text(number, format: .number)
-                .foregroundStyle(set.isCompleted ? .peakTintPositive : .peakTextSecondary)
+                .foregroundStyle(set.isCompleted ? .peakTextPositive : .peakTextSecondary)
                 .frame(width: SetColumns.number, alignment: .leading)
             Text(verbatim: reference)
                 .foregroundStyle(.peakTextTertiary)
