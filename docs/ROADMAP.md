@@ -12,7 +12,7 @@ Target: Q2 2027
 - ✅ Progressive overload engine
 - ✅ Routine scheduler
 - 🔶 HealthKit integration (steps, water, sleep, heart ✅; workout saving built, check on a device pending)
-- 🔶 iCloud sync, opt-in (SwiftData + CloudKit; two-device check pending)
+- 🔶 iCloud sync, opt-in (SwiftData + CloudKit): built, hidden in 1.0 until the two-device check ([ADR 0024](adr/0024-icloud-sync-off-for-1-0.md))
 - 🔶 Widgets (small, medium: water with a button, steps, today's workout) and the workout's Live Activity
 - ✅ Onboarding flow
 - ✅ Localization (EN, TR)

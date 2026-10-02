@@ -52,7 +52,7 @@ struct OnboardingView: View {
             // Screenshot helper: `-PeakOnboarding YES -PeakOnboardingStep 2` opens on a step (0 welcome … 5 start).
             .onAppear {
                 if let first = Step(rawValue: UserDefaults.standard.integer(forKey: "PeakOnboardingStep")) {
-                    step = first
+                    step = Self.shownSteps.contains(first) ? first : .reminders
                 }
             }
             // Screenshot helper: `-PeakOnboardingFinish import|sample|empty` picks a start, as a tap would.
@@ -76,6 +76,9 @@ struct OnboardingView: View {
                 if target == .reminders && reminders.authorization != .notDetermined {
                     target = .iCloud
                 }
+                if target == .iCloud && !AppData.isSyncAvailable {
+                    target = .goals
+                }
                 if target == .health && health.status != .notDetermined {
                     target = .welcome
                 }
@@ -89,7 +92,7 @@ struct OnboardingView: View {
             .disabled(step == .welcome)
             Spacer()
             HStack(spacing: Spacing.xSmall) {
-                ForEach(Step.allCases, id: \.self) { item in
+                ForEach(Self.shownSteps, id: \.self) { item in
                     Circle()
                         .fill(item == step ? Color.peakTextPrimary : Color.peakTextTertiary.opacity(0.4))
                         .frame(width: 8, height: 8)
@@ -260,6 +263,9 @@ struct OnboardingView: View {
         if target == .health && health.status != .notDetermined {
             target = .goals
         }
+        if target == .iCloud && !AppData.isSyncAvailable {
+            target = .reminders
+        }
         if target == .reminders && reminders.authorization != .notDetermined {
             target = .start
         }
@@ -279,6 +285,11 @@ struct OnboardingView: View {
 // MARK: Pieces
 
 extension OnboardingView {
+    /// iCloud Sync is left out while it is not offered (`AppData.isSyncAvailable`, ADR 0024).
+    private static var shownSteps: [Step] {
+        Step.allCases.filter { $0 != .iCloud || AppData.isSyncAvailable }
+    }
+
     fileprivate func title(_ text: LocalizedStringKey) -> some View {
         Text(text)
             .font(.peakScreenTitle)

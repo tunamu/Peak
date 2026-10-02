@@ -11,7 +11,9 @@
 | `sleepAnalysis` | Energy Level |
 | `heartRateVariabilitySDNN` | Energy Level (Apple Watch) |
 | `restingHeartRate` | Energy Level (Apple Watch) |
-| `dietaryWater` | Water tile |
+| `dietaryWater` | Finding the day's own sample to replace or delete it |
+
+Workouts are written and deleted, never read: both need only share access.
 
 ## Write
 
