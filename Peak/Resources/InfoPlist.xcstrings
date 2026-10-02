@@ -25,7 +25,7 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Peak, günlük ilerlemeni ve Enerji Seviyeni göstermek için adım, uyku, kalp atış hızı değişkenliği, dinlenik nabız ve su verilerini okur."
           }
         }
@@ -38,13 +38,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Peak saves your water intake and completed workouts to Apple Health."
+            "value" : "Peak saves your water intake and completed workouts, with the distance of your walks, to Apple Health."
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Peak, içtiğin suyu ve tamamladığın antrenmanları Sağlık uygulamasına kaydeder."
+            "state" : "translated",
+            "value" : "Peak, içtiğin suyu ve tamamladığın antrenmanları, yürüyüşlerinin mesafesiyle birlikte Sağlık uygulamasına kaydeder."
           }
         }
       }

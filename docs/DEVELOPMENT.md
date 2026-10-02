@@ -98,6 +98,7 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakImportScroll preview\|summary\|problems\|mode` | With `-PeakImportFile`, scrolls the import screen to that section |
 | `-PeakTemplate xlsx\|csv\|json` | With `-PeakTab settings`, chooses that import template (the file exporter opens) |
 | `-PeakExport YES` | With `-PeakTab settings`, taps Export Workout Data (the system file exporter opens) |
+| `-PeakICloudSync YES` | Offers iCloud Sync (Settings row and onboarding step), which 1.0 hides ([ADR 0024](adr/0024-icloud-sync-off-for-1-0.md)); the two rows below need it |
 | `-PeakShowICloud YES` | With `-PeakTab settings`, taps the iCloud row once sync reports a problem, or after 30 s |
 | `-PeakToggleSync YES` | With `-PeakTab settings`, flips iCloud Sync once after launch, without the question |
 | `-PeakOpenLink peak://workout/start` | Opens a `peak://` link at launch, as a widget tap does (`simctl openurl` asks first) |

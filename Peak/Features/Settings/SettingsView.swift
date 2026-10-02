@@ -172,7 +172,9 @@ struct SettingsView: View {
             }
             .disabled(health.status == .unavailable)
 
-            ICloudSyncRows()
+            if AppData.isSyncAvailable {
+                ICloudSyncRows()
+            }
 
             SettingsRow("Version", accessory: .value(Self.version)) {}
                 .disabled(true)

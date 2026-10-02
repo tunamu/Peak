@@ -9,7 +9,7 @@ Minimal, open-source iOS app for strength training with progressive overload, pl
 Routine → Today's workout → Log set by set → Next target set automatically → Repeat
 ```
 
-No accounts, no servers, no analytics. Your data stays on your device and in your own iCloud.
+No accounts, no servers, no analytics. Your data stays on your device.
 
 ## Features
 
@@ -17,16 +17,18 @@ No accounts, no servers, no analytics. Your data stays on your device and in you
 
 | Feature | Status |
 | --- | --- |
-| Progressive overload targets per set | 🔶 engine done, used in the workout screen (F6) |
+| Progressive overload targets per set, per workout or per movement | ✅ |
 | Routines with rotation (weekdays or every N days, several at once) | ✅ |
 | Home: week strip, today's workout, steps, water, Energy Level | ✅ |
-| Workout session: strength sets and walking cardio | ⬜ |
-| Import JSON, Excel and CSV; export JSON | ⬜ |
-| Apple Health: steps, sleep, HRV, water, workouts | 🔶 all but workouts (F6) |
-| iCloud sync | ⬜ |
-| Widgets and Live Activity | ⬜ |
-| English and Turkish | 🔶 |
+| Workout session: strength sets and walking cardio; workouts entered afterwards | ✅ |
+| Analysis: performance, records, trends, history calendar | ✅ |
+| Import JSON, Excel and CSV; export JSON | ✅ |
+| Apple Health: steps, sleep, HRV, water, workouts | ✅ |
+| Widgets, Lock Screen, Control Center and Live Activity | ✅ |
+| Reminders | ✅ |
+| English and Turkish | ✅ |
 | Dark and light themes | ✅ |
+| iCloud sync | 🔶 built, off until tested on two devices ([ADR 0024](docs/adr/0024-icloud-sync-off-for-1-0.md)) |
 
 Detailed progress: [docs/STATUS.md](docs/STATUS.md) · Timeline: [docs/ROADMAP.md](docs/ROADMAP.md)
 

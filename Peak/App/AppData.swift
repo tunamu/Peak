@@ -12,6 +12,17 @@ import SwiftData
 final class AppData {
     static let syncPreferenceKey = "iCloudSyncEnabled"
 
+    /// Whether iCloud Sync is offered at all. Off for 1.0 (ADR 0024): the two-device check has not been done, so
+    /// Settings and onboarding hide the switch and the store never opens with CloudKit. Everything else stays in
+    /// place; turning it on is this one line (and deploying the CloudKit schema to production first).
+    /// Debug builds can try it with `-PeakICloudSync YES`.
+    static var isSyncAvailable: Bool {
+        #if DEBUG
+            if UserDefaults.standard.bool(forKey: "PeakICloudSync") { return true }
+        #endif
+        return false
+    }
+
     private(set) var container: ModelContainer
     /// Present only while sync is on.
     private(set) var sync: SyncMonitor?
@@ -33,7 +44,7 @@ final class AppData {
     ) throws {
         self.preferences = preferences
         self.open = open
-        let syncs = preferences.bool(forKey: Self.syncPreferenceKey)
+        let syncs = Self.isSyncAvailable && preferences.bool(forKey: Self.syncPreferenceKey)
         container = try open(syncs)
         if syncs {
             sync = Self.startSync(on: container)
@@ -45,7 +56,7 @@ final class AppData {
     /// Opens the store again with sync on or off. Pending changes are saved first. The data stays on the device
     /// either way; turning sync off leaves what is already in iCloud there.
     func setSyncEnabled(_ enabled: Bool) throws {
-        guard enabled != isSyncEnabled else { return }
+        guard enabled != isSyncEnabled, !enabled || Self.isSyncAvailable else { return }
         try container.mainContext.save()
         let reopened = try open(enabled)
         sync = nil

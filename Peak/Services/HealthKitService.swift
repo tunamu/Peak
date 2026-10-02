@@ -12,7 +12,7 @@ final class HealthKitService: HealthService {
     ]
     static let readTypes: Set<HKObjectType> = [
         HKQuantityType(.stepCount), HKCategoryType(.sleepAnalysis), HKQuantityType(.heartRateVariabilitySDNN),
-        HKQuantityType(.restingHeartRate), HKQuantityType(.dietaryWater), HKObjectType.workoutType(),
+        HKQuantityType(.restingHeartRate), HKQuantityType(.dietaryWater),
     ]
 
     // MARK: Access

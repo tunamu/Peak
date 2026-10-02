@@ -1,17 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Add water in ${applicationName}" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "${applicationName} ile su kaydet"
-          }
-        }
-      }
-    },
     "Log water in ${applicationName}" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -25,20 +14,12 @@
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "${applicationName} ile su ekle"
-          }
-        }
-      }
-    },
-    "Start my workout in ${applicationName}" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
+          "stringSet" : {
             "state" : "translated",
-            "value" : "${applicationName} ile antrenmanımı başlat"
+            "values" : [
+              "${applicationName} ile su ekle",
+              "${applicationName} ile su kaydet"
+            ]
           }
         }
       }
@@ -56,9 +37,12 @@
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "${applicationName} ile bugünün antrenmanını başlat"
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "${applicationName} ile bugünün antrenmanını başlat",
+              "${applicationName} ile antrenmanımı başlat"
+            ]
           }
         }
       }

@@ -468,7 +468,7 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts to Apple Health.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts, with the distance of your walks, to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -509,7 +509,7 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Peak reads steps, sleep, heart rate variability, resting heart rate and water to show your daily progress and Energy Level.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts to Apple Health.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Peak saves your water intake and completed workouts, with the distance of your walks, to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

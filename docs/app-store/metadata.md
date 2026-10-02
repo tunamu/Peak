@@ -1,0 +1,143 @@
+# App Store metadata (1.0)
+
+Copy-paste source for App Store Connect. Field limits are in brackets; every field below was counted against them.
+
+## App Information
+
+| Field | Value |
+| --- | --- |
+| Name (EN) [30] | Peak: Workout Log |
+| Name (TR) [30] | Peak: Antrenman Günlüğü |
+| Subtitle (EN) [30] | Progressive overload tracker |
+| Subtitle (TR) [30] | Progressive overload takibi |
+| Bundle ID | com.tunamu.peak |
+| SKU | peak-ios |
+| Primary language | English (U.S.); Turkish added as a localization |
+| Primary category | Health & Fitness |
+| Secondary category | none |
+| Home Screen name | Peak (`CFBundleName`; the store name only needs to start with it) |
+
+## URLs
+
+| Field | Value |
+| --- | --- |
+| Privacy Policy URL | https://github.com/tunamu/Peak/blob/main/docs/privacy.md |
+| Support URL | https://github.com/tunamu/Peak/issues |
+| Marketing URL | https://github.com/tunamu/Peak (optional) |
+
+## App Privacy
+
+Data collection: **No, we do not collect data from this app.** Nothing leaves the device except what the user exports
+or writes to Apple Health, and Apple Health is not collection by the developer.
+
+## Pricing and availability
+
+Free, all countries and regions.
+
+## Keywords [100, comma-separated, no spaces]
+
+The name's words (peak, workout, log) are indexed already and are not repeated.
+
+- **EN:** `gym,strength,lifting,weight,training,tracker,routine,sets,reps,planner,fitness,overload,progress`
+- **TR:** `spor,fitness,ağırlık,salon,güç,program,rutin,set,tekrar,kas,takip,gelişim,vücut,overload`
+
+## Promotional text [170]
+
+- **EN:** Know exactly what to lift next. Peak sets every target from your last workout, so each session moves you
+  forward. Free, no account, no ads.
+- **TR:** Bir sonraki antrenmanda ne kaldıracağını bil. Peak her hedefi son antrenmanından hesaplar, her seans seni
+  ileri taşır. Ücretsiz, hesap yok, reklam yok.
+
+## Description (EN) [4000]
+
+```text
+Peak is a simple strength training log that tells you what to lift next.
+
+Log a workout set by set, and Peak works out your next targets from what you just did. Hit the top of your rep range and the weight goes up; otherwise the reps do. Progressive overload, without the spreadsheet.
+
+TRAIN WITH A PLAN
+• Build your workouts and put them on a routine: fixed weekdays or every few days, with the workouts rotating in order
+• Home shows today's workout, your week at a glance, and what is next on rest days
+• Every set shows last time's weight and reps next to today's target
+• Set your own overload rules for the whole app, one workout or a single movement
+• Notes for each movement: seat height, grip, how it felt last time
+• Forgot to start a workout? Log it afterwards, on any past day
+
+SEE YOUR PROGRESS
+• Volume, sets and targets hit for the last 4 weeks, 3 or 6 months, a year or all time
+• Every movement with its trend and a chart of its estimated one-rep max, weight, reps and volume, with your records
+• A calendar of every workout you have done
+
+APPLE HEALTH
+• Steps, water and an Energy Level built from your sleep, heart rate variability and resting heart rate
+• Finished workouts and water are saved to Apple Health
+• Everything still works without Health access
+
+ON YOUR IPHONE, NOT IN THE APP
+• Home Screen and Lock Screen widgets for steps, water, energy, today's workout and your week
+• A Live Activity with the current movement and the clock, in the Dynamic Island too
+• Log water from a widget, Control Center or Siri without opening the app
+• A morning reminder on workout days
+
+YOUR DATA STAYS YOURS
+• No account, no ads, no analytics, no tracking
+• Everything is stored on your iPhone
+• Import your history from Excel, CSV or JSON, and export it any time
+
+Peak is free and open source (MIT).
+
+Energy Level is an estimate to help you plan your training. It is not medical advice.
+```
+
+## Description (TR) [4000]
+
+```text
+Peak, bir sonraki antrenmanda ne kaldıracağını söyleyen sade bir güç antrenmanı günlüğü.
+
+Antrenmanını set set kaydet; Peak bir sonraki hedeflerini az önce yaptığından hesaplar. Tekrar aralığının üstüne çıktıysan ağırlık artar, çıkmadıysan tekrar. Excel tablosu olmadan progressive overload.
+
+PLANLA ÇALIŞ
+• Antrenmanlarını kur ve bir rutine bağla: haftanın belirli günleri ya da birkaç günde bir, antrenmanlar sırayla döner
+• Ana Sayfa'da bugünün antrenmanı, haftanın özeti ve dinlenme günlerinde sıradaki antrenman
+• Her sette geçen seferki ağırlık ve tekrar, bugünün hedefinin yanında
+• Overload kurallarını tüm uygulama, tek bir antrenman ya da tek bir hareket için ayarla
+• Her hareket için not: koltuk yüksekliği, tutuş, geçen seferki his
+• Antrenmanı başlatmayı mı unuttun? Sonradan, geçmiş bir güne de girebilirsin
+
+GELİŞİMİNİ GÖR
+• Son 4 hafta, 3 ya da 6 ay, bir yıl ya da tüm zamanlar için hacim, set ve tutturulan hedefler
+• Her hareketin trendi; tahmini tek tekrar maksimumu, ağırlık, tekrar ve hacim grafiği, rekorlarınla
+• Yaptığın her antrenmanın takvimi
+
+APPLE SAĞLIK
+• Adımlar, su ve uykundan, kalp atış hızı değişkenliğinden ve dinlenik nabzından hesaplanan Enerji Seviyesi
+• Tamamlanan antrenmanlar ve su Sağlık uygulamasına kaydedilir
+• Sağlık izni vermesen de her şey çalışır
+
+UYGULAMAYI AÇMADAN
+• Adım, su, enerji, bugünün antrenmanı ve haftan için ana ekran ve kilit ekranı widget'ları
+• Mevcut hareket ve süreyle Canlı Etkinlik, Dynamic Island'da da
+• Widget'tan, Denetim Merkezi'nden ya da Siri'yle su ekle
+• Antrenman günlerinde sabah hatırlatması
+
+VERİN SENİN
+• Hesap yok, reklam yok, analiz yok, takip yok
+• Her şey iPhone'unda saklanır
+• Geçmişini Excel, CSV ya da JSON'dan içe aktar, istediğin zaman dışa aktar
+
+Peak ücretsiz ve açık kaynaklıdır (MIT).
+
+Enerji Seviyesi antrenmanını planlamana yardım eden bir tahmindir, tıbbi tavsiye değildir.
+```
+
+## Age rating
+
+Every content question: None / No. Expected rating: 4+.
+
+## App Review notes
+
+```text
+Peak needs no account or sign-in. To see a full app quickly: on first launch choose "Start with a Sample Program",
+then tap Start on Home. Apple Health access is optional; without it the steps, water and Energy Level cards show a
+"Connect Apple Health" button and the rest of the app works. All data stays on the device.
+```

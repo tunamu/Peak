@@ -1,7 +1,7 @@
 # Peak Development Status
 
-**Last Updated**: 2026-10-01  
-**Current Phase**: F11 — Analysis and v1 improvements (F11-01…F11-13 done) · next: device checks, then F12 (App Store) · F10-02 and F10-04 wait for a device pass · F8 two-device check waits for an iCloud account with room
+**Last Updated**: 2026-10-02  
+**Current Phase**: F12 — App Store release · F10-02 (VoiceOver) and F10-04 (hitches) wait for a device pass · iCloud Sync hidden in 1.0 (ADR 0024) until the two-device check
 
 ## F0 — Repository and infrastructure
 
@@ -93,6 +93,10 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 
 ## F8: iCloud sync 🔶
 
+> **1.0 ships without it** ([ADR 0024](adr/0024-icloud-sync-off-for-1-0.md)): `AppData.isSyncAvailable` is off, so
+> Settings and onboarding hide it and the store never opens with CloudKit. Debug builds offer it with
+> `-PeakICloudSync YES` for the two-device check; `ICloudSyncTests` covers both.
+
 | ID | Task | Status |
 | --- | --- | --- |
 | F8-01 | Turn on CloudKit; deploy the schema to production in CloudKit Dashboard | 🔶 The app syncs its store with the private database (`iCloud.com.tunamu.peak`); the widget opens the same store without sync, and its writes reach iCloud through persistent history when the app runs. Settings mirror to iCloud's key-value store (`UbiquitousSettingsMirror`). Signed with the paid team: the profile carries CloudKit, key-value store and Push. Without an iCloud account the app works locally (checked on the simulator). Still to do: data flowing between two devices, Settings › Developer › Initialize CloudKit Schema, then deploy to production |
@@ -140,9 +144,17 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | F11-13 | Workouts entered after the fact | ✅ [ADR 0023](adr/0023-workouts-entered-later.md): Log Workout on past days (Home, History), Add Workout › Start Now / Log Finished and a planned card's Log as Finished today. The workout sheet without the timer (time pill → `LogTimeSheet`, Save Workout); `SessionStatus.logging`, no schema change; `current()` asks for active or paused only; targets from before the day; `ManualLogPlan` defaults (last time's start and length, else 18:00 for an hour, never past now); `DayPlanner.logSuggestions`. Delete Workout on a finished workout, also from Health. `ManualLogTests` (unit and UI) |
 | F11-09 | Haptics catalog | ✅ `PeakHaptic` in PeakDesign; every haptic goes through it. New: workout started, pause and resume, warning before "Start anyway?" and Delete All Data, selection on the Analysis pickers and calendar. Table in DESIGN_SYSTEM › Haptics. To feel on a device |
 
-## Upcoming phases (⬜)
+## F12: App Store release 🔶
 
-- F12: App Store release
+| ID | Task | Status |
+| --- | --- | --- |
+| F12-00 | iCloud Sync hidden for 1.0 | ✅ [ADR 0024](adr/0024-icloud-sync-off-for-1-0.md); privacy policy, README and CHANGELOG say data stays on the device |
+| F12-01 | App Store Connect record, name | ⬜ |
+| F12-02 | Privacy label and policy on GitHub Pages | ⬜ |
+| F12-03 | HealthKit review checklist | ✅ Usage texts match the types (unused workout read dropped, walking distance named); widget privacy manifest; TR Siri phrases both variants. RELEASE.md checklist |
+| F12-04 | Screenshots, description, keywords | ⬜ |
+| F12-05 | TestFlight | ⬜ |
+| F12-06 | Tag, release notes | ⬜ |
 
 ## Notes
 

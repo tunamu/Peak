@@ -51,4 +51,6 @@ xcrun xctrace export --input launch.trace \
 ## Still to check by hand
 
 Scrolling and the sheets need touches, so hitches are checked on a device with the Animation Hitches template while
-scrolling Home, Settings and a workout with every set filled.
+scrolling Home, Settings and a workout with every set filled. On 2026-10-02 the maintainer scrolled Home, Analysis, Settings and a workout on the
+iPhone 13 Pro Max and found them smooth; no trace was kept (the phone locked before recording started: set Auto-Lock to
+Never and use `xctrace record --attach <pid>` next time).

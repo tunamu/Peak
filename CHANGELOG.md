@@ -33,16 +33,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   workout with its volume, completion, targets hit and duration. **History**: a month calendar with a dot on every
   workout day, and the month's workouts (or the day's) as the same cards Home shows, opening read-only. Muscle groups left as Other, as imports
   leave them, are told from the movement's name.
-- iCloud Sync, off until you turn it on in Settings › General: workouts, templates, routines and water sync through
-  your private iCloud database, and settings through iCloud's key-value store. Turning it on or off takes effect at
-  once. Without an iCloud account Peak keeps working on the device. Water logged from the widget is uploaded the next
-  time the app runs.
 - A light tap when a set is done.
 - Set fields take a tap anywhere in their 44 pt cell, and VoiceOver reads them as Weight and Reps.
 - Empty lists say what they are for and offer the one thing to do (Create Workout, Create Routine).
 - Larger text: Today's Workout, the Energy and Water tiles and the workout header stack instead of breaking words;
   fixed-column controls cap their size and show the large content viewer.
-- Onboarding on the first launch: Apple Health, your step and water goals, iCloud Sync, and a start with your own
+- Onboarding on the first launch: Apple Health, your step and water goals, reminders, and a start with your own
   data, the sample program or nothing. People who already have data skip it.
 - Shortcuts and Siri: "Log water in Peak" adds water without opening the app (your quick amount, or the amount
   you give) and "Start today's workout in Peak" opens it on today's workout; in English and Turkish. Tapping a
@@ -51,10 +47,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   same (+1 by default, +0 to +5). Exports and imports carry it.
 - Settings › Delete All Data, for starting over: it shows what will be deleted, asks you to type DELETE, and saves a
   backup first that can be imported again.
-- Exercises, workouts and routines created on two devices before they synced are merged into one, keeping every past
-  session.
-- Settings › General › iCloud shows whether your data syncs: synced, not signed in, iCloud storage full, uploads
-  turned down, offline and more, each explained in a sentence with a way to the Settings app when the fix is there.
 - A running workout shows as a Live Activity: on the Lock Screen with the current movement, set progress, the clock
   and Pause/Resume, and in the Dynamic Island. It follows every change, keeps the right time after the app was
   killed, and ends when the workout is finished or discarded.
