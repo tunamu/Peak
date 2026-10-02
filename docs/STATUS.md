@@ -149,10 +149,10 @@ and a finished workout opens read-only from its card. Device checks pending: Hea
 | ID | Task | Status |
 | --- | --- | --- |
 | F12-00 | iCloud Sync hidden for 1.0 | ✅ [ADR 0024](adr/0024-icloud-sync-off-for-1-0.md); privacy policy, README and CHANGELOG say data stays on the device |
-| F12-01 | App Store Connect record, name | ⬜ |
-| F12-02 | Privacy label and policy on GitHub Pages | ⬜ |
+| F12-01 | App Store Connect record, name | ✅ "Peak" was taken: **Peak: Workout Log** (TR: Peak: Antrenman Günlüğü); the Home Screen name stays Peak. SKU `peak-ios` |
+| F12-02 | Privacy label and policy | ✅ Policy served from the repo (`docs/privacy.md` on `main`, the URL Settings already opens; no Pages needed); label: Data Not Collected |
 | F12-03 | HealthKit review checklist | ✅ Usage texts match the types (unused workout read dropped, walking distance named); widget privacy manifest; TR Siri phrases both variants. RELEASE.md checklist |
-| F12-04 | Screenshots, description, keywords | ⬜ |
+| F12-04 | Screenshots, description, keywords | ✅ [app-store/metadata.md](app-store/metadata.md): EN + TR texts within limits; 5 screenshots per language (6.9", dark) from `make-sample-data.py`. Found on the way: chart date labels cut off at the edges, fixed |
 | F12-05 | TestFlight | ⬜ |
 | F12-06 | Tag, release notes | ⬜ |
 
