@@ -139,6 +139,8 @@ struct PerformancePage: View {
                     )
                     .foregroundStyle(.peakWater)
                 }
+                // Room on both sides: date labels are centred on their tick, so one at an edge would be cut off.
+                .chartXScale(range: .plotDimension(startPadding: 24, endPadding: 24))
                 .chartYAxis {
                     AxisMarks(position: .leading) { _ in
                         AxisGridLine()
@@ -147,7 +149,7 @@ struct PerformancePage: View {
                 }
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: 4)) { _ in
-                        AxisValueLabel(format: .dateTime.day().month(.abbreviated))
+                        AxisValueLabel(format: .dateTime.day().month(.abbreviated), anchor: .top)
                     }
                 }
                 .frame(height: 180)

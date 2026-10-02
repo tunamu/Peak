@@ -130,6 +130,14 @@ Peak ücretsiz ve açık kaynaklıdır (MIT).
 Enerji Seviyesi antrenmanını planlamana yardım eden bir tahmindir, tıbbi tavsiye değildir.
 ```
 
+## Screenshots
+
+6.9" (iPhone 17 Pro Max simulator, 1320 × 2868), dark appearance, status bar 9:41, English and Turkish, in this order:
+Home (today's planned workout), the running workout, Analysis › Performance, a movement's chart (Bench Press),
+Analysis › History. Data from `make-sample-data.py`; Health from `-PeakMockHealth YES`; the workout opened through
+`-PeakOpenLink peak://workout/start`, so it is today's planned one. Shot last, because a running workout shows on every
+tab afterwards.
+
 ## Age rating
 
 Every content question: None / No. Expected rating: 4+.
