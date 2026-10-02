@@ -90,6 +90,8 @@ public protocol HealthService: AnyObject {
     func setWaterTotal(_ milliliters: Int, on day: Date) async throws
     /// Saves a finished workout and returns the Health workout's ID.
     func saveWorkout(_ workout: HealthWorkout) async throws -> UUID
+    /// Deletes a workout Peak saved earlier, when its session is deleted.
+    func deleteWorkout(id: UUID) async throws
     /// Calls `onChange` whenever step data changes, also in the background.
     func observeSteps(_ onChange: @escaping @MainActor @Sendable () -> Void)
 }
@@ -180,6 +182,13 @@ public final class MockHealthService: HealthService {
     public func saveWorkout(_ workout: HealthWorkout) async throws -> UUID {
         savedWorkouts.append(workout)
         return UUID()
+    }
+
+    /// Workouts deleted so far, by ID.
+    public private(set) var deletedWorkoutIDs: [UUID] = []
+
+    public func deleteWorkout(id: UUID) async throws {
+        deletedWorkoutIDs.append(id)
     }
 
     public func observeSteps(_ onChange: @escaping @MainActor @Sendable () -> Void) {}

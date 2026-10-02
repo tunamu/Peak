@@ -27,7 +27,9 @@ public struct PeakExporter {
             exercises: try fetch(Exercise.self).sorted(by: Self.creationOrder).map(exercise),
             workoutTemplates: try fetch(WorkoutTemplate.self).sorted(by: Self.listOrder).map(template),
             routines: try fetch(Routine.self).sorted(by: Self.listOrder).map(routine),
-            sessions: try fetch(WorkoutSession.self).sorted(by: Self.sessionOrder).map(session),
+            // A workout still being entered is not part of the data yet (F11-13).
+            sessions: try fetch(WorkoutSession.self).filter { $0.status != .logging }.sorted(by: Self.sessionOrder)
+                .map(session),
             waterLogs: try fetch(WaterLog.self).sorted(by: Self.waterOrder).map(waterLog),
             settings: settings
         )

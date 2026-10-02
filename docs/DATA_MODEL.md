@@ -44,7 +44,7 @@ field only in `#Predicate`, which cannot see computed properties.
 | `TemplateItem` | Exercise inside a template | `order`, `targetSets` (default 2), `exercise`, `template` |
 | `Routine` | A schedule of templates | `isActive`, `scheduleType` (weekdays/interval), `weekdaysMask`, `intervalDays`, `startDate`, `entries` |
 | `RoutineEntry` | Template position in a routine's rotation | `order`, `template`, `routine` |
-| `WorkoutSession` | A performed workout | `status`, `startedAt`, `endedAt`, `pausedTotal`, `pausedAt`, `title` (snapshot), `source`, `isDateEstimated`, `healthKitWorkoutID`, `exercises` |
+| `WorkoutSession` | A performed workout | `status` (active/paused/completed/discarded, and `logging` while entered after the fact, ADR 0023), `startedAt`, `endedAt`, `pausedTotal`, `pausedAt`, `title` (snapshot), `source`, `isDateEstimated`, `healthKitWorkoutID`, `exercises` |
 | `SessionExercise` | Exercise inside a session | `order`, `exerciseName` (snapshot), `note` (this session), `isCompleted`, `sets`, `segments` |
 | `SetEntry` | One strength set | `order`, `weightKg`, `reps`, `targetWeightKg`, `targetReps`, `isCompleted`, `completedAt` |
 | `CardioSegment` | One cardio segment | `order`, `speedKmh`, `inclinePercent`, `durationSec` |

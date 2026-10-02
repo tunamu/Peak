@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Workouts done without starting them in Peak can be entered afterwards: Log Workout on a past day (Home, or a day
+  picked in History), and Add Workout › Log Finished or a planned card's Log as Finished on today. The same tables as
+  a live workout, with the start time and length instead of the timer (the last time's by default); the routine's
+  workout moves the rotation on, and it is saved to Apple Health. A finished workout can be deleted, also from Health.
 - Notes on movements: how a movement is set up (seat, grip), pinned above its sets every time, and a note for each
   session from the note button beside the movement, with last time's note at hand. Analysis lists a movement's notes
   over time.

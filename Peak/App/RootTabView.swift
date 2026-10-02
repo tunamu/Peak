@@ -1,5 +1,6 @@
 import PeakCore
 import PeakDesign
+import SwiftData
 import SwiftUI
 
 /// The three tabs (C-01). iOS 26 draws the design's floating glass tab bar by itself.
@@ -12,6 +13,7 @@ struct RootTabView: View {
 
     @Binding var selection: TabID
     @Environment(WorkoutLauncher.self) private var launcher
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         // iOS 26 draws every tab symbol filled; the selected tab is marked by the glass pill and the tint. Filling
@@ -38,6 +40,8 @@ struct RootTabView: View {
         .sheet(item: Bindable(launcher).presented) { session in
             WorkoutSessionSheet(session: session)
         }
+        // A workout left half entered opens again (F11-13).
+        .task { launcher.reopenLog(in: modelContext) }
         .alert(
             "Start anyway?",
             isPresented: Binding(

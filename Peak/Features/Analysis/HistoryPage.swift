@@ -3,7 +3,8 @@ import PeakDesign
 import SwiftUI
 
 /// F11-06: every completed workout, a month at a time under the calendar (D-25). A day picked on the calendar narrows
-/// the list to it. Each row opens the workout read-only, as on Home.
+/// the list to it. Each row opens the workout read-only, as on Home. A picked day up to today can have a workout
+/// entered after the fact (F11-13).
 struct HistoryPage: View {
     /// Completed sessions, newest first.
     let sessions: [WorkoutSession]
@@ -42,6 +43,9 @@ struct HistoryPage: View {
                                 }
                             }
                         }
+                    }
+                    if let selection, calendar.startOfDay(for: selection) <= calendar.startOfDay(for: today) {
+                        LogWorkoutMenu(day: selection)
                     }
                 }
             }

@@ -1,6 +1,164 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld sets are empty. Save anyway?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@sets@ empty. Save anyway?"
+          },
+          "substitutions" : {
+            "sets" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg set is"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg sets are"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld set boş. Yine de kaydedilsin mi?"
+          }
+        }
+      }
+    },
+    "Add Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Ekle"
+          }
+        }
+      }
+    },
+    "It is added to your history on %@." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmişine %@ günü olarak eklenir."
+          }
+        }
+      }
+    },
+    "It is removed from your history and from Apple Health." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmişinden ve Apple Sağlık'tan kaldırılır."
+          }
+        }
+      }
+    },
+    "Log as Finished" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapıldı Olarak Gir"
+          }
+        }
+      }
+    },
+    "Log Finished" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonradan Gir"
+          }
+        }
+      }
+    },
+    "Log Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Gir"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaydet"
+          }
+        }
+      }
+    },
+    "Save Workout" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenmanı Kaydet"
+          }
+        }
+      }
+    },
+    "Save workout?" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman kaydedilsin mi?"
+          }
+        }
+      }
+    },
+    "Start Now" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şimdi Başlat"
+          }
+        }
+      }
+    },
+    "The workout has to be over by now." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman şu ana kadar bitmiş olmalı."
+          }
+        }
+      }
+    },
+    "Workout Time" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antrenman Saati"
+          }
+        }
+      }
+    },
     "“%@” is out of range" : {
       "localizations" : {
         "tr" : {
@@ -2824,6 +2982,7 @@
       }
     },
     "Page" : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {

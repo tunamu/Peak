@@ -10,8 +10,18 @@ import SwiftUI
 /// it again. The bottom bar (C-11) holds the timer with Pause/Resume and Finish Workout (always confirmed); Close and
 /// Discard sit in the toolbar. Swiping the sheet down is off so a workout is never closed by accident. A finished
 /// workout opens read-only in `CompletedWorkoutSheet`.
+///
+/// A workout entered after the fact (F11-13, status `logging`) uses the same tables without the timer: the bottom bar
+/// holds its time (start and length, changed in `LogTimeSheet`) and Save Workout, and Cancel throws it away.
 struct WorkoutSessionSheet: View {
     let session: WorkoutSession
+    /// Fixed when the sheet opens: saving turns the session `completed` while the summary is still to come.
+    private let isLogging: Bool
+
+    init(session: WorkoutSession) {
+        self.session = session
+        isLogging = session.status == .logging
+    }
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -19,6 +29,7 @@ struct WorkoutSessionSheet: View {
     @Environment(HealthConnection.self) private var health
     @State private var isDiscardConfirmationShown = false
     @State private var isFinishConfirmationShown = false
+    @State private var isTimeSheetShown = false
     /// The movement whose notes are open (F11-12).
     @State private var notesFor: SessionExercise?
     /// Set once the workout is finished: the sheet then shows the summary (S-11).
@@ -84,12 +95,27 @@ struct WorkoutSessionSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Close", systemImage: "xmark") { dismiss() }
+                    if isLogging {
+                        // Nothing entered yet: gone at once; otherwise asked first.
+                        Button("Cancel", systemImage: "xmark") {
+                            focus = nil
+                            if controller.hasEntries {
+                                isDiscardConfirmationShown = true
+                            } else {
+                                try? controller.discard()
+                                dismiss()
+                            }
+                        }
+                    } else {
+                        Button("Close", systemImage: "xmark") { dismiss() }
+                    }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu("More", systemImage: "ellipsis") {
-                        Button("Discard Workout", systemImage: "trash", role: .destructive) {
-                            isDiscardConfirmationShown = true
+                if !isLogging {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu("More", systemImage: "ellipsis") {
+                            Button("Discard Workout", systemImage: "trash", role: .destructive) {
+                                isDiscardConfirmationShown = true
+                            }
                         }
                     }
                 }
@@ -107,11 +133,21 @@ struct WorkoutSessionSheet: View {
         .presentationDetents([.large])
         .interactiveDismissDisabled()
         .sheet(item: $notesFor) { MovementNoteSheet(exercise: $0) }
+        .sheet(isPresented: $isTimeSheetShown) {
+            LogTimeSheet(start: session.startedAt, duration: session.duration()) { start, duration in
+                try? controller.setLogTime(start: start, duration: duration)
+            }
+        }
         .alert(finishQuestion, isPresented: $isFinishConfirmationShown) {
-            Button("Finish Workout") { finish() }
+            Button(isLogging ? "Save Workout" : "Finish Workout") { finish() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("The workout is saved and the timer stops.")
+            if isLogging {
+                let day = session.startedAt.formatted(.dateTime.weekday(.wide).day().month(.wide))
+                Text("It is added to your history on \(day).")
+            } else {
+                Text("The workout is saved and the timer stops.")
+            }
         }
         .confirmationDialog(
             "Discard this workout?", isPresented: $isDiscardConfirmationShown, titleVisibility: .visible
@@ -235,22 +271,32 @@ struct WorkoutSessionSheet: View {
         return fields[index + 1]
     }
 
+}
+
+// MARK: Finishing
+
+extension WorkoutSessionSheet {
     /// The finish pipeline: save the session, show the summary, then write the workout to Health in the background.
     /// Live Activity and widgets join with F9.
-    /// "Finish workout?", or with empty sets "3 sets are empty. Finish anyway?".
-    private var finishQuestion: Text {
+    /// "Finish workout?", or with empty sets "3 sets are empty. Finish anyway?"; "Save workout?" when entered after the
+    /// fact.
+    fileprivate var finishQuestion: Text {
         let empty = controller.emptySetCount
+        if isLogging {
+            return empty > 0 ? Text("\(empty) sets are empty. Save anyway?") : Text("Save workout?")
+        }
         return empty > 0 ? Text("\(empty) sets are empty. Finish anyway?") : Text("Finish workout?")
     }
 
-    private func finish() {
-        guard (try? controller.finish()) != nil else { return }
+    fileprivate func finish() {
+        let saved = isLogging ? try? controller.saveLog() : try? controller.finish()
+        guard saved != nil else { return }
         summary = WorkoutSummary(session: session, rule: settings.progressionRule)
         Task { await saveToHealth() }
     }
 
     /// Writes the workout to Health once; without access it is skipped, the session stays in Peak either way.
-    private func saveToHealth() async {
+    fileprivate func saveToHealth() async {
         guard health.status == .connected, session.healthKitWorkoutID == nil, let workout = session.healthWorkout
         else { return }
         guard let id = try? await health.service.saveWorkout(workout) else { return }
@@ -262,24 +308,15 @@ struct WorkoutSessionSheet: View {
 // MARK: Bottom bar
 
 extension WorkoutSessionSheet {
-    /// C-11: the timer pill (Pause/Resume) and Finish Workout.
+    /// C-11: the timer pill (Pause/Resume) and Finish Workout; when entered after the fact, the time pill and Save.
     fileprivate var bottomBar: some View {
         GlassEffectContainer(spacing: Spacing.medium) {
             HStack(spacing: Spacing.small) {
-                Button {
-                    if session.status == .paused {
-                        try? controller.resume()
-                    } else {
-                        try? controller.pause()
-                    }
-                } label: {
-                    HStack(spacing: Spacing.xSmall) {
-                        SessionClockText(session: session)
-                        Image(systemName: session.status == .paused ? "play.fill" : "pause.fill")
-                            .accessibilityLabel(session.status == .paused ? "Resume" : "Pause")
-                    }
+                if isLogging {
+                    logTimeButton
+                } else {
+                    timerButton
                 }
-                .buttonStyle(.peakGlassPill)
                 // Always asked: a stray tap must not end the workout.
                 Button {
                     focus = nil
@@ -287,8 +324,13 @@ extension WorkoutSessionSheet {
                 } label: {
                     // The short title when the long one would break (large text).
                     ViewThatFits(in: .horizontal) {
-                        Label("Finish Workout", systemImage: "checkmark").fixedSize()
-                        Label("Finish", systemImage: "checkmark").fixedSize()
+                        if isLogging {
+                            Label("Save Workout", systemImage: "checkmark").fixedSize()
+                            Label("Save", systemImage: "checkmark").fixedSize()
+                        } else {
+                            Label("Finish Workout", systemImage: "checkmark").fixedSize()
+                            Label("Finish", systemImage: "checkmark").fixedSize()
+                        }
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -302,5 +344,41 @@ extension WorkoutSessionSheet {
         .accessibilityIdentifier("peak.capped.bottomBar")
         .padding(.horizontal, Spacing.screenMargin)
         .padding(.bottom, Spacing.xSmall)
+    }
+
+    /// The start and length of a workout entered after the fact; tapping changes them.
+    private var logTimeButton: some View {
+        Button {
+            focus = nil
+            isTimeSheetShown = true
+        } label: {
+            HStack(spacing: Spacing.xSmall) {
+                Image(systemName: "clock")
+                    .accessibilityHidden(true)
+                Text(verbatim: session.startedAt.formatted(date: .omitted, time: .shortened))
+                    .monospacedDigit()
+            }
+        }
+        .buttonStyle(.peakGlassPill)
+        .accessibilityLabel(Text("Workout Time"))
+        .accessibilityValue(Text(verbatim: LogTimeSheet.range(start: session.startedAt, duration: session.duration())))
+    }
+
+    /// The running time; tapping pauses or resumes.
+    private var timerButton: some View {
+        Button {
+            if session.status == .paused {
+                try? controller.resume()
+            } else {
+                try? controller.pause()
+            }
+        } label: {
+            HStack(spacing: Spacing.xSmall) {
+                SessionClockText(session: session)
+                Image(systemName: session.status == .paused ? "play.fill" : "pause.fill")
+                    .accessibilityLabel(session.status == .paused ? "Resume" : "Pause")
+            }
+        }
+        .buttonStyle(.peakGlassPill)
     }
 }

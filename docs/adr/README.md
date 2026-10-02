@@ -27,6 +27,7 @@ edited away. If it changes, a new ADR supersedes it and the old one is marked **
 | [0020](0020-analysis-screen.md) | The Analysis screen: Performance and History pages |
 | [0021](0021-local-reminders.md) | Local reminders on workout days |
 | [0022](0022-schema-v2.md) | SchemaV2: movement notes and per-movement progressive overload |
+| [0023](0023-workouts-entered-later.md) | Workouts entered after the fact |
 
 ## Open assumptions
 

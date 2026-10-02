@@ -216,6 +216,11 @@ final class HealthKitService: HealthService {
         return saved.uuid
     }
 
+    /// Health lets an app delete only what it saved itself, which is all Peak asks for. Already gone is fine.
+    func deleteWorkout(id: UUID) async throws {
+        _ = try await store.deleteObjects(of: .workoutType(), predicate: HKQuery.predicateForObject(with: id))
+    }
+
     // MARK: Helpers
 
     /// One value per day from `from` to `to`, keyed by the day's start.

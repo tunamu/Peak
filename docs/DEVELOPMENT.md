@@ -108,6 +108,7 @@ Xcode, add them under Product › Scheme › Edit Scheme › Run › Arguments; 
 | `-PeakLoadSecondRoutine YES` | With `-PeakTab settings`, adds an everyday second routine, so days have two workouts |
 | `-PeakMockHealth YES` | Uses sample Health data (7,598 steps, a rested night, steady heart data) instead of HealthKit |
 | `-PeakHomeDay yesterday\|tomorrow\|nextWeek` | Selects that day on Home (a bare `-1` would be read as another argument) |
+| `-PeakLogWorkout yesterday\|today` | Opens the first workout to be entered after the fact for that day (ADR 0023) |
 | `-PeakStartWorkout YES` | Starts the first workout from Home, to see the running state |
 | `-PeakEnergy notReady` | Forces the energy level the "Start anyway?" alert checks (with `-PeakStartWorkout`, shows the alert) |
 | `-PeakAnalysisPage performance\|history` | With `-PeakTab analysis`, opens that page |

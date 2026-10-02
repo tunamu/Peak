@@ -148,34 +148,57 @@ struct HomeView: View {
                     open: open(workout)
                 )
                 .disabled(isRunning && workout.isPlanned)
+                .contextMenu {
+                    // Done without the phone: entered as finished, with its routine (F11-13).
+                    if isToday, case .planned(let template, let routine) = workout {
+                        Button("Log as Finished", systemImage: "checkmark.circle") {
+                            launcher.log(
+                                template, routine: routine, on: today, rule: settings.progressionRule, in: modelContext)
+                        }
+                    }
+                    addWorkoutMenu(isRunning: isRunning)
+                }
             }
-            if canStartAnother(isRunning: isRunning) {
+            if isToday && !templates.isEmpty {
                 Menu {
-                    anotherWorkoutButtons
+                    addWorkoutButtons(isRunning: isRunning)
                 } label: {
-                    Label("Start Another Workout", systemImage: "plus")
+                    Label("Add Workout", systemImage: "plus")
                         .font(.peakRow)
                         .foregroundStyle(.peakTextSecondary)
                         .frame(maxWidth: .infinity, minHeight: Metrics.minTouchTarget)
                         .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
+            } else if !isToday && !isFuture && !templates.isEmpty {
+                LogWorkoutMenu(day: selectedDay)
             }
         }
-        .contextMenu {
-            if canStartAnother(isRunning: isRunning) {
-                Menu {
-                    anotherWorkoutButtons
-                } label: {
-                    Label("Start Another Workout", systemImage: "plus")
-                }
+        .contextMenu { addWorkoutMenu(isRunning: isRunning) }
+    }
+
+    /// "Add Workout" in a long-press menu, today only.
+    @ViewBuilder
+    private func addWorkoutMenu(isRunning: Bool) -> some View {
+        if isToday && !templates.isEmpty {
+            Menu("Add Workout", systemImage: "plus") {
+                addWorkoutButtons(isRunning: isRunning)
             }
         }
     }
 
-    /// F6-07: any template can be started today outside the plan, unless a workout already runs (one at a time).
-    private func canStartAnother(isRunning: Bool) -> Bool {
-        isToday && !isRunning && !templates.isEmpty
+    /// Today: start any template now outside the plan (F6-07), unless a workout already runs (one at a time), or enter
+    /// one already done (F11-13), which never runs.
+    @ViewBuilder
+    private func addWorkoutButtons(isRunning: Bool) -> some View {
+        if !isRunning {
+            Menu("Start Now", systemImage: "play") {
+                anotherWorkoutButtons
+            }
+        }
+        Menu("Log Finished", systemImage: "checkmark.circle") {
+            LogWorkoutMenuItems(day: today)
+        }
     }
 
     /// One button per template. The session is saved without a routine, so the rotation carries on untouched.
@@ -316,9 +339,16 @@ extension HomeView {
                 launcher.start(template, routine: nil, rule: settings.progressionRule, in: modelContext)
                 launcher.presented = nil
             }
+            // `-PeakLogWorkout yesterday|today` enters the first workout for that day after the fact (F11-13).
+            let logDays = ["yesterday": -1, "today": 0]
+            if let offset = logDays[UserDefaults.standard.string(forKey: "PeakLogWorkout") ?? ""],
+                let template = templates.first, let day = calendar.date(byAdding: .day, value: offset, to: today)
+            {
+                launcher.log(template, routine: nil, on: day, rule: settings.progressionRule, in: modelContext)
+            }
             // `-PeakStartWalk YES` throws away the running workout and starts a walk (made if missing), to see C-12.
             if UserDefaults.standard.bool(forKey: "PeakStartWalk") {
-                startSampleWalk()
+                HomeView.startSampleWalk(in: modelContext, templates: templates, rule: settings.progressionRule)
             }
             // `-PeakPauseWorkout YES` pauses the running workout, to see the paused state.
             if UserDefaults.standard.bool(forKey: "PeakPauseWorkout"),
@@ -343,33 +373,6 @@ extension HomeView {
             {
                 launcher.resume(session)
             }
-        }
-
-        private func startSampleWalk() {
-            let sessions = SessionRepository(context: modelContext)
-            if let current = try? sessions.current() {
-                sessions.discard(current)
-            }
-            let templates = TemplateRepository(context: modelContext)
-            let template: WorkoutTemplate
-            if let walking = self.templates.first(where: { $0.name == "Walking" }) {
-                template = walking
-            } else {
-                guard
-                    let walk = try? ExerciseRepository(context: modelContext)
-                        .findOrCreate(name: "Incline Walk", kind: .cardio),
-                    let created = try? templates.create(name: "Walking", kind: .cardio)
-                else { return }
-                templates.setItems([(walk, 1)], of: created)
-                template = created
-            }
-            let session = sessions.start(from: template, rule: settings.progressionRule)
-            if let segment = session.orderedExercises.first?.orderedSegments.first {
-                segment.speedKmh = 5.5
-                segment.inclinePercent = 12
-                segment.durationSec = 1_800
-            }
-            try? modelContext.save()
         }
     #endif
 }

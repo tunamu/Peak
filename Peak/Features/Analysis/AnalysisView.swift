@@ -3,7 +3,7 @@ import PeakDesign
 import SwiftData
 import SwiftUI
 
-/// Analysis tab (C-14, ADR 0020): Performance and History, chosen with the segmented control or by swiping between
+/// Analysis tab (C-14, ADR 0020): Performance and History, chosen with the glass segmented picker or by swiping between
 /// them. Every number is computed from the completed sessions when the screen opens (docs/ANALYSIS.md).
 struct AnalysisView: View {
     enum Page: String, CaseIterable, Hashable {
@@ -63,18 +63,19 @@ struct AnalysisView: View {
                 .foregroundStyle(.peakTextPrimary)
                 .accessibilityAddTraits(.isHeader)
             if !isEmpty {
-                Picker(
-                    "Page",
+                // The week strip's look rather than the system segmented control, so both tabs match.
+                GlassSegmentedPicker(
                     selection: Binding(
                         get: { page ?? .performance },
                         set: { newPage in
                             withAnimation(.smooth) { page = newPage }
-                        })
-                ) {
-                    Text("Performance").tag(Page.performance)
-                    Text("History").tag(Page.history)
-                }
-                .pickerStyle(.segmented)
+                        }),
+                    segments: [
+                        .init("Performance", value: Page.performance),
+                        .init("History", value: Page.history),
+                    ]
+                )
+                .accessibilityIdentifier("peak.capped.analysisPages")
             }
         }
         .padding(.horizontal, Spacing.screenMargin)

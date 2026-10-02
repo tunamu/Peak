@@ -22,9 +22,12 @@ final class AccessibilityAuditTests: XCTestCase {
     /// - Contrast: the audit misreads text on Liquid Glass, so the text's contrast is measured from the screenshot
     ///   instead (the element's darkest pixels against its median), and must reach 4.5:1 (WCAG AA).
     /// - Dynamic Type and clipped text inside the containers capped on purpose (`peak.capped.*`: the week strip, the
-    ///   set table, the workout's bottom bar and the bar above the tab bar), which show the large content viewer.
+    ///   Analysis page picker, the set table, the workout's bottom bar and the bar above the tab bar), which show the
+    ///   large content viewer.
     /// Content scrolled under the bars (the tab bar, the bar above it, the workout's bottom bar) is blurred by their
     /// glass on purpose and is read once scrolled up, so contrast, Dynamic Type and clipping are not judged there.
+    /// Disabled controls (Start while another workout runs) are dimmed on purpose; WCAG 1.4.3 leaves inactive controls
+    /// out of contrast.
     @MainActor
     private func audit(_ app: XCUIApplication, _ screen: String, knowsUnnamedIssues: Bool = false) throws {
         let capped = app.descendants(matching: .any)
@@ -46,6 +49,9 @@ final class AccessibilityAuditTests: XCTestCase {
                             || ownBars.contains { $0.intersects(frame) && !$0.contains(frame) }
                     } ?? false
                 if isUnderBar && [.contrast, .dynamicType, .textClipped].contains(issue.auditType) {
+                    return true
+                }
+                if issue.auditType == .contrast && issue.element?.isEnabled == false {
                     return true
                 }
                 let name = issue.element.map { "'\($0.label)' \($0.frame)" } ?? "an unnamed element"
@@ -222,6 +228,34 @@ final class AccessibilityAuditTests: XCTestCase {
             let finish = app.buttons[language == "tr" ? "Antrenmanı Bitir" : "Finish Workout"]
             XCTAssertTrue(finish.waitForExistence(timeout: 5), "The workout did not open")
             try audit(app, "workout (\(language))", knowsUnnamedIssues: true)
+            app.terminate()
+        }
+    }
+
+    /// A workout entered after the fact and its time sheet (F11-13), for yesterday with the sample program.
+    @MainActor
+    func testWorkoutEnteredLater() throws {
+        let setup = launch(
+            ["-PeakSkipOnboarding", "YES", "-PeakTab", "settings", "-PeakLoadSampleProgram", "YES"], language: "en")
+        setup.terminate()
+        for language in ["en", "tr"] {
+            let isTurkish = language == "tr"
+            let app = launch(
+                ["-PeakSkipOnboarding", "YES", "-PeakTab", "home", "-PeakLogWorkout", "yesterday"], language: language)
+            let save = app.buttons[isTurkish ? "Antrenmanı Kaydet" : "Save Workout"]
+            XCTAssertTrue(save.waitForExistence(timeout: 5), "The workout did not open to be entered")
+            try audit(app, "workout entered later (\(language))", knowsUnnamedIssues: true)
+
+            app.buttons[isTurkish ? "Antrenman Saati" : "Workout Time"].tap()
+            let update = app.buttons[isTurkish ? "Güncelle" : "Update"]
+            XCTAssertTrue(update.waitForExistence(timeout: 5), "The time sheet did not open")
+            try audit(app, "workout time (\(language))", knowsUnnamedIssues: true)
+            update.tap()
+
+            // Nothing was entered, so Cancel throws it away without asking; the next launch starts clean.
+            XCTAssertTrue(save.waitForExistence(timeout: 5))
+            app.buttons[isTurkish ? "İptal" : "Cancel"].firstMatch.tap()
+            XCTAssertTrue(app.buttons[isTurkish ? "Antrenman Ekle" : "Add Workout"].waitForExistence(timeout: 5))
             app.terminate()
         }
     }
