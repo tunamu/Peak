@@ -144,8 +144,51 @@ Every content question: None / No. Expected rating: 4+.
 
 ## App Review notes
 
+App Review asked for this on 2026-10-03 (new developer account, limited review history). The same text goes to the
+Resolution Center reply and to the Notes field of App Review Information, with the screen recording attached to the
+reply.
+
 ```text
-Peak needs no account or sign-in. To see a full app quickly: on first launch choose "Start with a Sample Program",
-then tap Start on Home. Apple Health access is optional; without it the steps, water and Energy Level cards show a
-"Connect Apple Health" button and the rest of the app works. All data stays on the device.
+1. Screen recording
+Attached: a recording from a physical iPhone on the latest iOS. It starts on the Home Screen by launching the app and
+shows the typical flow: onboarding, the Apple Health permission, starting with the sample program, logging sets,
+finishing a workout and its summary, Analysis, logging a past workout, widgets, and import/export in Settings.
+Peak has no account registration, login or account deletion, no user-generated content visible to other people, and no
+paid content or In-App Purchases.
+
+2. Purpose and audience
+Peak is a strength training log for people who lift weights, from beginners to experienced lifters. To keep making
+progress you have to add weight or reps over time (progressive overload); most people track this in notes or
+spreadsheets and guess their next targets. Peak records each workout set by set and calculates the next target weight
+and reps from the last session, so the user always knows what to lift next. It also shows progress charts and reads
+steps, sleep and heart rate data from Apple Health for an Energy Level estimate. The app is free, with no account, no
+ads and no tracking; all data stays on the device.
+
+3. How to access the main features
+No login or demo account is needed.
+- First launch: choose "Start with a Sample Program". This creates a weekly routine with ready workouts.
+- Home: today's workout is shown. Tap Start, enter weight and reps for each set, then finish the workout to see the
+  summary and the new targets.
+- Analysis: Performance shows volume and progress charts; History shows a calendar of past workouts.
+- Logging a workout afterwards: select a past day on Home and tap "Log Workout".
+- Settings: "Import Workout Data" (Excel, CSV or JSON) and data export. No sample files are needed; the sample program
+  is enough to use every feature.
+- Apple Health access is optional. Without it the steps, water and Energy Level cards show a "Connect Apple Health"
+  button and the rest of the app works.
+
+4. External services
+Peak has no backend server and uses no third-party services, analytics, ads, payment processors, authentication
+services or AI services. It only uses Apple frameworks on the device: HealthKit (reads steps, sleep, heart rate
+variability and resting heart rate; writes workouts and water), WidgetKit and ActivityKit (widgets and Live Activity),
+App Intents (Siri and Control Center) and local notifications. ZIPFoundation, an open-source library, is used on the
+device to read and create Excel files for import. The iCloud entitlement is present for a future sync feature, but
+sync is turned off in version 1.0 and no data is sent to iCloud.
+
+5. Regional differences
+The app works the same in all regions. It is available in English and Turkish, with the same features and content in
+both languages.
+
+6. Regulated industry or third-party material
+Not applicable. Peak is not a medical app and contains no protected third-party material. Energy Level is presented
+as an estimate to help plan training, and the app states that it is not medical advice.
 ```
